@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Slider from '@react-native-community/slider';
 import * as Haptics from 'expo-haptics';
+import { router } from 'expo-router';
+import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSessionStore } from '../store/session';
 
 const MIN = 1;
-const MAX = 10;
+const MAX = 6;
 
 export default function HowManyScreen() {
   const [count, setCount] = useState(3);
@@ -48,9 +50,9 @@ export default function HowManyScreen() {
       <Pressable
         style={styles.nextButton}
         onPress={() => {
-          // Skærm 3 bygger vi næste gang — for nu bekræfter vi bare valget
-          console.log('Antal personer:', count);
-        }}
+  useSessionStore.getState().initPersons(count);
+  router.push('/name');
+}}
       >
         <Text style={styles.nextButtonText}>Next</Text>
       </Pressable>
