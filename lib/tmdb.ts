@@ -44,7 +44,11 @@ export async function fetchWatchProviders(region: string = 'DK'): Promise<WatchP
   const res = await fetch(
     `${TMDB_BASE_URL}/watch/providers/movie?api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&watch_region=${region}`
   );
-  if (!res.ok) throw new Error(`TMDb fejl: ${res.status}`);
+  if (!res.ok) {
+    const text = await res.text();
+    console.error('TMDb watch-providers fejl:', res.status, text);
+    throw new Error(`TMDb fejl: ${res.status}`);
+  }
   const data = await res.json();
   return data.results as WatchProvider[];
 }

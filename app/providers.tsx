@@ -15,9 +15,12 @@ export default function ProvidersScreen() {
 
   useEffect(() => {
     fetchWatchProviders('DK')
-      .then(setProviders)
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+  .then(setProviders)
+  .catch((err) => {
+    console.error('fetchWatchProviders fejl:', err);
+    setError(true);
+  })
+  .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#1A1A1A" /></View>;
