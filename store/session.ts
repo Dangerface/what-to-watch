@@ -1,58 +1,62 @@
 import { create } from 'zustand';
 
-export type Person = {
-  name: string;
-  genreIds: number[];
-  decades: string[];
-};
+export type SourceType = 'streamingOnly' | 'includeRental';
+export type Vibe = 'classics' | 'cult' | 'mustWatch' |'hiddenGem' | 'awardWinners' | 'trending';
 
 type SessionState = {
-  persons: Person[];
-  currentPersonIndex: number;
-  initPersons: (count: number) => void;
-  setName: (name: string) => void;
+  sourceType: SourceType | null;
+  providerIds: number[];
+  maxRuntimeMinutes: number | null; // null = ingen grænse (slider helt til højre)
+  familyFriendly: boolean;
+  genreIds: number[];
+  vibes: Vibe[];
+
+  setSourceType: (type: SourceType) => void;
+  toggleProvider: (id: number) => void;
+  setMaxRuntime: (minutes: number | null) => void;
+  setFamilyFriendly: (value: boolean) => void;
   toggleGenre: (id: number) => void;
-  toggleDecade: (decade: string) => void;
-  goToNextPerson: () => void;
+  toggleVibe: (vibe: Vibe) => void;
+  reset: () => void;
 };
 
-const emptyPerson = (): Person => ({ name: '', genreIds: [], decades: [] });
+const initialState = {
+  sourceType: null as SourceType | null,
+  providerIds: [] as number[],
+  maxRuntimeMinutes: 120, // default 2 timer
+  familyFriendly: false,
+  genreIds: [] as number[],
+  vibes: [] as Vibe[],
+};
 
 export const useSessionStore = create<SessionState>()((set) => ({
-  persons: [],
-  currentPersonIndex: 0,
+  ...initialState,
 
-  initPersons: (count) =>
-    set({ persons: Array.from({ length: count }, emptyPerson), currentPersonIndex: 0 }),
+  setSourceType: (type) => set({ sourceType: type }),
 
-  setName: (name) =>
-    set((state) => {
-      const persons = [...state.persons];
-      persons[state.currentPersonIndex] = { ...persons[state.currentPersonIndex], name };
-      return { persons };
-    }),
+  toggleProvider: (id) =>
+    set((state) => ({
+      providerIds: state.providerIds.includes(id)
+        ? state.providerIds.filter((p) => p !== id)
+        : [...state.providerIds, id],
+    })),
+
+  setMaxRuntime: (minutes) => set({ maxRuntimeMinutes: minutes }),
+  setFamilyFriendly: (value) => set({ familyFriendly: value }),
 
   toggleGenre: (id) =>
-    set((state) => {
-      const persons = [...state.persons];
-      const current = persons[state.currentPersonIndex];
-      const genreIds = current.genreIds.includes(id)
-        ? current.genreIds.filter((g) => g !== id)
-        : [...current.genreIds, id];
-      persons[state.currentPersonIndex] = { ...current, genreIds };
-      return { persons };
-    }),
+    set((state) => ({
+      genreIds: state.genreIds.includes(id)
+        ? state.genreIds.filter((g) => g !== id)
+        : [...state.genreIds, id],
+    })),
 
-  toggleDecade: (decade) =>
-    set((state) => {
-      const persons = [...state.persons];
-      const current = persons[state.currentPersonIndex];
-      const decades = current.decades.includes(decade)
-        ? current.decades.filter((d) => d !== decade)
-        : [...current.decades, decade];
-      persons[state.currentPersonIndex] = { ...current, decades };
-      return { persons };
-    }),
+  toggleVibe: (vibe) =>
+    set((state) => ({
+      vibes: state.vibes.includes(vibe)
+        ? state.vibes.filter((v) => v !== vibe)
+        : [...state.vibes, vibe],
+    })),
 
-  goToNextPerson: () => set((state) => ({ currentPersonIndex: state.currentPersonIndex + 1 })),
+  reset: () => set(initialState),
 }));

@@ -2,16 +2,18 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
+import { getStepNumber, getTotalSteps } from '../lib/flow';
 import { fetchGenres, Genre } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
 
 export default function GenreScreen() {
-  const { persons, currentPersonIndex, toggleGenre } = useSessionStore();
+  const { sourceType, genreIds, toggleGenre } = useSessionStore();
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const selectedIds = persons[currentPersonIndex]?.genreIds ?? [];
+  const totalSteps = getTotalSteps(sourceType);
+  const step = getStepNumber('genre', sourceType);
 
   useEffect(() => {
     fetchGenres()
@@ -25,12 +27,12 @@ export default function GenreScreen() {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader step={2} personName={persons[currentPersonIndex]?.name} />
+      <ScreenHeader step={step} totalSteps={totalSteps} />
       <Text style={styles.heading}>What genres do you like?</Text>
 
       <ScrollView contentContainerStyle={styles.chipWrap}>
         {genres.map((genre) => {
-          const isSelected = selectedIds.includes(genre.id);
+          const isSelected = genreIds.includes(genre.id);
           return (
             <Pressable key={genre.id} onPress={() => toggleGenre(genre.id)} style={[styles.chip, isSelected && styles.chipSelected]}>
               <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>{genre.name}</Text>
@@ -39,7 +41,7 @@ export default function GenreScreen() {
         })}
       </ScrollView>
 
-      <Pressable style={styles.nextButton} onPress={() => router.push('/decade')}>
+      <Pressable style={styles.nextButton} onPress={() => router.push('/vibe')}>
         <Text style={styles.nextButtonText}>Next</Text>
       </Pressable>
     </View>
