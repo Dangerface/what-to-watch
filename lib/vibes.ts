@@ -1,18 +1,26 @@
 import { Vibe } from '../store/session';
 import { getCuratedMovies } from './curatedLists';
-import { DiscoverFilters, DiscoverVibe, Movie, discoverMovies, discoverMoviesForVibe, discoverTrending, fetchMovieAvailableOnProviders, fetchMovieCertificationDK } from './tmdb';
+import {
+  DiscoverFilters,
+  DiscoverVibe,
+  Movie,
+  RUNTIME_TOLERANCE_MINUTES,
+  discoverMovies,
+  discoverMoviesForVibe,
+  discoverMustWatch,
+  discoverTrending,
+  fetchMovieAvailableOnProviders,
+  fetchMovieCertificationDK,
+  filterExcludedGenres,
+} from './tmdb';
 
 const HAS_CURATED: Vibe[] = ['cult', 'awardWinners', 'mustWatch'];
-const LIVE_VIBE_MAP: Partial<Record<Vibe, DiscoverVibe>> = { classics: 'classics', mustWatch: 'mustWatch', hiddenGem: 'hiddenGem' };
-
-function filterByGenre(movies: Movie[], genreIds: number[]): Movie[] {
-  if (genreIds.length === 0) return movies;
-  return movies.filter((m) => m.genre_ids.some((g) => genreIds.includes(g)));
-}
+const LIVE_VIBE_MAP: Partial<Record<Vibe, DiscoverVibe>> = { classics: 'classics', hiddenGem: 'hiddenGem' };
 
 function filterByRuntime(movies: Movie[], maxMinutes: number | null): Movie[] {
   if (maxMinutes == null) return movies;
-  return movies.filter((m) => m.runtime == null || m.runtime <= maxMinutes);
+  const tolerance = maxMinutes + RUNTIME_TOLERANCE_MINUTES;
+  return movies.filter((m) => m.runtime == null || m.runtime <= tolerance);
 }
 
 function dedupe(movies: Movie[]): Movie[] {
@@ -20,8 +28,6 @@ function dedupe(movies: Movie[]): Movie[] {
   return movies.filter((m) => (seen.has(m.id) ? false : (seen.add(m.id), true)));
 }
 
-// Kun de bedst-vurderede 40 kandidater tjekkes live — ellers kan en stor kurateret liste
-// (som dit cult.json med ~280 film) udløse hundredvis af ekstra API-kald per søgning.
 async function verifyCuratedCandidates(movies: Movie[], filters: DiscoverFilters, limit = 40): Promise<Movie[]> {
   if (!filters.familyFriendly && filters.providerIds.length === 0) return movies;
 
@@ -40,11 +46,12 @@ async function verifyCuratedCandidates(movies: Movie[], filters: DiscoverFilters
 
 export async function getMoviesForVibe(vibe: Vibe, filters: DiscoverFilters): Promise<Movie[]> {
   const curatedRaw = HAS_CURATED.includes(vibe) ? getCuratedMovies(vibe) : [];
-  const curatedFiltered = filterByRuntime(filterByGenre(curatedRaw, filters.genreIds), filters.maxRuntimeMinutes);
+  const curatedFiltered = filterExcludedGenres(filterByRuntime(curatedRaw, filters.maxRuntimeMinutes), filters);
   const curatedVerified = await verifyCuratedCandidates(curatedFiltered, filters);
 
   let live: Movie[] = [];
   if (vibe === 'trending') live = await discoverTrending(filters);
+  else if (vibe === 'mustWatch') live = await discoverMustWatch(filters);
   else if (LIVE_VIBE_MAP[vibe]) live = await discoverMoviesForVibe(LIVE_VIBE_MAP[vibe]!, filters);
 
   return dedupe([...curatedVerified, ...live]);

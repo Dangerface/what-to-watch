@@ -1,6 +1,7 @@
 import { SourceType } from '../store/session';
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+export const RUNTIME_TOLERANCE_MINUTES = 15;
 
 export type Genre = { id: number; name: string };
 
@@ -53,6 +54,22 @@ export type DiscoverFilters = {
   page?: number;
 };
 
+const GENRE_ANIMATION = 16;
+const GENRE_FAMILY = 10751;
+
+function computeExcludedGenres(filters: DiscoverFilters): number[] {
+  const excluded: number[] = [];
+  if (!filters.genreIds.includes(GENRE_ANIMATION)) excluded.push(GENRE_ANIMATION);
+  if (!filters.familyFriendly && !filters.genreIds.includes(GENRE_FAMILY)) excluded.push(GENRE_FAMILY);
+  return excluded;
+}
+
+export function filterExcludedGenres(movies: Movie[], filters: DiscoverFilters): Movie[] {
+  const excluded = computeExcludedGenres(filters);
+  if (excluded.length === 0) return movies;
+  return movies.filter((m) => !m.genre_ids.some((g) => excluded.includes(g)));
+}
+
 export async function discoverMovies(filters: DiscoverFilters, extraParams: Record<string, string> = {}): Promise<Movie[]> {
   const params = new URLSearchParams({
     api_key: process.env.EXPO_PUBLIC_TMDB_API_KEY!,
@@ -61,8 +78,12 @@ export async function discoverMovies(filters: DiscoverFilters, extraParams: Reco
     ...extraParams,
   });
 
-  if (filters.genreIds.length > 0) params.set('with_genres', filters.genreIds.join('|'));
-  if (filters.maxRuntimeMinutes != null) params.set('with_runtime.lte', String(filters.maxRuntimeMinutes));
+  // Genre er bevidst IKKE et hårdt filter her — det er en scoring-bonus i lib/scoring.ts,
+  // så anbefalinger aldrig løber tør pga. et snævert genre-valg.
+
+  if (filters.maxRuntimeMinutes != null) {
+    params.set('with_runtime.lte', String(filters.maxRuntimeMinutes + RUNTIME_TOLERANCE_MINUTES));
+  }
   if (filters.familyFriendly) {
     params.set('certification_country', 'DK');
     params.set('certification.lte', '11');
@@ -75,21 +96,22 @@ export async function discoverMovies(filters: DiscoverFilters, extraParams: Reco
     }
   }
 
+  const excludedGenres = computeExcludedGenres(filters);
+  if (excludedGenres.length > 0) params.set('without_genres', excludedGenres.join(','));
+
   const res = await fetch(`${TMDB_BASE_URL}/discover/movie?${params.toString()}`);
   if (!res.ok) throw new Error(`TMDb fejl: ${res.status}`);
   const data = await res.json();
   return data.results as Movie[];
 }
 
-export type DiscoverVibe = 'classics' | 'mustWatch' | 'hiddenGem';
+export type DiscoverVibe = 'classics' | 'hiddenGem';
 
 function vibeParams(vibe: DiscoverVibe): Record<string, string> {
   const thisYear = new Date().getFullYear();
   switch (vibe) {
     case 'classics':
       return { 'primary_release_date.lte': `${thisYear - 25}-12-31`, 'vote_count.gte': '200', sort_by: 'vote_average.desc' };
-    case 'mustWatch':
-      return { 'vote_average.gte': '7.5', 'vote_count.gte': '1000', sort_by: 'vote_average.desc' };
     case 'hiddenGem':
       return { 'vote_average.gte': '7.0', 'vote_count.gte': '50', 'vote_count.lte': '500', sort_by: 'vote_average.desc' };
   }
@@ -101,6 +123,23 @@ export async function discoverMoviesForVibe(vibe: DiscoverVibe, filters: Discove
 
 export async function discoverTrending(filters: DiscoverFilters): Promise<Movie[]> {
   return discoverMovies(filters, { sort_by: 'popularity.desc' });
+}
+
+const MUST_WATCH_VOTE_THRESHOLDS = [1000, 500, 200, 50];
+const MUST_WATCH_MIN_RESULTS = 10;
+
+export async function discoverMustWatch(filters: DiscoverFilters): Promise<Movie[]> {
+  let best: Movie[] = [];
+  for (const threshold of MUST_WATCH_VOTE_THRESHOLDS) {
+    const results = await discoverMovies(filters, {
+      'vote_average.gte': '7.5',
+      'vote_count.gte': String(threshold),
+      sort_by: 'vote_average.desc',
+    });
+    best = results;
+    if (results.length >= MUST_WATCH_MIN_RESULTS) break;
+  }
+  return best;
 }
 
 export async function fetchMovieCertificationDK(movieId: number): Promise<boolean> {
