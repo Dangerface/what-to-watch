@@ -1,59 +1,40 @@
 import { router } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { decadeOf, scoreMovie, tallyDecadeVotes, tallyGenreVotes } from '../lib/scoring';
-import { discoverMovies, Movie } from '../lib/tmdb';
+import { RankedMovie, rankMovies } from '../lib/scoring';
+import { DiscoverFilters, Movie } from '../lib/tmdb';
+import { getMoviesForNoVibe, getMoviesForVibe } from '../lib/vibes';
 import { useSessionStore } from '../store/session';
 
 const { width } = Dimensions.get('window');
 
-type ScoredMovie = { movie: Movie; score: number };
-
-function rankMovies(items: ScoredMovie[]) {
-  return [...items].sort((a, b) => b.score - a.score || b.movie.vote_average - a.movie.vote_average);
-}
-
 export default function ResultsScreen() {
-  const { persons } = useSessionStore();
-  const [ranked, setRanked] = useState<ScoredMovie[]>([]);
-  const [page, setPage] = useState(1);
+  const { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType, vibes } = useSessionStore();
+  const [ranked, setRanked] = useState<RankedMovie[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(false);
 
-  const genreVotes = useRef(tallyGenreVotes(persons)).current;
-  const decadeVotes = useRef(tallyDecadeVotes(persons)).current;
-  const selectedDecades = useRef(Object.keys(decadeVotes)).current;
-  const genreIds = useRef(Object.keys(genreVotes).map(Number)).current;
-
-  const fetchAndScore = async (pageToLoad: number) => {
-    const movies = await discoverMovies(genreIds, pageToLoad);
-    const filtered = movies.filter((m) => m.release_date && selectedDecades.includes(decadeOf(m.release_date)));
-    const pool = filtered.length > 0 ? filtered : movies;
-    return pool.map((m) => ({ movie: m, score: scoreMovie(m, genreVotes, decadeVotes) }));
-  };
-
   useEffect(() => {
-    fetchAndScore(1)
-      .then((scored) => setRanked(rankMovies(scored)))
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
-  }, []);
+    const filters: DiscoverFilters = { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType };
 
-  const handleEndReached = async () => {
-    if (loadingMore || page >= 500) return; // TMDb's hårde grænse, rammes reelt aldrig
-    setLoadingMore(true);
-    try {
-      const nextPage = page + 1;
-      const scored = await fetchAndScore(nextPage);
-      setRanked((prev) => rankMovies([...prev, ...scored]));
-      setPage(nextPage);
-    } catch {
-      // stille fejl — brugeren har stadig film at swipe imellem
-    } finally {
-      setLoadingMore(false);
-    }
-  };
+    (async () => {
+      try {
+        let movies: Movie[];
+        if (vibes.length === 0) {
+          movies = await getMoviesForNoVibe(filters);
+        } else {
+          const perVibe = await Promise.all(vibes.map((v) => getMoviesForVibe(v, filters)));
+          const seen = new Set<number>();
+          movies = perVibe.flat().filter((m) => (seen.has(m.id) ? false : (seen.add(m.id), true)));
+        }
+        setRanked(rankMovies(movies));
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#1A1A1A" /></View>;
 
@@ -75,8 +56,6 @@ export default function ResultsScreen() {
       horizontal
       pagingEnabled
       showsHorizontalScrollIndicator={false}
-      onEndReachedThreshold={0.5}
-      onEndReached={handleEndReached}
       renderItem={({ item }) => (
         <View style={[styles.card, { width }]}>
           {item.movie.poster_path && (

@@ -1,0 +1,2658 @@
+[
+  {
+    "id": 238,
+    "title": "The Godfather",
+    "overview": "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
+    "release_date": "1972-03-14",
+    "vote_average": 8.686,
+    "vote_count": 23454,
+    "genre_ids": [
+      18,
+      80
+    ],
+    "poster_path": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+    "runtime": 175
+  },
+  {
+    "id": 2118,
+    "title": "L.A. Confidential",
+    "overview": "Three detectives in the corrupt and brutal L.A. police force of the 1950s use differing methods to uncover a conspiracy behind the shotgun slayings of the patrons at an all-night diner.",
+    "release_date": "1997-09-19",
+    "vote_average": 7.806,
+    "vote_count": 5695,
+    "genre_ids": [
+      80,
+      9648,
+      53
+    ],
+    "poster_path": "/lWCgf5sD5FpMljjpkRhcC8pXcch.jpg",
+    "runtime": 138
+  },
+  {
+    "id": 829,
+    "title": "Chinatown",
+    "overview": "Private eye Jake Gittes lives off of the murky moral climate of sunbaked, pre-World War II Southern California. Hired by a beautiful socialite to investigate her husband's extra-marital affair, Gittes is swept into a maelstrom of double dealings and deadly deceits, uncovering a web of personal and political scandals that come crashing together.",
+    "release_date": "1974-06-20",
+    "vote_average": 7.905,
+    "vote_count": 4371,
+    "genre_ids": [
+      80,
+      9648,
+      53
+    ],
+    "poster_path": "/kZRSP3FmOcq0xnBulqpUQngJUXY.jpg",
+    "runtime": 130
+  },
+  {
+    "id": 424,
+    "title": "Schindler's List",
+    "overview": "The true story of how businessman Oskar Schindler saved over a thousand Jewish lives from the Nazis while they worked as slaves in his factory during World War II.",
+    "release_date": "1993-12-15",
+    "vote_average": 8.57,
+    "vote_count": 17827,
+    "genre_ids": [
+      18,
+      36,
+      10752
+    ],
+    "poster_path": "/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+    "runtime": 195
+  },
+  {
+    "id": 496243,
+    "title": "Parasite",
+    "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+    "release_date": "2019-05-30",
+    "vote_average": 8.491,
+    "vote_count": 21206,
+    "genre_ids": [
+      35,
+      53,
+      18
+    ],
+    "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+    "runtime": 133
+  },
+  {
+    "id": 24128,
+    "title": "Stop Making Sense",
+    "overview": "A concert film documenting Talking Heads at the height of their popularity, on tour for their 1983 album \"Speaking in Tongues.\" The band takes the stage one by one and is joined by a cadre of guest musicians for a career-spanning and cinematic performance that features creative choreography and visuals.",
+    "release_date": "1984-10-19",
+    "vote_average": 8.334,
+    "vote_count": 386,
+    "genre_ids": [
+      99,
+      10402
+    ],
+    "poster_path": "/utNpurUe1MMjEaHqvpkfxgfpSnV.jpg",
+    "runtime": 88
+  },
+  {
+    "id": 862,
+    "title": "Toy Story",
+    "overview": "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.",
+    "release_date": "1995-11-22",
+    "vote_average": 7.987,
+    "vote_count": 20431,
+    "genre_ids": [
+      10751,
+      35,
+      16,
+      12
+    ],
+    "poster_path": "/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+    "runtime": 81
+  },
+  {
+    "id": 863,
+    "title": "Toy Story 2",
+    "overview": "Andy heads off to Cowboy Camp, leaving his toys to their own devices. Things shift into high gear when an obsessive toy collector named Al McWhiggen, owner of Al's Toy Barn kidnaps Woody. Andy's toys mount a daring rescue mission, Buzz Lightyear meets his match and Woody has to decide where he and his heart truly belong.",
+    "release_date": "1999-10-30",
+    "vote_average": 7.619,
+    "vote_count": 15283,
+    "genre_ids": [
+      16,
+      35,
+      10751
+    ],
+    "poster_path": "/4rbcp3ng8n1MKHjpeqW0L7Fnpzz.jpg",
+    "runtime": 92
+  },
+  {
+    "id": 361743,
+    "title": "Top Gun: Maverick",
+    "overview": "After more than thirty years of service as one of the Navy’s top aviators, and dodging the advancement in rank that would ground him, Pete “Maverick” Mitchell finds himself training a detachment of TOP GUN graduates for a specialized mission the likes of which no living pilot has ever seen.",
+    "release_date": "2022-05-21",
+    "vote_average": 8.159,
+    "vote_count": 11448,
+    "genre_ids": [
+      28,
+      18
+    ],
+    "poster_path": "/n0YuM4f5lvGAP6MAW2kBIzugXnc.jpg",
+    "runtime": 131
+  },
+  {
+    "id": 11,
+    "title": "Star Wars",
+    "overview": "Princess Leia is captured and held hostage by the evil Imperial forces in their effort to take over the galactic Empire. Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire.",
+    "release_date": "1977-05-25",
+    "vote_average": 8.207,
+    "vote_count": 22770,
+    "genre_ids": [
+      12,
+      28,
+      878
+    ],
+    "poster_path": "/fai0rspsNeJCS69wHNjOdWxcI7P.jpg",
+    "runtime": 121
+  },
+  {
+    "id": 940721,
+    "title": "Godzilla Minus One",
+    "overview": "In postwar Japan, Godzilla brings new devastation to an already scorched landscape. With no military intervention or government help in sight, the survivors must join together in the face of despair and fight back against an unrelenting horror.",
+    "release_date": "2023-11-03",
+    "vote_average": 7.594,
+    "vote_count": 3362,
+    "genre_ids": [
+      878,
+      27,
+      28
+    ],
+    "poster_path": "/2E2WTX0TJEflAged6kzErwqX1kt.jpg",
+    "runtime": 125
+  },
+  {
+    "id": 10191,
+    "title": "How to Train Your Dragon",
+    "overview": "As the son of a Viking leader on the cusp of manhood, shy Hiccup Horrendous Haddock III faces a rite of passage: he must kill a dragon to prove his warrior mettle. But after downing a feared dragon, he realizes that he no longer wants to destroy it, and instead befriends the beast – which he names Toothless – much to the chagrin of his warrior father.",
+    "release_date": "2010-03-18",
+    "vote_average": 7.867,
+    "vote_count": 14655,
+    "genre_ids": [
+      14,
+      12,
+      16,
+      10751
+    ],
+    "poster_path": "/ygGmAO60t8GyqUo9xYeYxSZAR3b.jpg",
+    "runtime": 98
+  },
+  {
+    "id": 240,
+    "title": "The Godfather Part II",
+    "overview": "In the continuing saga of the Corleone crime family, a young Vito Corleone grows up in Sicily and in 1910s New York. In the 1950s, Michael Corleone attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
+    "release_date": "1974-12-20",
+    "vote_average": 8.573,
+    "vote_count": 14258,
+    "genre_ids": [
+      18,
+      80
+    ],
+    "poster_path": "/sSuQTCZwqKrNBNIsksO9IAUoWP9.jpg",
+    "runtime": 202
+  },
+  {
+    "id": 110,
+    "title": "Three Colors: Red",
+    "overview": "Part-time model Valentine unexpectedly befriends a retired judge after she runs over his dog. At first, the grumpy man shows no concern about the dog, and Valentine decides to keep it. But the two form a bond when she returns to his house and catches him listening to his neighbors’ phone calls.",
+    "release_date": "1994-05-12",
+    "vote_average": 7.888,
+    "vote_count": 1591,
+    "genre_ids": [
+      18,
+      9648,
+      10749
+    ],
+    "poster_path": "/JHmsBiX1tjCKqAul1lzC20WcAW.jpg",
+    "runtime": 100
+  },
+  {
+    "id": 60243,
+    "title": "A Separation",
+    "overview": "A married couple are faced with a difficult decision – to improve the life of their child by moving to another country or to stay in Iran and look after a deteriorating parent who has Alzheimer's disease.",
+    "release_date": "2011-02-15",
+    "vote_average": 7.905,
+    "vote_count": 2006,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/xQadpnoLokxzN3hRpCPbBGpxsiz.jpg",
+    "runtime": 123
+  },
+  {
+    "id": 776527,
+    "title": "Summer of Soul (...Or, When the Revolution Could Not Be Televised)",
+    "overview": "During the same summer as Woodstock, over 300,000 people attended the Harlem Cultural Festival, celebrating African American music and culture, and promoting Black pride and unity. The footage from the festival sat in a basement, unseen for over 50 years, keeping this incredible event in America's history lost — until now.",
+    "release_date": "2021-07-02",
+    "vote_average": 7.605,
+    "vote_count": 229,
+    "genre_ids": [
+      10402,
+      99,
+      36
+    ],
+    "poster_path": "/8kNwhqUGvpzWJd60O1Qvb8G6psK.jpg",
+    "runtime": 117
+  },
+  {
+    "id": 10193,
+    "title": "Toy Story 3",
+    "overview": "Woody, Buzz, and the rest of Andy's toys haven't been played with in years. With Andy about to go to college, the gang find themselves accidentally left at a nefarious day care center. The toys must band together to escape and return home to Andy.",
+    "release_date": "2010-06-16",
+    "vote_average": 7.8,
+    "vote_count": 16139,
+    "genre_ids": [
+      16,
+      10751,
+      35
+    ],
+    "poster_path": "/AbbXspMOwdvwWZgVN0nabZq03Ec.jpg",
+    "runtime": 103
+  },
+  {
+    "id": 12,
+    "title": "Finding Nemo",
+    "overview": "Nemo, an adventurous young clownfish, is unexpectedly taken from his Great Barrier Reef home to a dentist's office aquarium. It's up to his worrisome father Marlin and a friendly but forgetful fish Dory to bring Nemo home -- meeting vegetarian sharks, surfer dude turtles, hypnotic jellyfish, hungry seagulls, and more along the way.",
+    "release_date": "2003-05-30",
+    "vote_average": 7.82,
+    "vote_count": 20892,
+    "genre_ids": [
+      16,
+      10751,
+      12
+    ],
+    "poster_path": "/eHuGQ10FUzK1mdOY69wF5pGgEf5.jpg",
+    "runtime": 100
+  },
+  {
+    "id": 1058699,
+    "title": "STILL: A Michael J. Fox Movie",
+    "overview": "A short kid from a Canadian army base becomes the international pop culture darling of the 1980s—only to find the course of his life altered by a stunning diagnosis. What happens when an incurable optimist confronts an incurable disease?",
+    "release_date": "2023-01-20",
+    "vote_average": 7.791,
+    "vote_count": 251,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/fDO4gYZxvdsIrHKzsSAbc3N7Wfg.jpg",
+    "runtime": 95
+  },
+  {
+    "id": 1233413,
+    "title": "Sinners",
+    "overview": "Trying to leave their troubled lives behind, twin brothers return to their hometown to start again, only to discover that an even greater evil is waiting to welcome them back.",
+    "release_date": "2025-04-16",
+    "vote_average": 7.512,
+    "vote_count": 5102,
+    "genre_ids": [
+      27,
+      28,
+      53
+    ],
+    "poster_path": "/fWPgbnt2LSqkQ6cdQc0SZN9CpLm.jpg",
+    "runtime": 138
+  },
+  {
+    "id": 14160,
+    "title": "Up",
+    "overview": "Carl Fredricksen spent his entire life dreaming of exploring the globe and experiencing life to its fullest. But at age 78, life seems to have passed him by, until a twist of fate (and a persistent 8-year old Wilderness Explorer named Russell) gives him a new lease on life.",
+    "release_date": "2009-05-28",
+    "vote_average": 7.96,
+    "vote_count": 22033,
+    "genre_ids": [
+      16,
+      35,
+      10751,
+      12
+    ],
+    "poster_path": "/mFvoEwSfLqbcWwFsDjQebn9bzFe.jpg",
+    "runtime": 96
+  },
+  {
+    "id": 314365,
+    "title": "Spotlight",
+    "overview": "The true story of how the Boston Globe uncovered the massive scandal of child molestation and cover-up within the local Catholic Archdiocese, shaking the entire Catholic Church to its core.",
+    "release_date": "2015-11-06",
+    "vote_average": 7.812,
+    "vote_count": 8942,
+    "genre_ids": [
+      18,
+      36
+    ],
+    "poster_path": "/8DPGG400FgaFWaqcv11n8mRd2NG.jpg",
+    "runtime": 129
+  },
+  {
+    "id": 12163,
+    "title": "The Wrestler",
+    "overview": "Aging wrestler Randy \"The Ram\" Robinson is long past his prime but still ready and rarin' to go on the pro-wrestling circuit. After a particularly brutal beating, however, Randy hangs up his tights, pursues a serious relationship with a long-in-the-tooth stripper, and tries to reconnect with his estranged daughter. But he can't resist the lure of the ring and readies himself for a comeback.",
+    "release_date": "2008-12-17",
+    "vote_average": 7.544,
+    "vote_count": 4108,
+    "genre_ids": [
+      18,
+      10749
+    ],
+    "poster_path": "/7QH5p5BF582k6qHufCKjftfkqWH.jpg",
+    "runtime": 109
+  },
+  {
+    "id": 324857,
+    "title": "Spider-Man: Into the Spider-Verse",
+    "overview": "Struggling to find his place in the world while juggling school and family, Brooklyn teenager Miles Morales is unexpectedly bitten by a radioactive spider and develops unfathomable powers just like the one and only Spider-Man. While wrestling with the implications of his new abilities, Miles discovers a super collider created by the madman Wilson \"Kingpin\" Fisk, causing others from across the Spider-Verse to be inadvertently transported to his dimension.",
+    "release_date": "2018-12-06",
+    "vote_average": 8.399,
+    "vote_count": 17763,
+    "genre_ids": [
+      16,
+      28,
+      12,
+      878
+    ],
+    "poster_path": "/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg",
+    "runtime": 117
+  },
+  {
+    "id": 600354,
+    "title": "The Father",
+    "overview": "A man refuses all assistance from his daughter as he ages and, as he tries to make sense of his changing circumstances, he begins to doubt his loved ones, his own mind and even the fabric of his reality.",
+    "release_date": "2020-12-23",
+    "vote_average": 8.092,
+    "vote_count": 3746,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/pr3bEQ517uMb5loLvjFQi8uLAsp.jpg",
+    "runtime": 97
+  },
+  {
+    "id": 129,
+    "title": "Spirited Away",
+    "overview": "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
+    "release_date": "2001-07-20",
+    "vote_average": 8.534,
+    "vote_count": 18798,
+    "genre_ids": [
+      16,
+      10751,
+      14
+    ],
+    "poster_path": "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+    "runtime": 125
+  },
+  {
+    "id": 269149,
+    "title": "Zootopia",
+    "overview": "Determined to prove herself, Officer Judy Hopps, the first bunny on Zootopia's police force, jumps at the chance to crack her first case - even if it means partnering with scam-artist fox Nick Wilde to solve the mystery.",
+    "release_date": "2016-02-11",
+    "vote_average": 7.765,
+    "vote_count": 18459,
+    "genre_ids": [
+      16,
+      12,
+      10751,
+      35
+    ],
+    "poster_path": "/hlK0e0wAQ3VLuJcsfIYPvb4JVud.jpg",
+    "runtime": 109
+  },
+  {
+    "id": 703,
+    "title": "Annie Hall",
+    "overview": "New York comedian Alvy Singer falls in love with the ditsy Annie Hall.",
+    "release_date": "1977-04-19",
+    "vote_average": 7.717,
+    "vote_count": 4326,
+    "genre_ids": [
+      35,
+      18,
+      10749
+    ],
+    "poster_path": "/dEtjPywhDbAXYjoFfhBC4U9unU7.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 14048,
+    "title": "Man on Wire",
+    "overview": "On August 7th 1974, French tightrope walker Philippe Petit stepped out on a high wire, illegally rigged between New York's World Trade Center twin towers, then the world's tallest buildings. After nearly an hour of performing on the wire, 1,350 feet above the sidewalks of Manhattan, he was arrested. This fun and spellbinding documentary chronicles Philippe Petit's \"highest\" achievement.",
+    "release_date": "2008-08-01",
+    "vote_average": 7.381,
+    "vote_count": 989,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/1mS4rhIgHZcHIvf1beP9Av0Ui33.jpg",
+    "runtime": 94
+  },
+  {
+    "id": 929204,
+    "title": "Wallace & Gromit: Vengeance Most Fowl",
+    "overview": "Gromit’s concern that Wallace is becoming too dependent on his inventions proves justified, when Wallace invents a “smart” gnome that seems to develop a mind of its own. When it emerges that a vengeful figure from the past might be masterminding things, it falls to Gromit to battle sinister forces and save his master… or Wallace may never be able to invent again!",
+    "release_date": "2024-12-18",
+    "vote_average": 7.459,
+    "vote_count": 711,
+    "genre_ids": [
+      16,
+      12,
+      35,
+      878,
+      10751
+    ],
+    "poster_path": "/jUWFSBxTOiCinPdTOh3IDUXVemZ.jpg",
+    "runtime": 79
+  },
+  {
+    "id": 354912,
+    "title": "Coco",
+    "overview": "Despite his family’s baffling generations-old ban on music, Miguel dreams of becoming an accomplished musician like his idol, Ernesto de la Cruz. Desperate to prove his talent, Miguel finds himself in the stunning and colorful Land of the Dead following a mysterious chain of events. Along the way, he meets charming trickster Hector, and together, they set off on an extraordinary journey to unlock the real story behind Miguel's family history.",
+    "release_date": "2017-10-27",
+    "vote_average": 8.197,
+    "vote_count": 21329,
+    "genre_ids": [
+      10751,
+      16,
+      10402,
+      12
+    ],
+    "poster_path": "/6Ryitt95xrO8KXuqRGm1fUuNwqF.jpg",
+    "runtime": 105
+  },
+  {
+    "id": 1184918,
+    "title": "The Wild Robot",
+    "overview": "After a shipwreck, an intelligent robot called Roz is stranded on an uninhabited island. To survive the harsh environment, Roz bonds with the island's animals and cares for an orphaned baby goose.",
+    "release_date": "2024-09-12",
+    "vote_average": 8.307,
+    "vote_count": 6518,
+    "genre_ids": [
+      10751,
+      16,
+      878,
+      12
+    ],
+    "poster_path": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+    "runtime": 102
+  },
+  {
+    "id": 150540,
+    "title": "Inside Out",
+    "overview": "When 11-year-old Riley moves to a new city, her Emotions team up to help her through the transition. Joy, Fear, Anger, Disgust and Sadness work together, but when Joy and Sadness get lost, they must journey through unfamiliar places to get back home.",
+    "release_date": "2015-06-17",
+    "vote_average": 7.906,
+    "vote_count": 23810,
+    "genre_ids": [
+      16,
+      10751,
+      12,
+      18,
+      35
+    ],
+    "poster_path": "/2H1TmgdfNtsKlU9jKdeNyYL5y8T.jpg",
+    "runtime": 95
+  },
+  {
+    "id": 505192,
+    "title": "Shoplifters",
+    "overview": "In the outskirts of Tokyo, a poor but close-knit group living on the fringes of society survives through shoplifting and odd jobs. When Osamu and his son take in a neglected young girl, their already fragile existence begins to unravel. As the family grows attached to her, buried secrets surface, forcing them to confront the true meaning of love, belonging, and what makes a family.",
+    "release_date": "2018-06-02",
+    "vote_average": 7.828,
+    "vote_count": 2357,
+    "genre_ids": [
+      18,
+      80,
+      53
+    ],
+    "poster_path": "/4nfRUOv3LX5zLn98WS1WqVBk9E9.jpg",
+    "runtime": 120
+  },
+  {
+    "id": 11830,
+    "title": "Tampopo",
+    "overview": "In this humorous paean to the joys of food, a pair of truck drivers happen onto a decrepit roadside shop selling ramen noodles. The widowed owner, Tampopo, begs them to help her turn her establishment into a paragon of the \"art of noodle-soup making\". Interspersed are satirical vignettes about the importance of food to different aspects of human life.",
+    "release_date": "1985-11-23",
+    "vote_average": 7.787,
+    "vote_count": 447,
+    "genre_ids": [
+      35
+    ],
+    "poster_path": "/ArYdSuX3zY9fMsE4LqmBl7xJq5R.jpg",
+    "runtime": 115
+  },
+  {
+    "id": 353081,
+    "title": "Mission: Impossible - Fallout",
+    "overview": "When an IMF mission ends badly, the world is faced with dire consequences. As Ethan Hunt takes it upon himself to fulfill his original briefing, the CIA begin to question his loyalty and his motives. The IMF team find themselves in a race against time, hunted by assassins while trying to prevent a global catastrophe.",
+    "release_date": "2018-07-25",
+    "vote_average": 7.45,
+    "vote_count": 9325,
+    "genre_ids": [
+      28,
+      12
+    ],
+    "poster_path": "/AkJQpZp9WoNdj7pLYSj1L0RcMMN.jpg",
+    "runtime": 147
+  },
+  {
+    "id": 76,
+    "title": "Before Sunrise",
+    "overview": "An unexpected meeting on a train leads two travelers to spend an evening wandering through Vienna. As the night unfolds, they share stories and conversations about life and love, exploring new ideas while a quiet intimacy grows between them, knowing it may be their only night together.",
+    "release_date": "1995-01-27",
+    "vote_average": 8,
+    "vote_count": 4832,
+    "genre_ids": [
+      18,
+      10749
+    ],
+    "poster_path": "/kf1Jb1c2JAOqjuzA3H4oDM263uB.jpg",
+    "runtime": 101
+  },
+  {
+    "id": 578,
+    "title": "Jaws",
+    "overview": "When the seaside community of Amity finds itself under attack by a dangerous great white shark, the town's chief of police, a young marine biologist, and a grizzled shark hunter embark on a desperate quest to kill the beast before it strikes again.",
+    "release_date": "1975-06-20",
+    "vote_average": 7.684,
+    "vote_count": 11796,
+    "genre_ids": [
+      27,
+      53,
+      12
+    ],
+    "poster_path": "/lxM6kqilAdpdhqUl2biYp5frUxE.jpg",
+    "runtime": 124
+  },
+  {
+    "id": 441130,
+    "title": "Wolfwalkers",
+    "overview": "In a time of superstition and magic, when wolves are seen as demonic and nature an evil to be tamed, a young apprentice hunter comes to Ireland with her father to wipe out the last pack. But when she saves a wild native girl, their friendship leads her to discover the world of the Wolfwalkers and transform her into the very thing her father is tasked to destroy.",
+    "release_date": "2020-10-26",
+    "vote_average": 8.17,
+    "vote_count": 1442,
+    "genre_ids": [
+      16,
+      10751,
+      12,
+      14
+    ],
+    "poster_path": "/vqGiNbdc2sDwsnivMMYzwAoSSu6.jpg",
+    "runtime": 102
+  },
+  {
+    "id": 429,
+    "title": "The Good, the Bad and the Ugly",
+    "overview": "While the Civil War rages on between the Union and the Confederacy, three men – a quiet loner, a ruthless hitman, and a Mexican bandit – comb the American Southwest in search of a strongbox containing $200,000 in stolen gold.",
+    "release_date": "1966-12-23",
+    "vote_average": 8.5,
+    "vote_count": 9892,
+    "genre_ids": [
+      37
+    ],
+    "poster_path": "/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg",
+    "runtime": 161
+  },
+  {
+    "id": 273895,
+    "title": "Selma",
+    "overview": "\"Selma,\" as in Alabama, the place where segregation in the South was at its worst, leading to a march that ended in violence, forcing a famous statement by President Lyndon B. Johnson that ultimately led to the signing of the Voting Rights Act.",
+    "release_date": "2014-12-25",
+    "vote_average": 7.37,
+    "vote_count": 2359,
+    "genre_ids": [
+      36,
+      18
+    ],
+    "poster_path": "/2QyUcitU0hrxy6B2zkyJ0EhNlqm.jpg",
+    "runtime": 128
+  },
+  {
+    "id": 1000837,
+    "title": "I'm Still Here",
+    "overview": "A woman married to a former politician during the 1971 military dictatorship in Brazil is forced to reinvent herself and chart a new course for her family after a violent and arbitrary act.",
+    "release_date": "2024-09-19",
+    "vote_average": 7.9,
+    "vote_count": 1132,
+    "genre_ids": [
+      18,
+      36
+    ],
+    "poster_path": "/gZnsMbhCvhzAQlKaVpeFRHYjGyb.jpg",
+    "runtime": 138
+  },
+  {
+    "id": 555285,
+    "title": "Are You There God? It's Me, Margaret.",
+    "overview": "When her family moves from New York City to New Jersey, an 11-year-old girl navigates new friends, feelings, and the beginning of adolescence.",
+    "release_date": "2023-03-29",
+    "vote_average": 7.147,
+    "vote_count": 534,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/yb6UB4WC3znlwU0L4AqMnjR9G9S.jpg",
+    "runtime": 106
+  },
+  {
+    "id": 346648,
+    "title": "Paddington 2",
+    "overview": "Paddington, now happily settled with the Browns, picks up a series of odd jobs to buy the perfect present for his Aunt Lucy, but it is stolen.",
+    "release_date": "2017-11-09",
+    "vote_average": 7.485,
+    "vote_count": 2881,
+    "genre_ids": [
+      12,
+      35,
+      10751
+    ],
+    "poster_path": "/1OJ9vkD5xPt3skC6KguyXAgagRZ.jpg",
+    "runtime": 104
+  },
+  {
+    "id": 99,
+    "title": "All About My Mother",
+    "overview": "Following the tragic death of her teenage son, Manuela travels from Madrid to Barcelona in an attempt to contact the long-estranged father the boy never knew. She reunites with an old friend, an outspoken transgender sex worker, and befriends a troubled actress and a pregnant, HIV-positive nun.",
+    "release_date": "1999-04-16",
+    "vote_average": 7.61,
+    "vote_count": 2101,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/hjQhzhkGYXPNM96k0mOgob6HMmn.jpg",
+    "runtime": 101
+  },
+  {
+    "id": 5961,
+    "title": "Fanny and Alexander",
+    "overview": "As children in the loving Ekdahl family, Fanny and Alexander enjoy a happy life with their parents, who run a theater company. After their father dies unexpectedly, however, the siblings end up in a joyless home when their mother, Emilie, marries a stern bishop. The bleak situation gradually grows worse as the bishop becomes more controlling, but dedicated relatives make a valiant attempt to aid Emilie, Fanny and Alexander.",
+    "release_date": "1982-12-17",
+    "vote_average": 7.765,
+    "vote_count": 903,
+    "genre_ids": [
+      14,
+      18,
+      9648
+    ],
+    "poster_path": "/q8jlA3Wc1Z987hNKRFA44g5OugC.jpg",
+    "runtime": 188
+  },
+  {
+    "id": 25188,
+    "title": "The Last Picture Show",
+    "overview": "High school seniors and best friends, Sonny and Duane, live in a dying Texas town. The handsome Duane is dating a local beauty, while Sonny is having an affair with the coach's wife. As graduation nears and both boys contemplate their futures, Duane eyes the army and Sonny takes over a local business. Each struggles to figure out if he can escape this dead-end town and build a better life somewhere else.",
+    "release_date": "1971-10-03",
+    "vote_average": 7.613,
+    "vote_count": 795,
+    "genre_ids": [
+      18,
+      10749
+    ],
+    "poster_path": "/7NYePZc0lZrRomtmQsjOJMePTEb.jpg",
+    "runtime": 119
+  },
+  {
+    "id": 1398,
+    "title": "Stalker",
+    "overview": "Near a gray and unnamed city is the Zone, a place guarded by barbed wire and soldiers, and where the normal laws of physics are victim to frequent anomalies. A stalker guides two men into the Zone, specifically to an area in which deep-seated desires are granted.",
+    "release_date": "1979-05-25",
+    "vote_average": 8.1,
+    "vote_count": 2585,
+    "genre_ids": [
+      878,
+      18
+    ],
+    "poster_path": "/1qhOyf5C4s9ZdvY8d5JDx9DFMeT.jpg",
+    "runtime": 162
+  },
+  {
+    "id": 489985,
+    "title": "Minding the Gap",
+    "overview": "Three young men bond together to escape volatile families in their Rust Belt hometown. As they face adult responsibilities, unexpected revelations threaten their decade-long friendship.",
+    "release_date": "2018-08-17",
+    "vote_average": 7.691,
+    "vote_count": 204,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/uOu2YgrryHD1UlngykzTodAxGdC.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 13310,
+    "title": "Let the Right One In",
+    "overview": "When Oskar, a sensitive, bullied 12-year-old boy, meets his new neighbor, the mysterious and moody Eli, they strike up a friendship. Initially reserved with each other, Oskar and Eli slowly form a close bond, but it soon becomes apparent that she is no ordinary young girl.",
+    "release_date": "2008-10-24",
+    "vote_average": 7.546,
+    "vote_count": 3344,
+    "genre_ids": [
+      27,
+      18
+    ],
+    "poster_path": "/7IG4WjaAOVDlLvLUkh513HSwhW8.jpg",
+    "runtime": 115
+  },
+  {
+    "id": 1232493,
+    "title": "No Other Land",
+    "overview": "This film made by a Palestinian-Israeli collective shows the destruction of the occupied West Bank's Masafer Yatta by Israeli soldiers and the alliance which develops between the Palestinian activist Basel and Israeli journalist Yuval.",
+    "release_date": "2024-11-01",
+    "vote_average": 8.022,
+    "vote_count": 336,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/s7XYieuZg9kMe07i9VI4bfGN4Pw.jpg",
+    "runtime": 92
+  },
+  {
+    "id": 653725,
+    "title": "Crip Camp: A Disability Revolution",
+    "overview": "Down the road from Woodstock in the early 1970s, a revolution blossomed in a ramshackle summer camp for disabled teenagers, transforming their young lives and igniting a landmark movement.",
+    "release_date": "2020-03-25",
+    "vote_average": 7.174,
+    "vote_count": 167,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/iALSypN3MhC6kBVwc9VpuJUlm1j.jpg",
+    "runtime": 107
+  },
+  {
+    "id": 546554,
+    "title": "Knives Out",
+    "overview": "When renowned crime novelist Harlan Thrombey is found dead at his estate just after his 85th birthday, the inquisitive and debonair Detective Benoit Blanc is mysteriously enlisted to investigate. From Harlan's dysfunctional family to his devoted staff, Blanc sifts through a web of red herrings and self-serving lies to uncover the truth behind Harlan's untimely death.",
+    "release_date": "2019-11-27",
+    "vote_average": 7.842,
+    "vote_count": 14413,
+    "genre_ids": [
+      35,
+      80,
+      9648
+    ],
+    "poster_path": "/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
+    "runtime": 131
+  },
+  {
+    "id": 169813,
+    "title": "Short Term 12",
+    "overview": "Grace, a compassionate young supervisor at a foster care facility, helps at-risk teens. But when a new charge dredges up memories of her own troubled past, Grace's tough exterior begins eroding.",
+    "release_date": "2013-08-23",
+    "vote_average": 7.743,
+    "vote_count": 1446,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/iRYip0xx8sxM1TvgDQdK2YKV5pw.jpg",
+    "runtime": 96
+  },
+  {
+    "id": 1214469,
+    "title": "Ghostlight",
+    "overview": "When melancholic construction worker Dan finds himself drifting from his wife and daughter, he discovers community and purpose in a local theater's production of Romeo and Juliet. As the drama onstage starts to mirror his own life, he and his family are forced to confront a personal loss.",
+    "release_date": "2024-06-14",
+    "vote_average": 7.142,
+    "vote_count": 106,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/aqSuuJdNYmx1Gsd0J8lqfzMADfE.jpg",
+    "runtime": 115
+  },
+  {
+    "id": 549559,
+    "title": "Apollo 11",
+    "overview": "A look at the Apollo 11 mission to land on the moon led by commander Neil Armstrong and pilot Buzz Aldrin.",
+    "release_date": "2019-03-01",
+    "vote_average": 7.859,
+    "vote_count": 724,
+    "genre_ids": [
+      99,
+      36,
+      18
+    ],
+    "poster_path": "/woLMRroHyoTGoXyxdEeBJEYBFtu.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 1128559,
+    "title": "Super/Man: The Christopher Reeve Story",
+    "overview": "Christopher Reeve portrayed the Man of Steel in four Superman films and played dozens of other roles that displayed his talent and range as an actor, before being injured in a near-fatal horse-riding accident in 1995 that left him paralyzed from the neck down. After becoming a quadriplegic, he became a charismatic leader and activist in the quest to find a cure for spinal cord injuries, as well as a passionate advocate for disability rights and care.",
+    "release_date": "2024-09-21",
+    "vote_average": 8.074,
+    "vote_count": 223,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/73WchlI0Hj4HQd0T2KOztKquOek.jpg",
+    "runtime": 104
+  },
+  {
+    "id": 372058,
+    "title": "Your Name.",
+    "overview": "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
+    "release_date": "2016-07-01",
+    "vote_average": 8.485,
+    "vote_count": 12922,
+    "genre_ids": [
+      16,
+      10749,
+      18
+    ],
+    "poster_path": "/vfJFJPepRKapMd5G2ro7klIRysq.jpg",
+    "runtime": 106
+  },
+  {
+    "id": 543580,
+    "title": "They Shall Not Grow Old",
+    "overview": "A documentary about World War I with never-before-seen footage to commemorate the centennial of Armistice Day, and the end of the war.",
+    "release_date": "2018-11-09",
+    "vote_average": 7.763,
+    "vote_count": 692,
+    "genre_ids": [
+      99,
+      36,
+      10752
+    ],
+    "poster_path": "/yMGfJeTXUdIjOqjS0jJfjgYEuYC.jpg",
+    "runtime": 99
+  },
+  {
+    "id": 840430,
+    "title": "The Holdovers",
+    "overview": "A curmudgeonly instructor at a New England prep school is forced to remain on campus during Christmas break to babysit the handful of students with nowhere to go. Eventually, he forms an unlikely bond with one of them — a damaged, brainy troublemaker — and with the school’s head cook, who has just lost a son in Vietnam.",
+    "release_date": "2023-10-27",
+    "vote_average": 7.643,
+    "vote_count": 2643,
+    "genre_ids": [
+      18,
+      35
+    ],
+    "poster_path": "/VHSzNBTwxV8vh7wylo7O9CLdac.jpg",
+    "runtime": 133
+  },
+  {
+    "id": 490003,
+    "title": "Won't You Be My Neighbor?",
+    "overview": "For more than thirty years, and through his television program, Fred Rogers (1928-2003), host, producer, writer and pianist, accompanied by his puppets and his many friends, spoke directly to young children about some of life's most important issues.",
+    "release_date": "2018-06-29",
+    "vote_average": 7.978,
+    "vote_count": 612,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/8qE8NZjiP2M884baH0VoLF828Vp.jpg",
+    "runtime": 95
+  },
+  {
+    "id": 121,
+    "title": "The Lord of the Rings: The Two Towers",
+    "overview": "Frodo Baggins and the other members of the Fellowship continue on their sacred quest to destroy the One Ring--but on separate paths. Their destinies lie at two towers--Orthanc Tower in Isengard, where the corrupt wizard Saruman awaits, and Sauron's fortress at Barad-dur, deep within the dark lands of Mordor.",
+    "release_date": "2002-12-18",
+    "vote_average": 8.428,
+    "vote_count": 24465,
+    "genre_ids": [
+      12,
+      14,
+      28
+    ],
+    "poster_path": "/5VTN0pR8gcqV3EPUHHfMGnJYN9L.jpg",
+    "runtime": 179
+  },
+  {
+    "id": 218,
+    "title": "The Terminator",
+    "overview": "In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the \"Terminator\" back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?",
+    "release_date": "1984-10-26",
+    "vote_average": 7.69,
+    "vote_count": 15019,
+    "genre_ids": [
+      28,
+      53,
+      878
+    ],
+    "poster_path": "/qvktm0BHcnmDpul4Hz01GIazWPr.jpg",
+    "runtime": 108
+  },
+  {
+    "id": 44639,
+    "title": "Inside Job",
+    "overview": "A film that exposes the shocking truth behind the economic crisis of 2008. The global financial meltdown, at a cost of over $20 trillion, resulted in millions of people losing their homes and jobs. Through extensive research and interviews with major financial insiders, politicians and journalists, Inside Job traces the rise of a rogue industry and unveils the corrosive relationships which have corrupted politics, regulation and academia.",
+    "release_date": "2010-10-08",
+    "vote_average": 7.7,
+    "vote_count": 1061,
+    "genre_ids": [
+      99,
+      80
+    ],
+    "poster_path": "/7yXXIWec24htucjsZS1sDuPLqw8.jpg",
+    "runtime": 109
+  },
+  {
+    "id": 1278263,
+    "title": "The Seed of the Sacred Fig",
+    "overview": "Investigating judge Iman grapples with paranoia amid political unrest in Tehran. When his gun vanishes, he suspects his wife and daughters, imposing draconian measures that strain family ties as societal rules crumble.",
+    "release_date": "2024-09-18",
+    "vote_average": 7.519,
+    "vote_count": 509,
+    "genre_ids": [
+      18,
+      53,
+      80
+    ],
+    "poster_path": "/ifOazNzv2cNJ5CQjMV7cPXG2Lmy.jpg",
+    "runtime": 167
+  },
+  {
+    "id": 14278,
+    "title": "Murderball",
+    "overview": "Quadriplegics, who play full-contact rugby in wheelchairs, overcome unimaginable obstacles to compete in the Paralympic Games in Athens, Greece.",
+    "release_date": "2005-07-22",
+    "vote_average": 7.081,
+    "vote_count": 111,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/qxaXzZnGsHaAJpSaF72nDhhL58n.jpg",
+    "runtime": 88
+  },
+  {
+    "id": 13963,
+    "title": "The Last Waltz",
+    "overview": "Martin Scorsese's documentary intertwines footage from The Band's incredible farewell tour with probing backstage interviews and featured performances by Eric Clapton, Bob Dylan, Joni Mitchell, Van Morrison, and other rock legends.",
+    "release_date": "1978-04-26",
+    "vote_average": 7.7,
+    "vote_count": 320,
+    "genre_ids": [
+      99,
+      10402
+    ],
+    "poster_path": "/2K7CFH0AIHnGrA4yQjPCoIB5CmQ.jpg",
+    "runtime": 117
+  },
+  {
+    "id": 216,
+    "title": "Ali: Fear Eats the Soul",
+    "overview": "Emmi Kurowski, a cleaning lady, is lonely in her old age. Her husband died years ago, and her grown children offer little companionship. One night she goes to a bar frequented by Arab immigrants and strikes up a friendship with middle-aged mechanic Ali. Their relationship soon develops into something more, and Emmi's family and neighbors criticize their spontaneous marriage. Soon Emmi and Ali are forced to confront their own insecurities about their future.",
+    "release_date": "1974-03-05",
+    "vote_average": 7.7,
+    "vote_count": 464,
+    "genre_ids": [
+      10749,
+      18
+    ],
+    "poster_path": "/cRL8j5RhL4YUviwcfTiCVHfrBFM.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 419430,
+    "title": "Get Out",
+    "overview": "Chris and his girlfriend Rose go upstate to visit her parents for the weekend. At first, Chris reads the family's overly accommodating behavior as nervous attempts to deal with their daughter's interracial relationship, but as the weekend progresses, a series of increasingly disturbing discoveries lead him to a truth that he never could have imagined.",
+    "release_date": "2017-02-24",
+    "vote_average": 7.625,
+    "vote_count": 19256,
+    "genre_ids": [
+      9648,
+      53,
+      27
+    ],
+    "poster_path": "/tFXcEccSQMf3lfhfXKSU9iRBpa3.jpg",
+    "runtime": 104
+  },
+  {
+    "id": 15383,
+    "title": "Army of Shadows",
+    "overview": "Betrayed by an informant, Philippe Gerbier finds himself trapped in a torturous Nazi prison camp. Though Gerbier escapes to rejoin the Resistance in occupied Marseilles, France, and exacts his revenge on the informant, he must continue a quiet, seemingly endless battle against the Nazis in an atmosphere of tension, paranoia and distrust.",
+    "release_date": "1969-09-10",
+    "vote_average": 7.89,
+    "vote_count": 770,
+    "genre_ids": [
+      10752,
+      18,
+      53,
+      36
+    ],
+    "poster_path": "/aqNZWM9bspt8zaDvVRIRiWxRVJ7.jpg",
+    "runtime": 145
+  },
+  {
+    "id": 531428,
+    "title": "Portrait of a Lady on Fire",
+    "overview": "On an isolated island in Brittany at the end of the eighteenth century, a female painter is obliged to paint a wedding portrait of a young woman.",
+    "release_date": "2019-09-06",
+    "vote_average": 8.088,
+    "vote_count": 3016,
+    "genre_ids": [
+      18,
+      10749
+    ],
+    "poster_path": "/rUDuOKpkKBHxx41BScqKej72iT3.jpg",
+    "runtime": 121
+  },
+  {
+    "id": 416477,
+    "title": "The Big Sick",
+    "overview": "Pakistan-born comedian Kumail Nanjiani and grad student Emily Gardner fall in love but struggle as their cultures clash. When Emily contracts a mysterious illness, Kumail finds himself forced to face her feisty parents, his family's expectations, and his true feelings.",
+    "release_date": "2017-03-30",
+    "vote_average": 7.32,
+    "vote_count": 2686,
+    "genre_ids": [
+      35,
+      18,
+      10749
+    ],
+    "poster_path": "/9fJTT8pBxxQsFILJHTtHhdYFr77.jpg",
+    "runtime": 120
+  },
+  {
+    "id": 18094,
+    "title": "Anvil! The Story of Anvil",
+    "overview": "At 14, best friends Robb Reiner and Lips made a pact to rock together forever. Their band, Anvil, hailed as the \"demi-gods of Canadian metal\" influenced a musical generation that includes Metallica, Slayer, and Anthrax. Following a calamitous European tour, Lips and Robb, now in their fifties, set off to record their 13th album in one last attempt to fulfill their boyhood dreams.",
+    "release_date": "2008-01-14",
+    "vote_average": 7.584,
+    "vote_count": 279,
+    "genre_ids": [
+      99,
+      10402
+    ],
+    "poster_path": "/rDrMuFaWBKwjwEnw4C06Sm97huY.jpg",
+    "runtime": 81
+  },
+  {
+    "id": 489,
+    "title": "Good Will Hunting",
+    "overview": "Will Hunting is a headstrong, working-class genius who is failing the lessons of life. After one too many run-ins with the law, Will's last chance is a psychology professor, who might be the only man who can reach him.",
+    "release_date": "1997-12-05",
+    "vote_average": 8.165,
+    "vote_count": 14219,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/z2FnLKpFi1HPO7BEJxdkv6hpJSU.jpg",
+    "runtime": 127
+  },
+  {
+    "id": 543093,
+    "title": "Maiden",
+    "overview": "In a moving portrait of resilience, Alex Holmes chronicles the unprecedented journey of 24-year-old Tracy Edwards and the first all-female sailing crew to enter the Whitbread Round the World Race.",
+    "release_date": "2019-03-08",
+    "vote_average": 7.513,
+    "vote_count": 38,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/19rEZWy1c8vv9ZALuMr0DNXMvF6.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 68734,
+    "title": "Argo",
+    "overview": "As the Iranian revolution reaches a boiling point, a CIA 'exfiltration' specialist concocts a risky plan to free six Americans who have found shelter at the home of the Canadian ambassador.",
+    "release_date": "2012-10-11",
+    "vote_average": 7.286,
+    "vote_count": 9144,
+    "genre_ids": [
+      18,
+      53
+    ],
+    "poster_path": "/m5gPWFZFIp4UJFABgWyLkbXv8GX.jpg",
+    "runtime": 120
+  },
+  {
+    "id": 146,
+    "title": "Crouching Tiger, Hidden Dragon",
+    "overview": "Two warriors in pursuit of a stolen sword and a notorious fugitive are led to an impetuous, physically-skilled, teenage nobleman's daughter, who is at a crossroads in her life.",
+    "release_date": "2000-07-06",
+    "vote_average": 7.438,
+    "vote_count": 3671,
+    "genre_ids": [
+      12,
+      18,
+      28,
+      10749,
+      14
+    ],
+    "poster_path": "/iNDVBFNz4XyYzM9Lwip6atSTFqf.jpg",
+    "runtime": 120
+  },
+  {
+    "id": 274,
+    "title": "The Silence of the Lambs",
+    "overview": "Clarice Starling is a top student at the FBI's training academy.  Jack Crawford wants Clarice to interview Dr. Hannibal Lecter, a brilliant psychiatrist who is also a violent psychopath, serving life behind bars for various acts of murder and cannibalism.  Crawford believes that Lecter may have insight into a case and that Starling, as an attractive young woman, may be just the bait to draw him out.",
+    "release_date": "1991-02-14",
+    "vote_average": 8.345,
+    "vote_count": 18406,
+    "genre_ids": [
+      80,
+      53,
+      18
+    ],
+    "poster_path": "/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
+    "runtime": 119
+  },
+  {
+    "id": 769,
+    "title": "GoodFellas",
+    "overview": "The true story of Henry Hill, a half-Irish, half-Sicilian Brooklyn kid who is adopted by neighbourhood gangsters at an early age and climbs the ranks of a Mafia family under the guidance of Jimmy Conway.",
+    "release_date": "1990-09-12",
+    "vote_average": 8.45,
+    "vote_count": 14683,
+    "genre_ids": [
+      18,
+      80
+    ],
+    "poster_path": "/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
+    "runtime": 145
+  },
+  {
+    "id": 618363,
+    "title": "Collective",
+    "overview": "In the aftermath of a tragic fire in a Romanian club, burn victims begin dying in hospitals from wounds that were not life threatening.  A team of investigative journalists move into action uncovering the mass corruption of the health system and of the state institutions. Collective follows journalists, whistle blowers, and authorities alike. An immersive and uncompromising look into a dysfunctional system, exposing corruption, propaganda, and manipulation that nowadays affect not only Romania, but societies around the world.",
+    "release_date": "2019-02-13",
+    "vote_average": 7.54,
+    "vote_count": 198,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/oR93n0CAn2GznyHDFSRTp0J1t8c.jpg",
+    "runtime": 109
+  },
+  {
+    "id": 301528,
+    "title": "Toy Story 4",
+    "overview": "Woody has always been confident about his place in the world, devoted to taking care of his kid—whether that's Andy or Bonnie. But after Bonnie creates a reluctant new toy called \"Forky\", a road trip adventure alongside old and new friends challenges everything Woody believes about loyalty, purpose, and what it truly means to be a toy.",
+    "release_date": "2019-06-19",
+    "vote_average": 7.464,
+    "vote_count": 10926,
+    "genre_ids": [
+      10751,
+      35,
+      16,
+      12
+    ],
+    "poster_path": "/w9kR8qbmQ01HwnvK4alvnQ2ca0L.jpg",
+    "runtime": 100
+  },
+  {
+    "id": 423,
+    "title": "The Pianist",
+    "overview": "The true story of pianist Władysław Szpilman's experiences in Warsaw during the Nazi occupation. When the Jews of the city find themselves forced into a ghetto, Szpilman finds work playing in a café; and when his family is deported in 1942, he stays behind, works for a while as a laborer, and eventually goes into hiding in the ruins of the war-torn city.",
+    "release_date": "2002-09-17",
+    "vote_average": 8.371,
+    "vote_count": 10385,
+    "genre_ids": [
+      18,
+      10752
+    ],
+    "poster_path": "/2hFvxCCWrTmCYwfy7yum0GKRi3Y.jpg",
+    "runtime": 150
+  },
+  {
+    "id": 393559,
+    "title": "My Life as a Zucchini",
+    "overview": "After his mother’s death, Zucchini is befriended by a kind police officer, Raymond, who accompanies him to his new foster home filled with other orphans his age. There, with the help of his newfound friends, Zucchini eventually learns to trust and love as he searches for a new family of his own.",
+    "release_date": "2016-09-22",
+    "vote_average": 7.791,
+    "vote_count": 1551,
+    "genre_ids": [
+      16,
+      35,
+      18
+    ],
+    "poster_path": "/2uu8fIzl76C9MFiUQhjKYSLKVq.jpg",
+    "runtime": 66
+  },
+  {
+    "id": 50183,
+    "title": "The Ascent",
+    "overview": "During a freezing WWII winter, two Soviet partisans on a mission to gather food contend with the temperature, the occupying Germans, and their own psyches.",
+    "release_date": "1977-04-02",
+    "vote_average": 7.871,
+    "vote_count": 256,
+    "genre_ids": [
+      18,
+      10752
+    ],
+    "poster_path": "/hJOju5XZfmq4Lg5dPa8IPVY3mDt.jpg",
+    "runtime": 110
+  },
+  {
+    "id": 76341,
+    "title": "Mad Max: Fury Road",
+    "overview": "An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order.",
+    "release_date": "2015-05-13",
+    "vote_average": 7.637,
+    "vote_count": 24508,
+    "genre_ids": [
+      28,
+      12,
+      878
+    ],
+    "poster_path": "/ulcAi4dKpAjHwYGS08vNyx9H6I9.jpg",
+    "runtime": 121
+  },
+  {
+    "id": 451995,
+    "title": "Faces Places",
+    "overview": "Director Agnès Varda and photographer/muralist JR journey through rural France and form an unlikely friendship.",
+    "release_date": "2017-06-28",
+    "vote_average": 7.621,
+    "vote_count": 425,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/1NX6NTj9FiiJwEgRUmEifSzE7Na.jpg",
+    "runtime": 94
+  },
+  {
+    "id": 615643,
+    "title": "Minari",
+    "overview": "A Korean American family moves to an Arkansas farm in search of its own American dream. Amidst the challenges of this new life in the strange and rugged Ozarks, they discover the undeniable resilience of family and what really makes a home.",
+    "release_date": "2021-02-12",
+    "vote_average": 7.326,
+    "vote_count": 1911,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/6mPNdmjdbVKPITv3LLCmQoKs9Zw.jpg",
+    "runtime": 115
+  },
+  {
+    "id": 1016084,
+    "title": "BlackBerry",
+    "overview": "Two mismatched entrepreneurs – egghead innovator Mike Lazaridis and cut-throat businessman Jim Balsillie – joined forces in an endeavour that was to become a worldwide hit in little more than a decade. The story of the meteoric rise and catastrophic demise of the world's first smartphone.",
+    "release_date": "2023-02-13",
+    "vote_average": 7.178,
+    "vote_count": 956,
+    "genre_ids": [
+      35,
+      18,
+      36
+    ],
+    "poster_path": "/nQSvHZDuMlrZdm7ooMo8gb4CXhW.jpg",
+    "runtime": 120
+  },
+  {
+    "id": 387,
+    "title": "Das Boot",
+    "overview": "A German submarine hunts allied ships during the Second World War, but it soon becomes the hunted. The crew tries to survive below the surface, while stretching both the boat and themselves to their limits.",
+    "release_date": "1981-09-17",
+    "vote_average": 8.078,
+    "vote_count": 2607,
+    "genre_ids": [
+      18,
+      36,
+      10752
+    ],
+    "poster_path": "/u8FhQPncOAkwcei2OI9orPWhV6K.jpg",
+    "runtime": 150
+  },
+  {
+    "id": 5723,
+    "title": "Once",
+    "overview": "A vacuum repairman moonlights as a street musician and hopes for his big break. One day a Czech immigrant, who earns a living selling flowers, approaches him with the news that she is also an aspiring singer-songwriter. The pair decide to collaborate, and the songs that they compose reflect the story of their blossoming love.",
+    "release_date": "2007-03-23",
+    "vote_average": 7.4,
+    "vote_count": 1496,
+    "genre_ids": [
+      18,
+      10402,
+      10749
+    ],
+    "poster_path": "/7nW363kSYRCkr4VGOMvuSGwtzKs.jpg",
+    "runtime": 85
+  },
+  {
+    "id": 155,
+    "title": "The Dark Knight",
+    "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+    "release_date": "2008-07-16",
+    "vote_average": 8.534,
+    "vote_count": 36550,
+    "genre_ids": [
+      28,
+      80,
+      53
+    ],
+    "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "runtime": 152
+  },
+  {
+    "id": 129112,
+    "title": "Wadjda",
+    "overview": "An enterprising Saudi girl signs on for her school's Quran recitation competition as a way to raise the remaining funds she needs in order to buy the green bicycle that has captured her interest.",
+    "release_date": "2012-12-06",
+    "vote_average": 7.219,
+    "vote_count": 529,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/w4iCIZ1kWSOCt0yELjfUMNAToUF.jpg",
+    "runtime": 98
+  },
+  {
+    "id": 10020,
+    "title": "Beauty and the Beast",
+    "overview": "Follow the adventures of Belle, a bright young woman who finds herself in the castle of a prince who's been turned into a mysterious beast. With the help of the castle's enchanted staff, Belle soon learns the most important lesson of all -- that true beauty comes from within.",
+    "release_date": "1991-10-22",
+    "vote_average": 7.725,
+    "vote_count": 10854,
+    "genre_ids": [
+      10749,
+      10751,
+      16,
+      14
+    ],
+    "poster_path": "/hUJ0UvQ5tgE2Z9WpfuduVSdiCiU.jpg",
+    "runtime": 84
+  },
+  {
+    "id": 575264,
+    "title": "Mission: Impossible - Dead Reckoning Part One",
+    "overview": "Ethan Hunt and his IMF team embark on their most dangerous mission yet: To track down a terrifying new weapon that threatens all of humanity before it falls into the wrong hands. With control of the future and the world's fate at stake and dark forces from Ethan's past closing in, a deadly race around the globe begins. Confronted by a mysterious, all-powerful enemy, Ethan must consider that nothing can matter more than his mission—not even the lives of those he cares about most.",
+    "release_date": "2023-07-08",
+    "vote_average": 7.502,
+    "vote_count": 5324,
+    "genre_ids": [
+      28,
+      12,
+      53
+    ],
+    "poster_path": "/NNxYkU70HPurnNCSiCjYAmacwm.jpg",
+    "runtime": 164
+  },
+  {
+    "id": 869626,
+    "title": "Marcel the Shell with Shoes On",
+    "overview": "Marcel is an adorable one-inch-tall shell who ekes out a colorful existence with his grandmother Connie and their pet lint, Alan. Once part of a sprawling community of shells, they now live alone as the sole survivors of a mysterious tragedy. When a documentarian discovers them amongst the clutter of his Airbnb, his resulting short film brings Marcel millions of passionate fans, as well as unprecedented dangers and a new hope at finding his long-lost family.",
+    "release_date": "2022-06-24",
+    "vote_average": 7.619,
+    "vote_count": 732,
+    "genre_ids": [
+      16,
+      35,
+      18,
+      10751,
+      14
+    ],
+    "poster_path": "/jaYmP4Ct8YLnxWAW2oYkUjeXtzm.jpg",
+    "runtime": 90
+  },
+  {
+    "id": 569094,
+    "title": "Spider-Man: Across the Spider-Verse",
+    "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
+    "release_date": "2023-05-31",
+    "vote_average": 8.347,
+    "vote_count": 9145,
+    "genre_ids": [
+      16,
+      28,
+      12,
+      878
+    ],
+    "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+    "runtime": 140
+  },
+  {
+    "id": 10548,
+    "title": "When We Were Kings",
+    "overview": "It's 1974. Muhammad Ali is 32 and thought by many to be past his prime. George Foreman is ten years younger and the heavyweight champion of the world. Promoter Don King wants to make a name for himself and offers both fighters five million dollars apiece to fight one another, and when they accept, King has only to come up with the money. He finds a willing backer in Mobutu Sese Suko, the dictator of Zaire, and the \"Rumble in the Jungle\" is set, including a musical festival featuring some of America's top black performers, like James Brown and B.B. King.",
+    "release_date": "1996-10-25",
+    "vote_average": 7.6,
+    "vote_count": 259,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/yBkZK1JZOOJ3q5Jj1H9UP9T8YuV.jpg",
+    "runtime": 89
+  },
+  {
+    "id": 250766,
+    "title": "Life Itself",
+    "overview": "The surprising and entertaining life of renowned film critic and social commentator Roger Ebert (1942-2013): his early days as a freewheeling bachelor and Pulitzer Prize winner, his famously contentious partnership with Gene Siskel, his life-altering marriage, and his brave and transcendent battle with cancer.",
+    "release_date": "2014-07-04",
+    "vote_average": 7.508,
+    "vote_count": 375,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/nK4cYTEO2eHLMgMII0Ux0kBOGhG.jpg",
+    "runtime": 121
+  },
+  {
+    "id": 9459,
+    "title": "Woodstock",
+    "overview": "An intimate look at the Woodstock Music & Art Festival held in Bethel, NY in 1969, from preparation through cleanup, with historic access to insiders, blistering concert footage, and portraits of the concertgoers; negative and positive aspects are shown, from drug use by performers to naked fans sliding in the mud, from the collapse of the fences by the unexpected hordes to the surreal arrival of National Guard helicopters with food and medical assistance for the impromptu city of 500,000.",
+    "release_date": "1970-03-26",
+    "vote_average": 7.553,
+    "vote_count": 301,
+    "genre_ids": [
+      99,
+      10402
+    ],
+    "poster_path": "/AapH8Qx4kUZoO7F4aK5cUnHjtdg.jpg",
+    "runtime": 224
+  },
+  {
+    "id": 34921,
+    "title": "Winter Soldier",
+    "overview": "For three days in 1971, former US soldiers who were in Vietnam testify in Detroit about their war experiences. Nearly 30 speak, describing atrocities personally committed or witnessed, telling of inaccurate body counts, and recounting the process of destroying a village.",
+    "release_date": "1972-01-27",
+    "vote_average": 7.913,
+    "vote_count": 23,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/wIagxsIvSEGAXQuuCkximnhhyL1.jpg",
+    "runtime": 96
+  },
+  {
+    "id": 12444,
+    "title": "Harry Potter and the Deathly Hallows: Part 1",
+    "overview": "Harry, Ron and Hermione walk away from their last year at Hogwarts to find and destroy the remaining Horcruxes, putting an end to Voldemort's bid for immortality. But with Harry's beloved Dumbledore dead and Voldemort's unscrupulous Death Eaters on the loose, the world is more dangerous than ever.",
+    "release_date": "2010-11-17",
+    "vote_average": 7.732,
+    "vote_count": 20721,
+    "genre_ids": [
+      12,
+      14
+    ],
+    "poster_path": "/iGoXIpQb7Pot00EEdwpwPajheZ5.jpg",
+    "runtime": 146
+  },
+  {
+    "id": 8885,
+    "title": "Waltz with Bashir",
+    "overview": "An Israeli film director interviews fellow veterans of the 1982 invasion of Lebanon to reconstruct his own memories of his term of service in that conflict.",
+    "release_date": "2008-06-12",
+    "vote_average": 7.674,
+    "vote_count": 1083,
+    "genre_ids": [
+      16,
+      99,
+      18,
+      10752
+    ],
+    "poster_path": "/zQaCv7lKwHsh0YSHkt1QNjIOZ1c.jpg",
+    "runtime": 90
+  },
+  {
+    "id": 85,
+    "title": "Raiders of the Lost Ark",
+    "overview": "When Dr. Indiana Jones – the tweed-suited professor who just happens to be a celebrated archaeologist – is hired by the government to locate the legendary Ark of the Covenant, he finds himself up against the entire Nazi regime.",
+    "release_date": "1981-06-12",
+    "vote_average": 7.927,
+    "vote_count": 13917,
+    "genre_ids": [
+      12,
+      28
+    ],
+    "poster_path": "/ceG9VzoRAVGwivFU403Wc3AHRys.jpg",
+    "runtime": 115
+  },
+  {
+    "id": 556574,
+    "title": "Hamilton",
+    "overview": "Presenting the tale of American founding father Alexander Hamilton, this filmed version of the original Broadway smash hit is the story of America then, told by America now.",
+    "release_date": "2025-09-05",
+    "vote_average": 7.898,
+    "vote_count": 147,
+    "genre_ids": [
+      36,
+      18
+    ],
+    "poster_path": "/h1B7tW0t399VDjAcWJh8m87469b.jpg",
+    "runtime": 160
+  },
+  {
+    "id": 566213,
+    "title": "Honeyland",
+    "overview": "When nomadic beekeepers break Honeyland’s basic rule (take half of the honey, but leave half to the bees), the last female beehunter in Europe must save the bees and restore natural balance.",
+    "release_date": "2019-07-26",
+    "vote_average": 7.867,
+    "vote_count": 309,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/3IxGhQEzLWOxkZlcNMAIiYlOT8D.jpg",
+    "runtime": 89
+  },
+  {
+    "id": 980026,
+    "title": "The Promised Land",
+    "overview": "Denmark, 1755. Captain Ludvig Kahlen sets out to conquer a Danish heath reputed to be uncultivable, with an impossible goal: to establish a colony in the name of the king, in exchange for a royal title. A single-minded ambition that the ruthless lord of the region will relentlessly seek to put down. Kahlen's fate hangs in the balance: will his endevours bring him wealth and honour, or cost him his life...?",
+    "release_date": "2023-10-05",
+    "vote_average": 7.666,
+    "vote_count": 627,
+    "genre_ids": [
+      28,
+      18,
+      36
+    ],
+    "poster_path": "/okVwls2laPGOsLKKhXQCEiTBwpw.jpg",
+    "runtime": 127
+  },
+  {
+    "id": 471707,
+    "title": "Corpus Christi",
+    "overview": "A pious 20-year-old juvenile delinquent is sent to work at a sawmill in a small town; on arrival, he dresses up as a priest and accidentally takes over the local parish. The arrival of this young, charismatic preacher is an opportunity for the local community to begin the healing process after a tragedy that happened a year prior.",
+    "release_date": "2019-09-10",
+    "vote_average": 7.6,
+    "vote_count": 626,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/6VZlm8sEwxkE3L5nXxz17QLj1sF.jpg",
+    "runtime": 116
+  },
+  {
+    "id": 13958,
+    "title": "The King of Kong: A Fistful of Quarters",
+    "overview": "In this hilarious arcade showdown, a humble novice goes head-to-head against the reigning Donkey Kong champ in a confrontation that rocks the gaming world to its processors! For over 20 years, Billy Mitchell has owned the throne of the Donkey Kong world. No one could beat his top score until now. Newcomer Steve Wiebe claims to have beaten the unbeatable, but Mitchell isn't ready to relinquish his crown without a fight. Go behind the barrels as the two battle it out in a vicious war to earn the title of the true King of Kong.",
+    "release_date": "2007-03-25",
+    "vote_average": 7.729,
+    "vote_count": 511,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/wACtXGiO08EBbJhqsD2nUzPsrKe.jpg",
+    "runtime": 83
+  },
+  {
+    "id": 12698,
+    "title": "The Fog of War",
+    "overview": "Using archival footage, cabinet conversation recordings, and an interview of the 85-year-old Robert McNamara, The Fog of War depicts his life, from working as a WWII whiz-kid military officer, to being the Ford Motor Company's president, to managing the Vietnam War as defense secretary for presidents Kennedy and Johnson.",
+    "release_date": "2003-10-26",
+    "vote_average": 7.717,
+    "vote_count": 304,
+    "genre_ids": [
+      99,
+      10770
+    ],
+    "poster_path": "/m1dEnkrdJGBSLeAyJepuGrU9sNI.jpg",
+    "runtime": 107
+  },
+  {
+    "id": 158999,
+    "title": "Blackfish",
+    "overview": "Notorious killer whale Tilikum is responsible for the deaths of three individuals, including a top killer whale trainer. Blackfish shows the sometimes devastating consequences of keeping such intelligent and sentient creatures in captivity.",
+    "release_date": "2013-06-07",
+    "vote_average": 7.855,
+    "vote_count": 1208,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/kCk4mDFE96Mn1AYfEcbxkIiw7ND.jpg",
+    "runtime": 83
+  },
+  {
+    "id": 33324,
+    "title": "Harlan County U.S.A.",
+    "overview": "A heartbreaking record of the thirteen-month struggle between a community fighting to survive and a corporation dedicated to the bottom line.",
+    "release_date": "1976-10-15",
+    "vote_average": 7.5,
+    "vote_count": 120,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/p0cyMNsoP5ap0omfhakhImBWTRw.jpg",
+    "runtime": 104
+  },
+  {
+    "id": 502033,
+    "title": "Sound of Metal",
+    "overview": "Metal drummer Ruben begins to lose his hearing. When a doctor tells him his condition will worsen, he thinks his career and life is over. His girlfriend Lou checks the former addict into a rehab for the deaf hoping it will prevent a relapse and help him adapt to his new life. After being welcomed and accepted just as he is, Ruben must choose between his new normal and the life he once knew.",
+    "release_date": "2020-11-20",
+    "vote_average": 7.7,
+    "vote_count": 2916,
+    "genre_ids": [
+      18,
+      10402
+    ],
+    "poster_path": "/3178oOJKKPDeQ2legWQvMPpllv.jpg",
+    "runtime": 121
+  },
+  {
+    "id": 823219,
+    "title": "Flow",
+    "overview": "A solitary cat, displaced by a great flood, finds refuge on a boat with various species and must navigate the challenges of adapting to a transformed world together.",
+    "release_date": "2024-08-29",
+    "vote_average": 8.1,
+    "vote_count": 3022,
+    "genre_ids": [
+      12,
+      16,
+      10751,
+      14
+    ],
+    "poster_path": "/z2sG41PxfL1hnL1mHbxzSREUtOf.jpg",
+    "runtime": 85
+  },
+  {
+    "id": 680058,
+    "title": "The Rescue",
+    "overview": "The enthralling, against-all-odds story that transfixed the world in 2018: the daring rescue of twelve boys and their coach from deep inside a flooded cave in Northern Thailand.",
+    "release_date": "2021-10-08",
+    "vote_average": 7.967,
+    "vote_count": 276,
+    "genre_ids": [
+      99,
+      18
+    ],
+    "poster_path": "/kC7fVtCkJACwPBaRr2hlj2whfKX.jpg",
+    "runtime": 107
+  },
+  {
+    "id": 371645,
+    "title": "Hunt for the Wilderpeople",
+    "overview": "Ricky is a defiant young city kid who finds himself on the run with his cantankerous foster uncle in the wild New Zealand bush. A national manhunt ensues, and the two are forced to put aside their differences and work together to survive.",
+    "release_date": "2016-01-22",
+    "vote_average": 7.644,
+    "vote_count": 2374,
+    "genre_ids": [
+      12,
+      35,
+      18
+    ],
+    "poster_path": "/hkmz9rxgcweizXNElozGeKwmAJE.jpg",
+    "runtime": 101
+  },
+  {
+    "id": 680813,
+    "title": "Flee",
+    "overview": "Recounted mostly through animation to protect his identity, Amin looks back over his past as a child refugee from Afghanistan as he grapples with a secret he’s kept hidden for 20 years.",
+    "release_date": "2021-06-17",
+    "vote_average": 7.705,
+    "vote_count": 408,
+    "genre_ids": [
+      99,
+      16
+    ],
+    "poster_path": "/vlMIbqOpYG553J1kOJXA7mwQvE6.jpg",
+    "runtime": 89
+  },
+  {
+    "id": 14275,
+    "title": "Hoop Dreams",
+    "overview": "Every school day, African-American teenagers William Gates and Arthur Agee travel 90 minutes each way from inner-city Chicago to St. Joseph High School in Westchester, Illinois, a predominately white suburban school well-known for the excellence of its basketball program. Gates and Agee dream of NBA stardom, and with the support of their close-knit families, they battle the social and physical obstacles that stand in their way. This acclaimed documentary was shot over the course of five years.",
+    "release_date": "1994-09-12",
+    "vote_average": 7.588,
+    "vote_count": 340,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/gLzHl2XBtVwycl8DxdOXRHPm8G3.jpg",
+    "runtime": 174
+  },
+  {
+    "id": 381028,
+    "title": "Tower",
+    "overview": "Combining archival footage with rotoscopic animation, Tower reveals the action-packed untold stories of the witnesses, heroes and survivors of America's first mass school shooting, when the worst in one man brought out the best in so many others.",
+    "release_date": "2016-03-13",
+    "vote_average": 7.627,
+    "vote_count": 208,
+    "genre_ids": [
+      16,
+      80,
+      99
+    ],
+    "poster_path": "/sYau8BFtkQUMWDyRbpACru4cS6G.jpg",
+    "runtime": 82
+  },
+  {
+    "id": 2260,
+    "title": "Capturing the Friedmans",
+    "overview": "An Oscar nominated documentary about a middle-class American family who is torn apart when the father Arnold and son Jesse are accused of sexually abusing numerous children. Director Jarecki interviews people from different sides of this tragic story and raises the question of whether they were rightfully tried when they claim they were innocent and there was never any evidence against them.",
+    "release_date": "2003-05-30",
+    "vote_average": 7.142,
+    "vote_count": 368,
+    "genre_ids": [
+      99,
+      80
+    ],
+    "poster_path": "/429t6nh7M8cg29CtgXAjvwWe1Dv.jpg",
+    "runtime": 107
+  },
+  {
+    "id": 565085,
+    "title": "The Broken Mirror",
+    "overview": "Anne lives with her husband in Belgium where she works as a restorer of paintings. When she becomes pregnant, she finds herself remembering a picture she did some time ago and of which she has no memory, no recollection of what happened to it. It becomes her goal to discover and clarify the mystery behind this painting, at the same time she notices that a strange man is following all of her moves.",
+    "release_date": "1975-04-02",
+    "vote_average": 6.9,
+    "vote_count": 10,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/jV3nDU5cYPfCWNzoQdSPPeil6hm.jpg",
+    "runtime": 105
+  },
+  {
+    "id": 28216,
+    "title": "Mr. Death: The Rise and Fall of Fred A. Leuchter, Jr.",
+    "overview": "Documentary filmmaker Errol Morris investigates the case of a man who became an authority on capital punishment, but was discredited when he got involved on the wrong side of a court case. Leuchter, a meek man whose appearance belies his grim expertise, develops what he says is a more effective electric chair. Before long he's in demand from officials who want his opinions on other kinds of execution. But when called to aid the case of an accused Holocaust denier, Leuchter's problems begin.",
+    "release_date": "1999-12-29",
+    "vote_average": 7,
+    "vote_count": 72,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/buoMN4p95mvB2JgyglMb5gKxurV.jpg",
+    "runtime": 91
+  },
+  {
+    "id": 8416,
+    "title": "The Conformist",
+    "overview": "A weak-willed Italian man becomes a fascist flunky who goes abroad to arrange the assassination of his old teacher, now a political dissident.",
+    "release_date": "1971-01-29",
+    "vote_average": 7.645,
+    "vote_count": 782,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/nLJjFRqIJAK8qz0OKYnpKCblZNK.jpg",
+    "runtime": 108
+  },
+  {
+    "id": 515042,
+    "title": "Free Solo",
+    "overview": "Follow Alex Honnold as he attempts to become the first person to ever free solo climb Yosemite's 3,000 foot high El Capitan wall. With no ropes or safety gear, this would arguably be the greatest feat in rock climbing history.",
+    "release_date": "2018-09-28",
+    "vote_average": 7.9,
+    "vote_count": 1558,
+    "genre_ids": [
+      99,
+      12
+    ],
+    "poster_path": "/v4QfYZMACODlWul9doN9RxE99ag.jpg",
+    "runtime": 100
+  },
+  {
+    "id": 11645,
+    "title": "Ran",
+    "overview": "Shakespeare's King Lear is reimagined as a singular historical epic set in sixteenth-century Japan where an aging warlord divides his kingdom between his three sons.",
+    "release_date": "1985-06-01",
+    "vote_average": 8.015,
+    "vote_count": 1894,
+    "genre_ids": [
+      28,
+      18,
+      36
+    ],
+    "poster_path": "/dGgiXMWDcS5aJTBEFu7bmaQPNox.jpg",
+    "runtime": 160
+  },
+  {
+    "id": 1155828,
+    "title": "Sing Sing",
+    "overview": "Divine G, imprisoned at Sing Sing for a crime he didn't commit, finds purpose by acting in a theatre group alongside other incarcerated men in this story of resilience, humanity, and the transformative power of art.",
+    "release_date": "2024-07-12",
+    "vote_average": 7.391,
+    "vote_count": 393,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/ig5ju3Tt56UGoBrc6IlkUS6ahfE.jpg",
+    "runtime": 107
+  },
+  {
+    "id": 728928,
+    "title": "76 Days",
+    "overview": "Raw and intimate, this documentary captures the struggles of patients and frontline medical professionals battling the COVID-19 pandemic in Wuhan.",
+    "release_date": "2020-09-10",
+    "vote_average": 7.192,
+    "vote_count": 39,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/ebj4sLjGWfoCAWRSeKZUoef4bS1.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 812,
+    "title": "Aladdin",
+    "overview": "In the boorish city of Agrabah, kind-hearted street urchin Aladdin and Princess Jasmine fall in love, although she can only marry a prince. He and power-hungry Grand Vizier Jafar vie for a magic lamp that can fulfill their wishes.",
+    "release_date": "1992-11-25",
+    "vote_average": 7.657,
+    "vote_count": 12221,
+    "genre_ids": [
+      16,
+      10751,
+      12,
+      14,
+      10749
+    ],
+    "poster_path": "/eLFfl7vS8dkeG1hKp5mwbm37V83.jpg",
+    "runtime": 91
+  },
+  {
+    "id": 37799,
+    "title": "The Social Network",
+    "overview": "In 2003, Harvard undergrad and computer programmer Mark Zuckerberg begins work on a new concept that eventually turns into the global social network known as Facebook. Six years later, Mark is one of the youngest billionaires ever, but his unprecedented success leads to both personal and legal complications when he ends up on the receiving end of two lawsuits, one involving his former friend.",
+    "release_date": "2010-10-01",
+    "vote_average": 7.376,
+    "vote_count": 13436,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/n0ybibhJtQ5icDqTp8eRytcIHJx.jpg",
+    "runtime": 121
+  },
+  {
+    "id": 489925,
+    "title": "Eighth Grade",
+    "overview": "Thirteen-year-old Kayla endures the tidal wave of contemporary suburban adolescence as she makes her way through the last week of middle school — the end of her thus far disastrous eighth grade year — before she begins high school.",
+    "release_date": "2018-01-19",
+    "vote_average": 7.144,
+    "vote_count": 1705,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/xTa9cLhGHfQ7084UvoPQ2bBXKqd.jpg",
+    "runtime": 94
+  },
+  {
+    "id": 2011,
+    "title": "Persepolis",
+    "overview": "In 1970s Iran, Marjane 'Marji' Satrapi watches events through her young eyes and her idealistic family of a long dream being fulfilled of the hated Shah's defeat in the Iranian Revolution of 1979. However as Marji grows up, she witnesses first hand how the new Iran, now ruled by Islamic fundamentalists, has become a repressive tyranny on its own.",
+    "release_date": "2007-06-27",
+    "vote_average": 7.881,
+    "vote_count": 2234,
+    "genre_ids": [
+      16,
+      18
+    ],
+    "poster_path": "/aU8i2QAdTyRR1nYb36Gq51xXP8p.jpg",
+    "runtime": 95
+  },
+  {
+    "id": 576017,
+    "title": "For Sama",
+    "overview": "A love letter from a young mother to her daughter, the film tells the story of Waad al-Kateab’s life through five years of the uprising in Aleppo, Syria as she falls in love, gets married and gives birth to Sama, all while cataclysmic conflict rises around her.  Her camera captures incredible stories of loss, laughter and survival as Waad wrestles with an impossible choice– whether or not to flee the city to protect her daughter’s life, when leaving means abandoning the struggle for freedom for which she has already sacrificed so much.",
+    "release_date": "2019-07-26",
+    "vote_average": 8.232,
+    "vote_count": 319,
+    "genre_ids": [
+      99,
+      10752
+    ],
+    "poster_path": "/mDna51F8QfrJFZOgPGQUz3VKqsB.jpg",
+    "runtime": 100
+  },
+  {
+    "id": 338766,
+    "title": "Hell or High Water",
+    "overview": "A divorced dad and his ex-con brother resort to a desperate scheme in order to save their family's farm in West Texas.",
+    "release_date": "2016-08-11",
+    "vote_average": 7.306,
+    "vote_count": 4972,
+    "genre_ids": [
+      37,
+      80,
+      18
+    ],
+    "poster_path": "/ljRRxqy2aXIkIBXLmOVifcOR021.jpg",
+    "runtime": 102
+  },
+  {
+    "id": 857,
+    "title": "Saving Private Ryan",
+    "overview": "As U.S. troops storm the beaches of Normandy, three brothers lie dead on the battlefield, with a fourth trapped behind enemy lines. Ranger captain John Miller and seven men are tasked with penetrating German-held territory and bringing the boy home.",
+    "release_date": "1998-07-24",
+    "vote_average": 8.232,
+    "vote_count": 17685,
+    "genre_ids": [
+      10752,
+      18,
+      36
+    ],
+    "poster_path": "/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg",
+    "runtime": 169
+  },
+  {
+    "id": 585,
+    "title": "Monsters, Inc.",
+    "overview": "Lovable Sulley and his wisecracking sidekick Mike Wazowski are the top scare team at Monsters, Inc., the scream-processing factory in Monstropolis. When a little girl named Boo wanders into their world, it's the monsters who are scared silly, and it's up to Sulley and Mike to keep her out of sight and get her back home.",
+    "release_date": "2001-11-01",
+    "vote_average": 7.856,
+    "vote_count": 20170,
+    "genre_ids": [
+      16,
+      35,
+      10751,
+      14
+    ],
+    "poster_path": "/wFSpyMsp7H0ttERbxY7Trlv8xry.jpg",
+    "runtime": 92
+  },
+  {
+    "id": 916405,
+    "title": "The Quiet Girl",
+    "overview": "A quiet, neglected girl is sent away from her dysfunctional family to live with relatives for the summer. She blossoms in their care, but in this house where there are meant to be no secrets, she discovers one.",
+    "release_date": "2022-05-12",
+    "vote_average": 7.476,
+    "vote_count": 592,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/6Njyz53N417cgxE0d7cBEWHUEjc.jpg",
+    "runtime": 95
+  },
+  {
+    "id": 76203,
+    "title": "12 Years a Slave",
+    "overview": "In the pre-Civil War United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery. Facing cruelty as well as unexpected kindnesses Solomon struggles not only to stay alive, but to retain his dignity. In the twelfth year of his unforgettable odyssey, Solomon’s chance meeting with a Canadian abolitionist will forever alter his life.",
+    "release_date": "2013-10-18",
+    "vote_average": 7.929,
+    "vote_count": 12179,
+    "genre_ids": [
+      18,
+      36
+    ],
+    "poster_path": "/xdANQijuNrJaw1HA61rDccME4Tm.jpg",
+    "runtime": 134
+  },
+  {
+    "id": 1417,
+    "title": "Pan's Labyrinth",
+    "overview": "In post–civil war Spain, 10-year-old Ofelia moves with her pregnant mother to live under the control of her cruel stepfather. Drawn into a mysterious labyrinth, she meets a faun who reveals that she may be a lost princess from an underground kingdom. To return to her true father, she must complete a series of surreal and perilous tasks that blur the line between reality and fantasy.",
+    "release_date": "2006-10-11",
+    "vote_average": 7.768,
+    "vote_count": 11682,
+    "genre_ids": [
+      14,
+      18,
+      10752
+    ],
+    "poster_path": "/z7xXihu5wHuSMWymq5VAulPVuvg.jpg",
+    "runtime": 118
+  },
+  {
+    "id": 10386,
+    "title": "The Iron Giant",
+    "overview": "In the small town of Rockwell, Maine in October 1957, a giant metal machine befriends a nine-year-old boy and ultimately finds its humanity by unselfishly saving people from their own fears and prejudices.",
+    "release_date": "1999-08-06",
+    "vote_average": 7.961,
+    "vote_count": 6332,
+    "genre_ids": [
+      16,
+      18,
+      10751,
+      878,
+      12
+    ],
+    "poster_path": "/ct04FCFLPImNG5thcPLRnVsZlmS.jpg",
+    "runtime": 86
+  },
+  {
+    "id": 968,
+    "title": "Dog Day Afternoon",
+    "overview": "Based on the true story of would-be Brooklyn bank robbers John Wojtowicz and Salvatore Naturile. Sonny and Sal attempt a bank heist which quickly turns sour and escalates into a hostage situation and stand-off with the police. As Sonny's motives for the robbery are slowly revealed and things become more complicated, the heist turns into a media circus.",
+    "release_date": "1975-09-21",
+    "vote_average": 7.853,
+    "vote_count": 3483,
+    "genre_ids": [
+      80,
+      18,
+      53
+    ],
+    "poster_path": "/mavrhr0ig2aCRR8d48yaxtD5aMQ.jpg",
+    "runtime": 125
+  },
+  {
+    "id": 391713,
+    "title": "Lady Bird",
+    "overview": "Lady Bird McPherson, a strong willed, deeply opinionated, artistic 17 year old comes of age in Sacramento. Her relationship with her mother and her upbringing are questioned and tested as she plans to head off to college.",
+    "release_date": "2017-09-01",
+    "vote_average": 7.2,
+    "vote_count": 9141,
+    "genre_ids": [
+      18,
+      35
+    ],
+    "poster_path": "/gl66K7zRdtNYGrxyS2YDUP5ASZd.jpg",
+    "runtime": 94
+  },
+  {
+    "id": 948,
+    "title": "Halloween",
+    "overview": "Fifteen years after murdering his sister on Halloween Night 1963, Michael Myers escapes from a mental hospital and returns to the small town of Haddonfield, Illinois to kill again.",
+    "release_date": "1978-10-24",
+    "vote_average": 7.557,
+    "vote_count": 6317,
+    "genre_ids": [
+      27,
+      53
+    ],
+    "poster_path": "/wijlZ3HaYMvlDTPqJoTCWKFkCPU.jpg",
+    "runtime": 91
+  },
+  {
+    "id": 33,
+    "title": "Unforgiven",
+    "overview": "William Munny is a retired, once-ruthless killer turned gentle widower and hog farmer. To help support his two motherless children, he accepts one last bounty-hunter mission to find the men who brutalized a prostitute. Joined by his former partner and a cocky greenhorn, he takes on a corrupt sheriff.",
+    "release_date": "1992-08-07",
+    "vote_average": 7.912,
+    "vote_count": 5071,
+    "genre_ids": [
+      37
+    ],
+    "poster_path": "/54roTwbX9fltg85zjsmrooXAs12.jpg",
+    "runtime": 130
+  },
+  {
+    "id": 167073,
+    "title": "Brooklyn",
+    "overview": "In 1950s Ireland and New York, young Eilis Lacey has to choose between two men and two countries.",
+    "release_date": "2015-10-20",
+    "vote_average": 7.3,
+    "vote_count": 3312,
+    "genre_ids": [
+      18,
+      36,
+      10749
+    ],
+    "poster_path": "/cs7W8j5lI7qzRW6tKSj9p1Q0Ze7.jpg",
+    "runtime": 111
+  },
+  {
+    "id": 640,
+    "title": "Catch Me If You Can",
+    "overview": "A true story about Frank Abagnale Jr. who, before his 19th birthday, successfully conned millions of dollars worth of checks as a Pan Am pilot, doctor, and legal prosecutor. An FBI agent makes it his mission to put him behind bars. But Frank not only eludes capture, he revels in the pursuit.",
+    "release_date": "2002-12-16",
+    "vote_average": 7.978,
+    "vote_count": 17468,
+    "genre_ids": [
+      18,
+      80
+    ],
+    "poster_path": "/ctjEj2xM32OvBXCq8zAdK3ZrsAj.jpg",
+    "runtime": 141
+  },
+  {
+    "id": 411019,
+    "title": "I Am Not Your Negro",
+    "overview": "Working from the text of James Baldwin’s unfinished final novel, director Raoul Peck creates a meditation on what it means to be Black in the United States.",
+    "release_date": "2017-02-03",
+    "vote_average": 7.74,
+    "vote_count": 530,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/zwd0Zti7BvY1mO0mTPzM0fRrtc6.jpg",
+    "runtime": 93
+  },
+  {
+    "id": 77,
+    "title": "Memento",
+    "overview": "Leonard Shelby is tracking down the man who raped and murdered his wife. The difficulty of locating his wife's killer, however, is compounded by the fact that he suffers from a rare, untreatable form of short-term memory loss. Although he can recall details of life before his accident, Leonard cannot remember what happened fifteen minutes ago, where he's going, or why.",
+    "release_date": "2000-10-11",
+    "vote_average": 8.174,
+    "vote_count": 16669,
+    "genre_ids": [
+      9648,
+      53
+    ],
+    "poster_path": "/nzlv62aC0octS5AklAiWpXLX9Z0.jpg",
+    "runtime": 113
+  },
+  {
+    "id": 9008,
+    "title": "The Insider",
+    "overview": "A research chemist comes under personal and professional attack when he decides to appear in a 60 Minutes exposé on Big Tobacco.",
+    "release_date": "1999-10-28",
+    "vote_average": 7.463,
+    "vote_count": 2132,
+    "genre_ids": [
+      18,
+      53
+    ],
+    "poster_path": "/w695X0FvTlBCS7GSLHNILnrfqPm.jpg",
+    "runtime": 158
+  },
+  {
+    "id": 1050035,
+    "title": "Monster",
+    "overview": "After an outburst at school involving her son, a concerned single mother demands answers, triggering a sequence of deepening suspicion and turmoil.",
+    "release_date": "2023-06-02",
+    "vote_average": 7.931,
+    "vote_count": 948,
+    "genre_ids": [
+      9648,
+      53,
+      18
+    ],
+    "poster_path": "/kvUJUyUGOhEoiWWNH04IXoExPE2.jpg",
+    "runtime": 125
+  },
+  {
+    "id": 11686,
+    "title": "Love and Death",
+    "overview": "In czarist Russia, a neurotic soldier and his distant cousin formulate a plot to assassinate Napoleon.",
+    "release_date": "1975-06-10",
+    "vote_average": 7.453,
+    "vote_count": 987,
+    "genre_ids": [
+      35,
+      36
+    ],
+    "poster_path": "/oJXFd1UHZoOQ1UtoLxbyBLGJDox.jpg",
+    "runtime": 85
+  },
+  {
+    "id": 406,
+    "title": "La Haine",
+    "overview": "After a chaotic night of rioting in a marginal suburb of Paris, three young friends, Vinz, Hubert and Saïd, wander around unoccupied waiting for news about the state of health of a mutual friend who has been seriously injured when confronting the police.",
+    "release_date": "1995-05-31",
+    "vote_average": 8.082,
+    "vote_count": 4681,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/hY4exng4s29RzDbtQInjx9MA3PZ.jpg",
+    "runtime": 98
+  },
+  {
+    "id": 13475,
+    "title": "Star Trek",
+    "overview": "The fate of the galaxy rests in the hands of bitter rivals. One, James Kirk, is a delinquent, thrill-seeking Iowa farm boy. The other, Spock, a Vulcan, was raised in a logic-based society that rejects all emotion. As fiery instinct clashes with calm reason, their unlikely but powerful partnership is the only thing capable of leading their crew through unimaginable danger, boldly going where no one has gone before. The human adventure has begun again.",
+    "release_date": "2009-05-06",
+    "vote_average": 7.436,
+    "vote_count": 10684,
+    "genre_ids": [
+      878,
+      28,
+      12
+    ],
+    "poster_path": "/9vaRPXj44Q2meHgt3VVfQufiHOJ.jpg",
+    "runtime": 127
+  },
+  {
+    "id": 2062,
+    "title": "Ratatouille",
+    "overview": "In one of Paris's finest restaurants, Remy, a determined young rat, dreams of becoming a renowned French chef. Torn between his family's wishes and his true calling, Remy and his pal Linguini set in motion a hilarious chain of events that turns the City of Lights upside down.",
+    "release_date": "2007-06-28",
+    "vote_average": 7.846,
+    "vote_count": 18857,
+    "genre_ids": [
+      16,
+      35,
+      10751,
+      14
+    ],
+    "poster_path": "/t3vaWRPSf6WjDSamIkKDs1iQWna.jpg",
+    "runtime": 111
+  },
+  {
+    "id": 436,
+    "title": "Maria Full of Grace",
+    "overview": "A pregnant Colombian teenager becomes a drug mule to make some desperately needed money for her family.",
+    "release_date": "2004-04-02",
+    "vote_average": 7.204,
+    "vote_count": 441,
+    "genre_ids": [
+      18,
+      53,
+      80
+    ],
+    "poster_path": "/30CImATfvHWLXy6a3KmHXnYXB6c.jpg",
+    "runtime": 101
+  },
+  {
+    "id": 583,
+    "title": "Life of Brian",
+    "overview": "Brian Cohen is an average young Jewish man, but through a series of ridiculous events, he gains a reputation as the Messiah. When he's not dodging his followers or being scolded by his shrill mother, the hapless Brian has to contend with the pompous Pontius Pilate and acronym-obsessed members of a separatist movement. Rife with Monty Python's signature absurdity, the tale finds Brian's life paralleling Biblical lore, albeit with many more laughs.",
+    "release_date": "1979-08-17",
+    "vote_average": 7.763,
+    "vote_count": 5060,
+    "genre_ids": [
+      35
+    ],
+    "poster_path": "/lSSA64WF0M0BXnjwr2quMh6shCl.jpg",
+    "runtime": 94
+  },
+  {
+    "id": 555604,
+    "title": "Guillermo del Toro's Pinocchio",
+    "overview": "During the rise of fascism in Mussolini's Italy, a wooden boy brought magically to life struggles to live up to his father's expectations.",
+    "release_date": "2022-11-09",
+    "vote_average": 7.997,
+    "vote_count": 3441,
+    "genre_ids": [
+      16,
+      14,
+      12,
+      18
+    ],
+    "poster_path": "/vx1u0uwxdlhV2MUzj4VlcMB0N6m.jpg",
+    "runtime": 117
+  },
+  {
+    "id": 244786,
+    "title": "Whiplash",
+    "overview": "Under the direction of a ruthless instructor, a talented young drummer begins to pursue perfection at any cost, even his humanity.",
+    "release_date": "2014-10-10",
+    "vote_average": 8.375,
+    "vote_count": 17010,
+    "genre_ids": [
+      18,
+      10402,
+      53
+    ],
+    "poster_path": "/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
+    "runtime": 107
+  },
+  {
+    "id": 11450,
+    "title": "Quiz Show",
+    "overview": "Herbert Stempel's transformation into an unexpected television personality unfolds as he secures victory on the cherished American game show, 'Twenty-One.' However, when the show introduces the highly skilled contestant Charles Van Doren to replace Stempel, it compels Stempel to let out his frustrations and call out the show as rigged. Lawyer Richard Goodwin steps in and attempts to uncover the orchestrated deception behind the scenes.",
+    "release_date": "1994-08-25",
+    "vote_average": 7.25,
+    "vote_count": 1010,
+    "genre_ids": [
+      36,
+      18
+    ],
+    "poster_path": "/yoGJo1h3Hl2exXPVcG9UXWDENtX.jpg",
+    "runtime": 133
+  },
+  {
+    "id": 27375,
+    "title": "Salesman",
+    "overview": "This documentary from Albert and David Maysles follows the bitter rivalry of four door-to-door salesmen working for the Mid-American Bible Company: Paul \"The Badger\" Brennan, Charles \"The Gipper\" McDevitt, James \"The Rabbit\" Baker and Raymond \"The Bull\" Martos. Times are tough for this hard-living quartet, who spend their days traveling through small-town America, trying their best to peddle gold-leaf Bibles to an apathetic crowd of lower-middle-class housewives and elderly couples.",
+    "release_date": "1969-04-17",
+    "vote_average": 7.149,
+    "vote_count": 101,
+    "genre_ids": [
+      99
+    ],
+    "poster_path": "/gQhe7uWygmAiQ6HNA7Jeys4wdbk.jpg",
+    "runtime": 90
+  },
+  {
+    "id": 634649,
+    "title": "Spider-Man: No Way Home",
+    "overview": "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
+    "release_date": "2021-12-15",
+    "vote_average": 7.945,
+    "vote_count": 22938,
+    "genre_ids": [
+      28,
+      12,
+      878
+    ],
+    "poster_path": "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+    "runtime": 148
+  },
+  {
+    "id": 877268,
+    "title": "WALL·E's Treasures & Trinkets",
+    "overview": "Short vignettes featured as a DVD Extra Short.",
+    "release_date": "2008-11-18",
+    "vote_average": 7,
+    "vote_count": 6,
+    "genre_ids": [
+      16
+    ],
+    "poster_path": "/pJfm3EggGLZToce08Obf7HQHXrP.jpg",
+    "runtime": 5
+  },
+  {
+    "id": 2493,
+    "title": "The Princess Bride",
+    "overview": "In this enchantingly cracked fairy tale, the beautiful Princess Buttercup and the dashing Westley must overcome staggering odds to find happiness amid six-fingered swordsmen, murderous princes, Sicilians and rodents of unusual size. But even death can't stop these true lovebirds from triumphing.",
+    "release_date": "1987-09-25",
+    "vote_average": 7.705,
+    "vote_count": 5255,
+    "genre_ids": [
+      12,
+      14,
+      10749,
+      10751
+    ],
+    "poster_path": "/2FC9L9MrjBoGHYjYZjdWQdopVYb.jpg",
+    "runtime": 99
+  },
+  {
+    "id": 565310,
+    "title": "The Farewell",
+    "overview": "A headstrong Chinese-American woman returns to China when her beloved grandmother is given a terminal diagnosis. Billi struggles with her family's decision to keep grandma in the dark about her own illness as they all stage an impromptu wedding to see grandma one last time.",
+    "release_date": "2019-07-12",
+    "vote_average": 7.41,
+    "vote_count": 1577,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/7ht2IMGynDSVQGvAXhAb83DLET8.jpg",
+    "runtime": 100
+  },
+  {
+    "id": 290098,
+    "title": "The Handmaiden",
+    "overview": "1930s Korea, in the period of Japanese occupation, a new girl, Sook-hee, is hired as a handmaiden to a Japanese heiress, Hideko, who lives a secluded life on a large countryside estate with her domineering Uncle Kouzuki. But the maid has a secret. She is a pickpocket recruited by a swindler posing as a Japanese Count to help him seduce the Lady to steal her fortune.",
+    "release_date": "2016-06-01",
+    "vote_average": 8.176,
+    "vote_count": 4461,
+    "genre_ids": [
+      53,
+      18,
+      10749
+    ],
+    "poster_path": "/dLlH4aNHdnmf62umnInL8xPlPzw.jpg",
+    "runtime": 145
+  },
+  {
+    "id": 5259,
+    "title": "The Band's Visit",
+    "overview": "A small Egyptian police band travels to Israel to play at the inaugural ceremony of an Arab arts center, only to find themselves stuck in the wrong town.",
+    "release_date": "2007-09-13",
+    "vote_average": 7.047,
+    "vote_count": 179,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/gZPUNtSWnn23Zd88wxL5xzqYYqy.jpg",
+    "runtime": 83
+  },
+  {
+    "id": 501929,
+    "title": "The Mitchells vs. the Machines",
+    "overview": "A quirky, dysfunctional family's road trip is upended when they find themselves in the middle of the robot apocalypse and suddenly become humanity's unlikeliest last hope.",
+    "release_date": "2021-04-22",
+    "vote_average": 7.83,
+    "vote_count": 3474,
+    "genre_ids": [
+      16,
+      12,
+      35
+    ],
+    "poster_path": "/mI2Di7HmskQQ34kz0iau6J1vr70.jpg",
+    "runtime": 110
+  },
+  {
+    "id": 1891,
+    "title": "The Empire Strikes Back",
+    "overview": "The epic saga continues as Luke Skywalker, in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from aging master Yoda. But Darth Vader is more determined than ever to capture Luke. Meanwhile, rebel leader Princess Leia, cocky Han Solo, Chewbacca, and droids C-3PO and R2-D2 are thrown into various stages of capture, betrayal and despair.",
+    "release_date": "1980-05-20",
+    "vote_average": 8.393,
+    "vote_count": 18769,
+    "genre_ids": [
+      12,
+      28,
+      878
+    ],
+    "poster_path": "/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg",
+    "runtime": 124
+  },
+  {
+    "id": 335,
+    "title": "Once Upon a Time in the West",
+    "overview": "As the railroad builders advance unstoppably through the Arizona desert on their way to the sea, Jill arrives in the small town of Flagstone with the intention of starting a new life.",
+    "release_date": "1968-12-21",
+    "vote_average": 8.268,
+    "vote_count": 5025,
+    "genre_ids": [
+      18,
+      37
+    ],
+    "poster_path": "/qbYgqOczabWNn2XKwgMtVrntD6P.jpg",
+    "runtime": 166
+  },
+  {
+    "id": 4593,
+    "title": "The Discreet Charm of the Bourgeoisie",
+    "overview": "In Luis Buñuel’s deliciously satiric masterpiece, an upper-class sextet sits down to dinner but never eats, their attempts continually thwarted by a vaudevillian mixture of events both actual and imagined.",
+    "release_date": "1972-09-15",
+    "vote_average": 7.5,
+    "vote_count": 934,
+    "genre_ids": [
+      35
+    ],
+    "poster_path": "/zN4ILX2x64PvT2jIOAHXxCOi5WA.jpg",
+    "runtime": 101
+  },
+  {
+    "id": 451945,
+    "title": "BPM (Beats per Minute)",
+    "overview": "Paris, in the early 1990s: a group of young activists is desperately tied to finding the cure against an unknown lethal disease. They target the pharmaceutical labs that are retaining potential cures, and multiply direct actions, with the hope of saving their lives as well as the ones of future generations.",
+    "release_date": "2017-08-23",
+    "vote_average": 7.693,
+    "vote_count": 1402,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/azLtGx5ZhdTSP2b4oNLWtiE51OW.jpg",
+    "runtime": 143
+  },
+  {
+    "id": 45269,
+    "title": "The King's Speech",
+    "overview": "The King's Speech tells the story of the man who became King George VI, the father of Queen Elizabeth II. After his brother abdicates, George ('Bertie') reluctantly assumes the throne. Plagued by a dreaded stutter and considered unfit to be king, Bertie engages the help of an unorthodox speech therapist named Lionel Logue. Through a set of unexpected techniques, and as a result of an unlikely friendship, Bertie is able to find his voice and boldly lead the country into war.",
+    "release_date": "2010-11-26",
+    "vote_average": 7.732,
+    "vote_count": 9480,
+    "genre_ids": [
+      18,
+      36
+    ],
+    "poster_path": "/pVNKXVQFukBaCz6ML7GH3kiPlQP.jpg",
+    "runtime": 118
+  },
+  {
+    "id": 68,
+    "title": "Brazil",
+    "overview": "Low-level bureaucrat Sam Lowry escapes the monotony of his day-to-day life through a recurring daydream of himself as a virtuous hero saving a beautiful damsel. Investigating a case that led to the wrongful arrest and eventual death of an innocent man instead of wanted terrorist Harry Tuttle, he meets the woman from his daydream, and in trying to help her gets caught in a web of mistaken identities, mindless bureaucracy and lies.",
+    "release_date": "1985-02-20",
+    "vote_average": 7.657,
+    "vote_count": 3806,
+    "genre_ids": [
+      35,
+      878
+    ],
+    "poster_path": "/aewan59WcFThBimkTVVoNf2o5Vb.jpg",
+    "runtime": 143
+  },
+  {
+    "id": 11235,
+    "title": "Local Hero",
+    "overview": "An American oil company sends a man to Scotland to buy up an entire village where they want to build a refinery. But things don't go as expected.",
+    "release_date": "1983-02-17",
+    "vote_average": 6.8,
+    "vote_count": 414,
+    "genre_ids": [
+      35,
+      18
+    ],
+    "poster_path": "/jqxD0H9a1rg5bXftsm6gsNOjt4n.jpg",
+    "runtime": 111
+  },
+  {
+    "id": 11657,
+    "title": "Le Cercle Rouge",
+    "overview": "When French criminal Corey gets released from prison, he resolves to never return. He is quickly pulled back into the underworld, however, after a chance encounter with escaped murderer Vogel. Along with former policeman and current alcoholic Jansen, they plot an intricate jewel heist. All the while, quirky Police Commissioner Mattei, who was the one to lose custody of Vogel, is determined to find him.",
+    "release_date": "1970-10-19",
+    "vote_average": 7.607,
+    "vote_count": 745,
+    "genre_ids": [
+      80,
+      18,
+      53
+    ],
+    "poster_path": "/w56La43IJnGpLepgqfGCAZsbQPp.jpg",
+    "runtime": 140
+  },
+  {
+    "id": 680,
+    "title": "Pulp Fiction",
+    "overview": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+    "release_date": "1994-09-10",
+    "vote_average": 8.48,
+    "vote_count": 30758,
+    "genre_ids": [
+      53,
+      80,
+      35
+    ],
+    "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+    "runtime": 154
+  },
+  {
+    "id": 1051,
+    "title": "The French Connection",
+    "overview": "Tough narcotics detective 'Popeye' Doyle is in hot pursuit of a suave French drug dealer who may be the key to a huge heroin-smuggling operation.",
+    "release_date": "1971-10-09",
+    "vote_average": 7.493,
+    "vote_count": 2195,
+    "genre_ids": [
+      28,
+      80,
+      53
+    ],
+    "poster_path": "/pH4saPwMjhnVGwmSH6RkMaHrt3s.jpg",
+    "runtime": 104
+  },
+  {
+    "id": 838240,
+    "title": "Robot Dreams",
+    "overview": "A lonely dog's friendship with his robot companion takes a sad turn when an unexpected malfunction forces him to abandon Robot at the beach. Will Dog ever meet Robot again?",
+    "release_date": "2023-12-06",
+    "vote_average": 7.942,
+    "vote_count": 835,
+    "genre_ids": [
+      16,
+      18,
+      35,
+      878
+    ],
+    "poster_path": "/ds402Qq09ybgBcXKiQNTZfzsP5o.jpg",
+    "runtime": 102
+  },
+  {
+    "id": 679,
+    "title": "Aliens",
+    "overview": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
+    "release_date": "1986-07-18",
+    "vote_average": 7.966,
+    "vote_count": 11115,
+    "genre_ids": [
+      28,
+      53,
+      878
+    ],
+    "poster_path": "/r1x5JGpyqZU8PYhbs4UcrO1Xb6x.jpg",
+    "runtime": 137
+  },
+  {
+    "id": 10227,
+    "title": "PlayTime",
+    "overview": "Clumsy Monsieur Hulot finds himself perplexed by the intimidating complexity of a gadget-filled Paris. He attempts to meet with a business contact but soon becomes lost. His roundabout journey parallels that of an American tourist, and as they weave through the inventive urban environment, they intermittently meet, developing an interest in one another. They eventually get together at a chaotic restaurant, along with several other quirky characters.",
+    "release_date": "1967-12-13",
+    "vote_average": 7.666,
+    "vote_count": 693,
+    "genre_ids": [
+      35
+    ],
+    "poster_path": "/kQOrS0DLUXYsqPMedM2G6NJcJBq.jpg",
+    "runtime": 115
+  },
+  {
+    "id": 10161,
+    "title": "My Left Foot: The Story of Christy Brown",
+    "overview": "No one expects much from Christy Brown, a boy with cerebral palsy born into a working-class Irish family. Though Christy is a spastic quadriplegic and essentially paralyzed, a miraculous event occurs when, at the age of 5, he demonstrates control of his left foot by using chalk to scrawl a word on the floor. With the help of his steely mother — and no shortage of grit and determination — Christy overcomes his infirmity to become a painter, poet and author.",
+    "release_date": "1989-04-07",
+    "vote_average": 7.536,
+    "vote_count": 1056,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/GRAAl0bMQFoFIjV3aunc5jsM5u.jpg",
+    "runtime": 103
+  },
+  {
+    "id": 12498,
+    "title": "Sling Blade",
+    "overview": "Karl Childers, a mentally disabled man, has been in the custody of the state mental hospital since the age of 12 for killing his mother and her lover. Although thoroughly institutionalized, he is deemed fit to be released into the outside world.",
+    "release_date": "1996-08-30",
+    "vote_average": 7.539,
+    "vote_count": 885,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/rioWUWXPFNSjwm9NO2aau9x0wlP.jpg",
+    "runtime": 135
+  },
+  {
+    "id": 428493,
+    "title": "God's Own Country",
+    "overview": "A young farmer in rural Yorkshire numbs his daily frustrations with binge drinking and casual sex, until the arrival of a Romanian migrant worker.",
+    "release_date": "2017-08-31",
+    "vote_average": 7.727,
+    "vote_count": 1008,
+    "genre_ids": [
+      10749,
+      18
+    ],
+    "poster_path": "/hKJz8Moim43P1f1kGrM9Gh0c0rf.jpg",
+    "runtime": 104
+  },
+  {
+    "id": 38,
+    "title": "Eternal Sunshine of the Spotless Mind",
+    "overview": "Joel Barish, heartbroken that his girlfriend underwent a procedure to erase him from her memory, decides to do the same. However, as he watches his memories of her fade away, he realises that he still loves her, and may be too late to correct his mistake.",
+    "release_date": "2004-03-19",
+    "vote_average": 8.1,
+    "vote_count": 16659,
+    "genre_ids": [
+      878,
+      18,
+      10749
+    ],
+    "poster_path": "/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
+    "runtime": 108
+  },
+  {
+    "id": 528888,
+    "title": "Dolemite Is My Name",
+    "overview": "The story of Rudy Ray Moore, who created the iconic big screen pimp character Dolemite in the 1970s.",
+    "release_date": "2019-10-04",
+    "vote_average": 6.962,
+    "vote_count": 1316,
+    "genre_ids": [
+      18,
+      35,
+      36
+    ],
+    "poster_path": "/uoAqJg7ZSmftnBGOkupU1ySZQU0.jpg",
+    "runtime": 118
+  },
+  {
+    "id": 443463,
+    "title": "Leave No Trace",
+    "overview": "A father and daughter live a perfect but mysterious existence in Forest Park, a beautiful nature reserve near Portland, Oregon, rarely making contact with the world. But when a small mistake tips them off to authorities, they are sent on an increasingly erratic journey in search of a place to call their own.",
+    "release_date": "2018-06-29",
+    "vote_average": 6.802,
+    "vote_count": 1412,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/sygnLx3sZV5P8M2dyaGRegHdEL1.jpg",
+    "runtime": 109
+  },
+  {
+    "id": 510,
+    "title": "One Flew Over the Cuckoo's Nest",
+    "overview": "A petty criminal fakes insanity to serve his sentence in a mental ward rather than prison. He soon finds himself as a leader to the other patients—and an enemy to the cruel, domineering nurse who runs the ward.",
+    "release_date": "1975-11-19",
+    "vote_average": 8.406,
+    "vote_count": 11694,
+    "genre_ids": [
+      18
+    ],
+    "poster_path": "/kjWsMh72V6d8KRLV4EOoSJLT1H7.jpg",
+    "runtime": 135
+  }
+]

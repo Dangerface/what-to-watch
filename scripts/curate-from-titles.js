@@ -2,7 +2,7 @@
 // Eksempel: node scripts/curate-from-titles.js data/award-winners-titles.txt award-winners
 
 const fs = require('fs');
-const TMDB_API_KEY = 'DIN_NØGLE_HER';
+const TMDB_API_KEY = '1694c84ac285f5ee2843343e272e83b6';
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 function parseLine(line) {
