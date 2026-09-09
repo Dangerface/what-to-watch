@@ -1,18 +1,21 @@
 import { create } from 'zustand';
 
 export type SourceType = 'streamingOnly' | 'includeRental';
-export type Vibe = 'classics' | 'cult' | 'mustWatch' |'hiddenGem' | 'awardWinners' | 'trending';
+export type Vibe = 'classics' | 'mustWatch' | 'cult' | 'hiddenGem' | 'awardWinners' | 'trending';
 
 type SessionState = {
   sourceType: SourceType | null;
   providerIds: number[];
-  maxRuntimeMinutes: number | null; // null = ingen grænse (slider helt til højre)
+  showProvidersThisFlow: boolean;
+  maxRuntimeMinutes: number | null;
   familyFriendly: boolean;
   genreIds: number[];
   vibes: Vibe[];
 
   setSourceType: (type: SourceType) => void;
   toggleProvider: (id: number) => void;
+  setProviderIds: (ids: number[]) => void;
+  setShowProvidersThisFlow: (value: boolean) => void;
   setMaxRuntime: (minutes: number | null) => void;
   setFamilyFriendly: (value: boolean) => void;
   toggleGenre: (id: number) => void;
@@ -23,7 +26,8 @@ type SessionState = {
 const initialState = {
   sourceType: null as SourceType | null,
   providerIds: [] as number[],
-  maxRuntimeMinutes: 120, // default 2 timer
+  showProvidersThisFlow: false,
+  maxRuntimeMinutes: 120,
   familyFriendly: false,
   genreIds: [] as number[],
   vibes: [] as Vibe[],
@@ -40,6 +44,9 @@ export const useSessionStore = create<SessionState>()((set) => ({
         ? state.providerIds.filter((p) => p !== id)
         : [...state.providerIds, id],
     })),
+
+  setProviderIds: (ids) => set({ providerIds: ids }),
+  setShowProvidersThisFlow: (value) => set({ showProvidersThisFlow: value }),
 
   setMaxRuntime: (minutes) => set({ maxRuntimeMinutes: minutes }),
   setFamilyFriendly: (value) => set({ familyFriendly: value }),

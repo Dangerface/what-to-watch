@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getStepNumber, getTotalSteps } from '../lib/flow';
 import { useSessionStore, Vibe } from '../store/session';
@@ -14,9 +15,9 @@ const VIBE_OPTIONS: { value: Vibe; label: string }[] = [
 ];
 
 export default function VibeScreen() {
-  const { sourceType, vibes, toggleVibe } = useSessionStore();
-  const totalSteps = getTotalSteps(sourceType);
-  const step = getStepNumber('vibe', sourceType);
+  const { showProvidersThisFlow, vibes, toggleVibe } = useSessionStore();
+  const totalSteps = getTotalSteps(showProvidersThisFlow);
+  const step = getStepNumber('vibe', showProvidersThisFlow);
 
   return (
     <View style={styles.container}>
@@ -53,6 +54,6 @@ const styles = StyleSheet.create({
   chipSelected: { backgroundColor: '#1A1A1A' },
   chipText: { fontSize: 16, color: '#1A1A1A', fontWeight: '600' },
   chipTextSelected: { color: '#E8B923' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginVertical: 20 },
+  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginTop: 20, marginBottom: TAB_BAR_CLEARANCE },
   nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
 });

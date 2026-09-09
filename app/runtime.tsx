@@ -22,9 +22,9 @@ function indexForMinutes(minutes: number | null): number {
 }
 
 export default function RuntimeScreen() {
-  const { sourceType, maxRuntimeMinutes, setMaxRuntime, familyFriendly, setFamilyFriendly } = useSessionStore();
-  const totalSteps = getTotalSteps(sourceType);
-  const step = getStepNumber('runtime', sourceType);
+  const { showProvidersThisFlow, maxRuntimeMinutes, setMaxRuntime, familyFriendly, setFamilyFriendly } = useSessionStore();
+  const totalSteps = getTotalSteps(showProvidersThisFlow);
+  const step = getStepNumber('runtime', showProvidersThisFlow); // eller 'genre' / 'vibe'
   const currentIndex = indexForMinutes(maxRuntimeMinutes);
 
   const handleChange = (index: number) => {

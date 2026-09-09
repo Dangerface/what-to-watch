@@ -1,12 +1,16 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { RankedMovie, rankMovies } from '../lib/scoring';
+import { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { MovieCard } from '../components/MovieCard';
+import { ResultsFeed } from '../lib/resultsFeed';
+import { getMovieJailIds, getSoftJailIds } from '../lib/storage';
 import { DiscoverFilters, Movie } from '../lib/tmdb';
-import { getMoviesForNoVibe, getMoviesForVibe } from '../lib/vibes';
+import { useQuickSwipeTracking } from '../lib/useQuickSwipeTracking';
 import { useSessionStore } from '../store/session';
 
 const { width } = Dimensions.get('window');
+const BATCH_SIZE = 12;
+const { onViewableItemsChanged, viewabilityConfig } = useQuickSwipeTracking();
 
 function BackButton() {
   return (
@@ -18,24 +22,26 @@ function BackButton() {
 
 export default function ResultsScreen() {
   const { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType, vibes } = useSessionStore();
-  const [ranked, setRanked] = useState<RankedMovie[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(false);
+  const [exhausted, setExhausted] = useState(false);
+  const feedRef = useRef<ResultsFeed | null>(null);
 
   useEffect(() => {
     const filters: DiscoverFilters = { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType };
 
     (async () => {
       try {
-        let movies: Movie[];
-        if (vibes.length === 0) {
-          movies = await getMoviesForNoVibe(filters);
-        } else {
-          const perVibe = await Promise.all(vibes.map((v) => getMoviesForVibe(v, filters)));
-          const seen = new Set<number>();
-          movies = perVibe.flat().filter((m) => (seen.has(m.id) ? false : (seen.add(m.id), true)));
-        }
-        setRanked(rankMovies(movies, genreIds));
+        const [jailedIds, softJailedIds] = await Promise.all([getMovieJailIds(), getSoftJailIds()]);
+        const excludedIds = new Set([...jailedIds, ...softJailedIds]);
+        const feed = new ResultsFeed(vibes, filters, excludedIds);
+        feedRef.current = feed;
+
+        const batch = await feed.getNextBatch(BATCH_SIZE);
+        setMovies(batch);
+        if (batch.length === 0) setExhausted(true);
       } catch {
         setError(true);
       } finally {
@@ -43,6 +49,20 @@ export default function ResultsScreen() {
       }
     })();
   }, []);
+
+  const handleEndReached = async () => {
+    if (loadingMore || !feedRef.current || exhausted) return;
+    setLoadingMore(true);
+    try {
+      const batch = await feedRef.current.getNextBatch(BATCH_SIZE);
+      if (batch.length === 0) setExhausted(true);
+      else setMovies((prev) => [...prev, ...batch]);
+    } catch {
+      // stille fejl — brugeren har stadig film at swipe imellem
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -65,7 +85,7 @@ export default function ResultsScreen() {
     );
   }
 
-  if (ranked.length === 0) {
+  if (movies.length === 0) {
     return (
       <View style={styles.center}>
         <BackButton />
@@ -83,30 +103,34 @@ export default function ResultsScreen() {
     <View style={styles.root}>
       <BackButton />
       <FlatList
-        data={ranked}
-        keyExtractor={(item) => String(item.movie.id)}
+        data={movies}
+        keyExtractor={(item) => String(item.id)}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        onEndReachedThreshold={0.5}
+        onEndReached={handleEndReached}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
         renderItem={({ item }) => (
-          <View style={[styles.card, { width }]}>
-            {item.movie.poster_path && (
-              <Image source={{ uri: `https://image.tmdb.org/t/p/w500${item.movie.poster_path}` }} style={styles.poster} />
-            )}
-            <Text style={styles.title}>{item.movie.title}</Text>
-            <Text style={styles.meta}>{item.movie.release_date?.slice(0, 4)} · ⭐ {item.movie.vote_average.toFixed(1)}</Text>
-            <Text style={styles.overview} numberOfLines={5}>{item.movie.overview}</Text>
-          </View>
+          <MovieCard
+            movie={item}
+            width={width}
+            sourceType={sourceType}
+            onJailed={(id) => setMovies((prev) => prev.filter((m) => m.id !== id))}
+          />
         )}
         ListFooterComponent={
-          <View style={[styles.card, { width, justifyContent: 'center' }]}>
-            <Text style={styles.endOfListText}>
-              Ikke flere film på denne søgning. Prøv en bredere søgning for flere forslag.
-            </Text>
-            <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
-              <Text style={styles.restartButtonText}>Forfra</Text>
-            </Pressable>
-          </View>
+          exhausted ? (
+            <View style={[styles.card, { width, justifyContent: 'center' }]}>
+              <Text style={styles.endOfListText}>
+                Ikke flere film på denne søgning. Prøv en bredere søgning for flere forslag.
+              </Text>
+              <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
+                <Text style={styles.restartButtonText}>Forfra</Text>
+              </Pressable>
+            </View>
+          ) : null
         }
       />
     </View>

@@ -1,19 +1,20 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getStepNumber, getTotalSteps } from '../lib/flow';
 import { fetchGenres, Genre } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
 
 export default function GenreScreen() {
-  const { sourceType, genreIds, toggleGenre } = useSessionStore();
+  const { showProvidersThisFlow, genreIds, toggleGenre } = useSessionStore();
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const totalSteps = getTotalSteps(sourceType);
-  const step = getStepNumber('genre', sourceType);
+  const totalSteps = getTotalSteps(showProvidersThisFlow);
+  const step = getStepNumber('genre', showProvidersThisFlow);
 
   useEffect(() => {
     fetchGenres()
@@ -57,6 +58,6 @@ const styles = StyleSheet.create({
   chipSelected: { backgroundColor: '#1A1A1A' },
   chipText: { fontSize: 15, color: '#1A1A1A', fontWeight: '600' },
   chipTextSelected: { color: '#E8B923' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginVertical: 20 },
+  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginTop: 20, marginBottom: TAB_BAR_CLEARANCE },
   nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
 });

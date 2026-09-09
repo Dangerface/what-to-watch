@@ -39,11 +39,20 @@
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-image",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4e3b7ad2-ac4a-4abc-8601-80270cb69ec6"
+      }
     }
   }
 }
