@@ -1,6 +1,7 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View, ViewToken } from 'react-native';
+import { LoopingLoader } from '../components/LoopingLoader';
 import { MovieDetailCard } from '../components/MovieDetailCard';
 import { ResultsFeed } from '../lib/resultsFeed';
 import { getMovieJailIds, getSoftJailIds } from '../lib/storage';
@@ -10,7 +11,8 @@ import { useSessionStore } from '../store/session';
 
 const { width } = Dimensions.get('window');
 const BATCH_SIZE = 12;
-const { onViewableItemsChanged, viewabilityConfig } = useQuickSwipeTracking();
+const PREFETCH_LOOKAHEAD = 3;
+const LOADER_MIN_DISPLAY_MS = 1000;
 
 function BackButton() {
   return (
@@ -21,62 +23,111 @@ function BackButton() {
 }
 
 export default function ResultsScreen() {
-  const { searchId } = useLocalSearchParams<{ searchId?: string }>();
   const { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType, vibes } = useSessionStore();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(false);
   const [exhausted, setExhausted] = useState(false);
+
   const feedRef = useRef<ResultsFeed | null>(null);
+  const moviesRef = useRef<Movie[]>([]);
+  const exhaustedRef = useRef(false);
+  const pendingFetchRef = useRef<Promise<void> | null>(null);
+
+  const { onViewableItemsChanged: quickSwipeOnViewableItemsChanged, viewabilityConfig: quickSwipeViewabilityConfig } =
+    useQuickSwipeTracking();
 
   useEffect(() => {
-    setMovies([]);
-    setLoading(true);
-    setExhausted(false);
-    setError(false);
+    moviesRef.current = movies;
+  }, [movies]);
 
+  // Én fælles hentnings-funktion — starter en ny hentning, eller "hopper med på" en der allerede
+  // kører (fx startet af prefetch), så vi aldrig sender to samtidige forespørgsler af sted.
+  function startOrJoinFetch(): Promise<void> {
+    if (pendingFetchRef.current) return pendingFetchRef.current;
+    if (exhaustedRef.current || !feedRef.current) return Promise.resolve();
+
+    const promise = feedRef.current
+      .getNextBatch(BATCH_SIZE)
+      .then((batch) => {
+        if (batch.length === 0) {
+          exhaustedRef.current = true;
+          setExhausted(true);
+        } else {
+          setMovies((prev) => [...prev, ...batch]);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        pendingFetchRef.current = null;
+      });
+
+    pendingFetchRef.current = promise;
+    return promise;
+  }
+
+  // Stille baggrunds-hentning — ingen loader, ingen ventetid for brugeren.
+  const triggerPrefetch = () => {
+    if (!exhaustedRef.current) startOrJoinFetch();
+  };
+
+  // Brugeren har rent faktisk nået enden — vis loaderen, garanter mindst én fuld cyklus.
+  const handleReachedEnd = async () => {
+    if (exhaustedRef.current) return;
+    setLoadingMore(true);
+    const startTime = Date.now();
+
+    await startOrJoinFetch();
+
+    const elapsed = Date.now() - startTime;
+    if (elapsed < LOADER_MIN_DISPLAY_MS) {
+      await new Promise((resolve) => setTimeout(resolve, LOADER_MIN_DISPLAY_MS - elapsed));
+    }
+    setLoadingMore(false);
+  };
+
+  const prefetchOnViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    const last = viewableItems[viewableItems.length - 1];
+    if (!last || last.index == null) return;
+    const remaining = moviesRef.current.length - 1 - last.index;
+    if (remaining <= PREFETCH_LOOKAHEAD) triggerPrefetch();
+  }).current;
+
+  const prefetchViewabilityConfig = useRef({ itemVisiblePercentThreshold: 90 }).current;
+
+  const viewabilityConfigCallbackPairs = useRef([
+    { viewabilityConfig: quickSwipeViewabilityConfig, onViewableItemsChanged: quickSwipeOnViewableItemsChanged },
+    { viewabilityConfig: prefetchViewabilityConfig, onViewableItemsChanged: prefetchOnViewableItemsChanged },
+  ]).current;
+
+  useEffect(() => {
     const filters: DiscoverFilters = { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType };
 
     (async () => {
       try {
-        const [jailedIds, softJailedIds] = await Promise.all([getMovieJailIds(), getSoftJailIds()]);
+        const jailedIds = await getMovieJailIds();
+        const softJailedIds = await getSoftJailIds();
         const excludedIds = new Set([...jailedIds, ...softJailedIds]);
         const feed = new ResultsFeed(vibes, filters, excludedIds);
         feedRef.current = feed;
 
         const batch = await feed.getNextBatch(BATCH_SIZE);
         setMovies(batch);
-        if (batch.length === 0) setExhausted(true);
+        if (batch.length === 0) {
+          exhaustedRef.current = true;
+          setExhausted(true);
+        }
       } catch {
         setError(true);
       } finally {
         setLoading(false);
       }
     })();
-  }, [searchId]);
-
-  const handleEndReached = async () => {
-    if (loadingMore || !feedRef.current || exhausted) return;
-    setLoadingMore(true);
-    try {
-      const batch = await feedRef.current.getNextBatch(BATCH_SIZE);
-      if (batch.length === 0) setExhausted(true);
-      else setMovies((prev) => [...prev, ...batch]);
-    } catch {
-      // stille fejl — brugeren har stadig film at swipe imellem
-    } finally {
-      setLoadingMore(false);
-    }
-  };
+  }, []);
 
   if (loading) {
-    return (
-      <View style={styles.center}>
-        <BackButton />
-        <ActivityIndicator size="large" color="#1A1A1A" />
-      </View>
-    );
+    return <View style={styles.center}><BackButton /><ActivityIndicator size="large" color="#1A1A1A" /></View>;
   }
 
   if (error) {
@@ -95,9 +146,7 @@ export default function ResultsScreen() {
     return (
       <View style={styles.center}>
         <BackButton />
-        <Text style={styles.errorText}>
-          Der er ikke flere resultater på din søgning. Hvis du ønsker flere forslag, så prøv at gøre din søgning bredere.
-        </Text>
+        <Text style={styles.errorText}>We can't find any more movies. Try another search</Text>
         <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
           <Text style={styles.restartButtonText}>Forfra</Text>
         </Pressable>
@@ -114,19 +163,20 @@ export default function ResultsScreen() {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onEndReachedThreshold={0.5}
-        onEndReached={handleEndReached}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
+        onEndReachedThreshold={0.1}
+        onEndReached={handleReachedEnd}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs}
         renderItem={({ item }) => (
-  <MovieDetailCard movie={item} width={width} onJailed={() => setMovies((prev) => prev.filter((m) => m.id !== item.id))} />
-)}
+          <MovieDetailCard movie={item} width={width} onJailed={() => setMovies((prev) => prev.filter((m) => m.id !== item.id))} />
+        )}
         ListFooterComponent={
-          exhausted ? (
+          loadingMore ? (
+            <View style={[styles.card, { width, justifyContent: 'center', alignItems: 'center' }]}>
+              <LoopingLoader />
+            </View>
+          ) : exhausted ? (
             <View style={[styles.card, { width, justifyContent: 'center' }]}>
-              <Text style={styles.endOfListText}>
-                Ikke flere film på denne søgning. Prøv en bredere søgning for flere forslag.
-              </Text>
+              <Text style={styles.endOfListText}>We can't find any more movies. Try another search</Text>
               <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
                 <Text style={styles.restartButtonText}>Forfra</Text>
               </Pressable>
@@ -146,10 +196,6 @@ const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
   errorText: { fontSize: 16, textAlign: 'center', marginBottom: 20 },
   endOfListText: { fontSize: 15, textAlign: 'center', marginBottom: 20, paddingHorizontal: 20, color: '#1A1A1A' },
-  poster: { width: 220, height: 330, borderRadius: 16, marginBottom: 20 },
-  title: { fontFamily: 'Gabarito-Bold', fontSize: 26, textAlign: 'center', marginBottom: 8 },
-  meta: { fontSize: 16, marginBottom: 16 },
-  overview: { fontSize: 15, textAlign: 'center', lineHeight: 22, paddingHorizontal: 12 },
   restartButton: { backgroundColor: '#1A1A1A', paddingVertical: 16, paddingHorizontal: 40, borderRadius: 40 },
   restartButtonText: { color: '#FFFFFF', fontSize: 18, fontWeight: '600' },
 });

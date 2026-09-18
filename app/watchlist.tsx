@@ -40,8 +40,9 @@ function WatchLaterRow({
     <View style={styles.rowOuter}>
       <View style={styles.rowFlex}>
         <MovieListRow
-          movie={entry.movie}
-          extra={
+            movie={entry.movie}
+            source="watchlist"
+            extra={
             <>
               <View style={styles.providerRow}>
                 {providers.slice(0, 5).map(

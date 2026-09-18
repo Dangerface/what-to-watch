@@ -22,6 +22,7 @@ function WatchedRow({ entry, editMode, onRemove }: { entry: WatchedEntry; editMo
       <View style={styles.rowFlex}>
         <MovieListRow
           movie={entry.movie}
+          source="watched"
           extra={<Text style={styles.ratingText}>{entry.rating != null ? `${(entry.rating / 2).toFixed(1).replace('.0', '')}/5 ⭐` : 'Ikke bedømt'}</Text>}
         />
       </View>

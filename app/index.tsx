@@ -6,10 +6,14 @@ import StartupLoader from '../components/SplashScreen';
 import { checkStartupConnectivity, StartupCheckResult } from '../lib/startup';
 import { useUIStore } from '../store/ui';
 
-type ScreenState = 'loading' | StartupCheckResult;
+type ScreenState = 'loading' | 'success' | StartupCheckResult;
 
 export default function IndexScreen() {
-  const [state, setState] = useState<ScreenState>('loading');
+  const hasStarted = useUIStore((s) => s.hasStarted);
+  const setHasStarted = useUIStore((s) => s.setHasStarted);
+  
+  // If already started, default directly to success/ready, otherwise 'loading'
+  const [state, setState] = useState<ScreenState>(hasStarted ? 'success' : 'loading');
   const setTabBarHidden = useUIStore((s) => s.setTabBarHidden);
 
   useEffect(() => {
@@ -19,6 +23,7 @@ export default function IndexScreen() {
   const runChecks = async () => {
     const result = await checkStartupConnectivity();
     setState(result);
+    setHasStarted(true); // Mark startup as done so it never triggers again this session
   };
 
   const handleLoaderFinish = () => {

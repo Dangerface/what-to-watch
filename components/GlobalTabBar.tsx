@@ -13,18 +13,18 @@ const TABS: { key: TabKey; path: string; label: string; icon: keyof typeof Ionic
   { key: 'index', path: '/', label: 'Find Movie', icon: 'home' },
   { key: 'destiny', path: '/destiny', label: 'Skæbne', icon: 'planet' },
   { key: 'lists', path: '/lists', label: 'Lister', icon: 'list' },
-  { key: 'search', path: '/search', label: 'Søg', icon: 'search', capsuleOffsetX: 3 },
+  { key: 'search', path: '/search', label: 'Søg', icon: 'search' },
 ];
 
 const ROUTE_TO_TAB: Record<string, TabKey> = {
   '/': 'index',
-  '/source-type': 'index',
   '/destiny': 'destiny',
   '/lists': 'lists',
   '/watchlist': 'lists',
   '/movie-jail': 'lists',
   '/watched': 'lists',
   '/search': 'search',
+  '/source-type': 'index',
   '/providers': 'index',
   '/runtime': 'index',
   '/genre': 'index',
@@ -40,7 +40,6 @@ export function GlobalTabBar() {
   const mappedTab = ROUTE_TO_TAB[pathname];
   const lastActiveTab = useUIStore((state) => state.lastActiveTab) as TabKey;
   const setLastActiveTab = useUIStore((state) => state.setLastActiveTab);
-  const setListsTabPosition = useUIStore((state) => state.setListsTabPosition);
 
   useEffect(() => {
     if (mappedTab) setLastActiveTab(mappedTab);
@@ -52,13 +51,14 @@ export function GlobalTabBar() {
   const [barWidth, setBarWidth] = useState(0);
   const capsuleX = useRef(new Animated.Value(0)).current;
   const hasPositionedRef = useRef(false);
-  const listsItemRef = useRef<View>(null);
   const segmentWidth = barWidth / TABS.length;
 
   useEffect(() => {
     if (barWidth === 0) return;
     const offset = TABS[activeIndex].capsuleOffsetX ?? 0;
-    const target = activeIndex * segmentWidth + CAPSULE_INSET + offset;
+    const capsuleWidth = segmentWidth - CAPSULE_INSET * 2;
+    const rawTarget = activeIndex * segmentWidth + CAPSULE_INSET + offset;
+    const target = Math.min(Math.max(rawTarget, CAPSULE_INSET), barWidth - capsuleWidth - CAPSULE_INSET);
 
     if (!hasPositionedRef.current) {
       capsuleX.setValue(target);
@@ -69,12 +69,7 @@ export function GlobalTabBar() {
     Animated.spring(capsuleX, { toValue: target, useNativeDriver: true, friction: 8, tension: 80 }).start();
   }, [activeIndex, barWidth]);
 
-  const handleLayout = (e: LayoutChangeEvent) => {
-    setBarWidth(e.nativeEvent.layout.width);
-    listsItemRef.current?.measureInWindow((x, y, width, height) => {
-      setListsTabPosition({ x: x + width / 2, y: y + height / 2 });
-    });
-  };
+  const handleLayout = (e: LayoutChangeEvent) => setBarWidth(e.nativeEvent.layout.width);
 
   const handlePress = (targetKey: TabKey, path: string) => {
     if (targetKey === activeKey) {
@@ -96,12 +91,7 @@ export function GlobalTabBar() {
         )}
 
         {TABS.map((tab) => (
-          <Pressable
-            key={tab.key}
-            ref={tab.key === 'lists' ? listsItemRef : undefined}
-            onPress={() => handlePress(tab.key, tab.path)}
-            style={styles.tabItem}
-          >
+          <Pressable key={tab.key} onPress={() => handlePress(tab.key, tab.path)} style={styles.tabItem}>
             <Ionicons name={tab.icon} size={22} color="#1A1A1A" />
             <Text style={styles.label}>{tab.label}</Text>
           </Pressable>
