@@ -39,7 +39,10 @@ export default function VibeScreen() {
         })}
       </ScrollView>
 
-      <Pressable style={styles.nextButton} onPress={() => router.push('/results')}>
+      <Pressable
+        style={styles.nextButton}
+        onPress={() => router.push({ pathname: '/results', params: { searchId: Date.now().toString() } })}
+      >
         <Text style={styles.nextButtonText}>Find movie</Text>
       </Pressable>
     </View>

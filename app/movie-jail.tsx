@@ -1,7 +1,20 @@
+import { Feather, Ionicons } from '@expo/vector-icons';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { getMovieJail, releaseFromMovieJail } from '../lib/storage';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { EditActionButton } from '../components/EditActionButton';
+import { EditToggleButton } from '../components/EditToggleButton';
+import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
+import { MovieListRow } from '../components/MovieListRow';
+import {
+  getMovieJail,
+  getSoftJail,
+  getSoftJailDurationDays,
+  getSoftJailRemainingMs,
+  releaseFromMovieJail,
+  releaseFromSoftJail,
+  SoftJailEntry,
+} from '../lib/storage';
 import { Movie } from '../lib/tmdb';
 
 function BackButton() {
@@ -12,31 +25,71 @@ function BackButton() {
   );
 }
 
-function JailRow({ movie, onRelease }: { movie: Movie; onRelease: (id: number) => void }) {
+function formatRemaining(ms: number): string {
+  const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+  if (days >= 1) return `${days} ${days === 1 ? 'dag' : 'dage'} tilbage`;
+  const hours = Math.floor(ms / (60 * 60 * 1000));
+  if (hours >= 1) return `${hours} ${hours === 1 ? 'time' : 'timer'} tilbage`;
+  const minutes = Math.max(1, Math.floor(ms / (60 * 1000)));
+  return `${minutes} min tilbage`;
+}
+
+function JailRow({ movie, editMode, onRelease }: { movie: Movie; editMode: boolean; onRelease: (id: number) => void }) {
   return (
-    <View style={styles.row}>
-      {movie.poster_path && (
-        <Image source={{ uri: `https://image.tmdb.org/t/p/w154${movie.poster_path}` }} style={styles.poster} />
-      )}
-      <View style={styles.rowInfo}>
-        <Text style={styles.rowTitle} numberOfLines={2}>{movie.title}</Text>
-        <Text style={styles.rowRating}>⭐ {movie.vote_average.toFixed(1)}</Text>
+    <View style={styles.rowOuter}>
+      <View style={styles.rowFlex}>
+        <MovieListRow movie={movie} />
       </View>
-      <Pressable style={styles.releaseButton} onPress={() => onRelease(movie.id)}>
-        <Text style={styles.releaseButtonText}>Frigiv</Text>
-      </Pressable>
+      <EditActionButton visible={editMode}>
+        <Pressable onPress={() => onRelease(movie.id)} hitSlop={8}>
+          <Ionicons name="close-circle" size={28} color="#1A1A1A" />
+        </Pressable>
+      </EditActionButton>
+    </View>
+  );
+}
+
+function SoftJailRow({
+  entry,
+  durationDays,
+  editMode,
+  onRelease,
+}: {
+  entry: SoftJailEntry;
+  durationDays: number;
+  editMode: boolean;
+  onRelease: (id: number) => void;
+}) {
+  const remaining = getSoftJailRemainingMs(entry.addedAt, durationDays);
+  return (
+    <View style={styles.rowOuter}>
+      <View style={styles.rowFlex}>
+        <MovieListRow movie={entry.movie} extra={<Text style={styles.remainingText}>{formatRemaining(remaining)}</Text>} />
+      </View>
+      <EditActionButton visible={editMode}>
+        <Pressable onPress={() => onRelease(entry.movie.id)} hitSlop={8}>
+          <Feather name="x" size={28} color="#1A1A1A" />
+        </Pressable>
+      </EditActionButton>
     </View>
   );
 }
 
 export default function MovieJailScreen() {
+  const [tab, setTab] = useState<'jail' | 'soft'>('jail');
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [softEntries, setSoftEntries] = useState<SoftJailEntry[]>([]);
+  const [durationDays, setDurationDays] = useState(30);
   const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
 
   const load = useCallback(() => {
-    getMovieJail()
-      .then((list) => setMovies([...list].reverse())) // senest fængslede øverst
-      .finally(() => setLoading(false));
+    Promise.all([getMovieJail(), getSoftJail(), getSoftJailDurationDays()]).then(([jail, soft, duration]) => {
+      setMovies([...jail].reverse());
+      setSoftEntries([...soft].reverse());
+      setDurationDays(duration);
+      setLoading(false);
+    });
   }, []);
 
   useFocusEffect(
@@ -45,32 +98,55 @@ export default function MovieJailScreen() {
     }, [load])
   );
 
-  const handleRelease = async (movieId: number) => {
+  const handleReleaseJail = async (movieId: number) => {
     await releaseFromMovieJail(movieId);
     setMovies((prev) => prev.filter((m) => m.id !== movieId));
   };
 
-  if (!loading && movies.length === 0) {
-    return (
-      <View style={styles.center}>
-        <BackButton />
-        <Text style={styles.emptyText}>Ingen film i Movie Jail.</Text>
-        <Text style={styles.emptySubtext}>Tryk "🚫 Aldrig igen" på en film for at udelukke den fra fremtidige søgninger.</Text>
-      </View>
-    );
-  }
+  const handleReleaseSoft = async (movieId: number) => {
+    await releaseFromSoftJail(movieId);
+    setSoftEntries((prev) => prev.filter((e) => e.movie.id !== movieId));
+  };
+
+  const activeList = tab === 'jail' ? movies : softEntries;
+  const isEmpty = !loading && activeList.length === 0;
 
   return (
     <View style={styles.root}>
       <BackButton />
-      <Text style={styles.header}>Movie Jail</Text>
-      <Text style={styles.subheader}>Disse film vises aldrig i søgeresultater</Text>
-      <FlatList
-        data={movies}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => <JailRow movie={item} onRelease={handleRelease} />}
-        contentContainerStyle={styles.listContent}
-      />
+      <EditToggleButton editMode={editMode} onPress={() => setEditMode((prev) => !prev)} />
+      <Text style={styles.title}>Movie Jail</Text>
+
+      <View style={styles.tabRow}>
+        <Pressable style={[styles.tabButton, tab === 'jail' && styles.tabButtonActive]} onPress={() => setTab('jail')}>
+          <Text style={[styles.tabText, tab === 'jail' && styles.tabTextActive]}>Movie Jail</Text>
+        </Pressable>
+        <Pressable style={[styles.tabButton, tab === 'soft' && styles.tabButtonActive]} onPress={() => setTab('soft')}>
+          <Text style={[styles.tabText, tab === 'soft' && styles.tabTextActive]}>Soft Jail</Text>
+        </Pressable>
+      </View>
+
+      {isEmpty ? (
+        <View style={styles.emptyWrap}>
+          <Text style={styles.emptyText}>{tab === 'jail' ? 'Ingen film i Movie Jail.' : 'Ingen film i Soft Jail.'}</Text>
+        </View>
+      ) : tab === 'jail' ? (
+        <FlatList
+          data={movies}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => <JailRow movie={item} editMode={editMode} onRelease={handleReleaseJail} />}
+          contentContainerStyle={styles.listContent}
+        />
+      ) : (
+        <FlatList
+          data={softEntries}
+          keyExtractor={(item) => String(item.movie.id)}
+          renderItem={({ item }) => (
+            <SoftJailRow entry={item} durationDays={durationDays} editMode={editMode} onRelease={handleReleaseSoft} />
+          )}
+          contentContainerStyle={styles.listContent}
+        />
+      )}
     </View>
   );
 }
@@ -79,24 +155,16 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#E8B923' },
   backButton: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
   backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  header: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', marginTop: 60, marginBottom: 4 },
-  subheader: { fontSize: 13, textAlign: 'center', color: '#1A1A1A', marginBottom: 16 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
-  emptyText: { fontFamily: 'Gabarito-Bold', fontSize: 20, textAlign: 'center', marginBottom: 8 },
-  emptySubtext: { fontSize: 15, textAlign: 'center', color: '#1A1A1A' },
-  listContent: { paddingHorizontal: 16, paddingBottom: 24 },
-  row: {
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 14,
-    padding: 8,
-    marginBottom: 8,
-    alignItems: 'center',
-  },
-  poster: { width: 58, height: 80, borderRadius: 8, marginRight: 12 },
-  rowInfo: { flex: 1, justifyContent: 'center', gap: 4 },
-  rowTitle: { fontSize: 15, fontWeight: '700', color: '#1A1A1A' },
-  rowRating: { fontSize: 13, color: '#1A1A1A' },
-  releaseButton: { borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 16, paddingVertical: 6, paddingHorizontal: 12 },
-  releaseButtonText: { fontSize: 12, fontWeight: '600', color: '#1A1A1A' },
+  title: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', paddingTop: 110, marginBottom: 16, paddingHorizontal: 16 },
+  tabRow: { flexDirection: 'row', paddingHorizontal: 16, gap: 10, marginBottom: 16 },
+  tabButton: { flex: 1, borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 18, paddingVertical: 10, alignItems: 'center' },
+  tabButtonActive: { backgroundColor: '#1A1A1A' },
+  tabText: { fontSize: 14, fontWeight: '600', color: '#1A1A1A' },
+  tabTextActive: { color: '#E8B923' },
+  emptyWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 },
+  emptyText: { fontSize: 15, textAlign: 'center', color: '#1A1A1A' },
+  listContent: { paddingHorizontal: 16, paddingBottom: TAB_BAR_CLEARANCE + 20 },
+  rowOuter: { flexDirection: 'row', alignItems: 'center' },
+  rowFlex: { flex: 1 },
+  remainingText: { fontSize: 12, color: '#7A5C00', fontWeight: '600' },
 });

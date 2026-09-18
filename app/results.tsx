@@ -1,7 +1,7 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { MovieCard } from '../components/MovieCard';
+import { MovieDetailCard } from '../components/MovieDetailCard';
 import { ResultsFeed } from '../lib/resultsFeed';
 import { getMovieJailIds, getSoftJailIds } from '../lib/storage';
 import { DiscoverFilters, Movie } from '../lib/tmdb';
@@ -21,6 +21,7 @@ function BackButton() {
 }
 
 export default function ResultsScreen() {
+  const { searchId } = useLocalSearchParams<{ searchId?: string }>();
   const { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType, vibes } = useSessionStore();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,11 @@ export default function ResultsScreen() {
   const feedRef = useRef<ResultsFeed | null>(null);
 
   useEffect(() => {
+    setMovies([]);
+    setLoading(true);
+    setExhausted(false);
+    setError(false);
+
     const filters: DiscoverFilters = { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType };
 
     (async () => {
@@ -48,7 +54,7 @@ export default function ResultsScreen() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [searchId]);
 
   const handleEndReached = async () => {
     if (loadingMore || !feedRef.current || exhausted) return;
@@ -113,13 +119,8 @@ export default function ResultsScreen() {
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
         renderItem={({ item }) => (
-          <MovieCard
-            movie={item}
-            width={width}
-            sourceType={sourceType}
-            onJailed={(id) => setMovies((prev) => prev.filter((m) => m.id !== id))}
-          />
-        )}
+  <MovieDetailCard movie={item} width={width} onJailed={() => setMovies((prev) => prev.filter((m) => m.id !== item.id))} />
+)}
         ListFooterComponent={
           exhausted ? (
             <View style={[styles.card, { width, justifyContent: 'center' }]}>

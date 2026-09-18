@@ -5,7 +5,9 @@ export default function ListsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Lister</Text>
-
+      <Pressable style={styles.optionButton} onPress={() => router.push('/watched')}>
+        <Text style={styles.optionText}>Watched</Text>
+      </Pressable>
       <Pressable style={styles.optionButton} onPress={() => router.push('/watchlist')}>
         <Text style={styles.optionText}>Watch List</Text>
       </Pressable>

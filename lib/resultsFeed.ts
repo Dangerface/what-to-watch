@@ -1,6 +1,7 @@
 import { Vibe } from '../store/session';
+import { processBatched } from './batch';
 import { getCuratedMovies } from './curatedLists';
-import { popularityAdjustedScore } from './scoring';
+import { popularityAdjustedScore, weightedShuffle } from './scoring';
 import {
   DiscoverFilters,
   LiveVibe,
@@ -15,6 +16,7 @@ import {
 
 const MAX_STREAK = 5;
 const VERIFY_BATCH_SIZE = 8;
+const RANDOM_PAGE_CAP = 25;
 
 const LIVE_VIBE_MAP: Partial<Record<Vibe, LiveVibe>> = {
   classics: 'classics',
@@ -50,7 +52,10 @@ class VibeSupplier {
   private curatedRejectedFamilyCount = 0;
   private curatedRejectedProviderCount = 0;
 
-  private livePage = 0;
+  // --- Sidehentning: skiftevis sekventiel og tilfældig, indenfor RANDOM_PAGE_CAP ---
+  private fetchedPages = new Set<number>();
+  private sequentialCursor = 0;
+  private useRandomNext = false;
   private liveTotalPages = Infinity;
   private mustWatchThresholdIndex = 0;
   private liveDone = false;
@@ -78,7 +83,7 @@ class VibeSupplier {
       .filter((m) => matchesRuntime(m, this.filters))
       .filter((m) => !this.jailedIds.has(m.id));
 
-    this.curatedQueue = [...raw].sort(byPopularityAdjustedScore);
+    this.curatedQueue = weightedShuffle(raw, (m) => popularityAdjustedScore(m.vote_average, m.vote_count));
     this.curatedTotalCount = this.curatedQueue.length;
     console.log(`[${this.label()}] kurateret pulje: ${this.curatedTotalCount} film efter genre/runtime-filter`);
   }
@@ -88,41 +93,104 @@ class VibeSupplier {
     return LIVE_VIBE_MAP[this.vibe] ?? 'generic';
   }
 
-  private async fetchNextLivePage() {
+  private nextSequentialPage(): number | null {
+    let candidate = this.sequentialCursor + 1;
+    while (this.fetchedPages.has(candidate)) candidate += 1;
+    if (candidate > this.liveTotalPages) return null;
+    this.sequentialCursor = candidate;
+    return candidate;
+  }
+
+  private nextRandomPage(): number | null {
+    const cap = Math.min(RANDOM_PAGE_CAP, this.liveTotalPages);
+    const available: number[] = [];
+    for (let p = 1; p <= cap; p++) {
+      if (!this.fetchedPages.has(p)) available.push(p);
+    }
+    if (available.length === 0) return null;
+    return available[Math.floor(Math.random() * available.length)];
+  }
+
+  private resetPagination() {
+    this.fetchedPages = new Set();
+    this.sequentialCursor = 0;
+    this.useRandomNext = false;
+    this.liveTotalPages = Infinity;
+  }
+
+    private async fetchNextLivePage(): Promise<void> {
     if (this.liveDone) return;
-    this.livePage += 1;
+
+    let pageToFetch: number;
+    let pickedRandomly = false;
+
+    if (this.liveTotalPages === Infinity) {
+      // Allerførste hentning for denne tærskel — skal være side 1, total_pages kendes ikke endnu
+      pageToFetch = 1;
+    } else {
+      let resolved: number | null;
+      if (this.useRandomNext) {
+        resolved = this.nextRandomPage();
+        pickedRandomly = resolved !== null;
+        if (resolved === null) resolved = this.nextSequentialPage();
+      } else {
+        resolved = this.nextSequentialPage();
+        if (resolved === null) {
+          resolved = this.nextRandomPage();
+          pickedRandomly = resolved !== null;
+        }
+      }
+
+      if (resolved === null) {
+        const isMustWatch = this.liveVibe === 'mustWatch';
+        if (isMustWatch && this.mustWatchThresholdIndex < MUST_WATCH_VOTE_THRESHOLDS.length - 1) {
+          const nextThreshold = MUST_WATCH_VOTE_THRESHOLDS[this.mustWatchThresholdIndex + 1];
+          console.log(`[${this.label()}] tærskel udtømt (sekventielt + tilfældigt op til side ${RANDOM_PAGE_CAP}) — falder til vote_count.gte=${nextThreshold}`);
+          this.mustWatchThresholdIndex += 1;
+          this.resetPagination();
+          return this.fetchNextLivePage();
+        } else {
+          this.liveDone = true;
+          console.log(`[${this.label()}] TMDb live UDTØMT — ingen flere sider (stopper efter ${this.liveFetchedCount} film totalt fra TMDb)`);
+          return;
+        }
+      }
+
+      pageToFetch = resolved;
+      this.useRandomNext = !this.useRandomNext;
+    }
+
+    this.fetchedPages.add(pageToFetch);
 
     const isMustWatch = this.liveVibe === 'mustWatch';
     const threshold = MUST_WATCH_VOTE_THRESHOLDS[this.mustWatchThresholdIndex];
     const extra = isMustWatch ? liveVibeParams('mustWatch', threshold) : liveVibeParams(this.liveVibe);
     const thresholdLabel = isMustWatch ? ` (vote_count.gte=${threshold})` : '';
 
-    const { movies, totalPages } = await fetchDiscoverPage(this.filters, this.livePage, extra);
+    const { movies, totalPages } = await fetchDiscoverPage(this.filters, pageToFetch, extra);
     this.liveTotalPages = totalPages;
+    if (pageToFetch === 1 && this.sequentialCursor === 0) this.sequentialCursor = 1;
 
     const fresh = movies.filter((m) => !this.shownIds.has(m.id) && !this.jailedIds.has(m.id));
-    const sorted = [...fresh].sort(byPopularityAdjustedScore);
+
+    let verified = fresh;
+    if (this.filters.familyFriendly) {
+      const checked = await processBatched(fresh, VERIFY_BATCH_SIZE, async (m) => {
+        const ok = await fetchMovieCertificationDK(m.id);
+        return ok ? m : null;
+      });
+      verified = checked.filter((m): m is Movie => m !== null);
+    }
+
+    const sorted = weightedShuffle(verified, (m) => popularityAdjustedScore(m.vote_average, m.vote_count));
     this.buffer.push(...sorted);
-    this.liveFetchedCount += fresh.length;
+    this.liveFetchedCount += verified.length;
 
     console.log(
-      `[${this.label()}] TMDb live side ${this.livePage}/${totalPages}${thresholdLabel}: ${fresh.length} nye film, omsorteret efter score×log(stemmer) (${this.liveFetchedCount} totalt fra TMDb indtil nu)`
+      `[${this.label()}] TMDb live side ${pageToFetch}/${totalPages}${thresholdLabel} (${pickedRandomly ? 'tilfældig' : 'sekventiel'}): ${fresh.length} nye film (${this.liveFetchedCount} totalt fra TMDb indtil nu)`
     );
-
-    if (this.livePage >= this.liveTotalPages) {
-      if (isMustWatch && this.mustWatchThresholdIndex < MUST_WATCH_VOTE_THRESHOLDS.length - 1) {
-        const nextThreshold = MUST_WATCH_VOTE_THRESHOLDS[this.mustWatchThresholdIndex + 1];
-        console.log(`[${this.label()}] tærskel ${threshold} udtømt (alle ${totalPages} sider brugt) — falder til vote_count.gte=${nextThreshold}`);
-        this.mustWatchThresholdIndex += 1;
-        this.livePage = 0;
-      } else {
-        this.liveDone = true;
-        console.log(`[${this.label()}] TMDb live UDTØMT — ingen flere sider (stopper efter ${this.liveFetchedCount} film totalt fra TMDb)`);
-      }
-    }
   }
 
-  /** Tager kun ÉN batch fra køen ad gangen — verificerer ikke hele den kuraterede liste på forhånd. */
   private async verifyNextCuratedBatch(): Promise<void> {
     const batch = this.curatedQueue!.splice(0, VERIFY_BATCH_SIZE);
 

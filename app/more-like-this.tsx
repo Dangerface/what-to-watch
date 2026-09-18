@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { MovieCard } from '../components/MovieCard';
+import { MovieDetailCard } from '../components/MovieDetailCard';
 import { MoreLikeThisFeed } from '../lib/moreLikeThis';
 import { DiscoverFilters, Movie } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
@@ -87,13 +87,8 @@ export default function MoreLikeThisScreen() {
         onEndReachedThreshold={0.5}
         onEndReached={handleEndReached}
         renderItem={({ item }) => (
-          <MovieCard
-            movie={item}
-            width={width}
-            sourceType={sourceType}
-            onJailed={(id) => setMovies((prev) => prev.filter((m) => m.id !== id))}
-          />
-        )}
+  <MovieDetailCard movie={item} width={width} onJailed={() => setMovies((prev) => prev.filter((m) => m.id !== item.id))} />
+)}
         ListFooterComponent={
           exhausted ? (
             <View style={[styles.card, { width, justifyContent: 'center' }]}>

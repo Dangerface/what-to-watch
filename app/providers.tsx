@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getTotalSteps } from '../lib/flow';
 import { getSelectedProviderIds, saveSelectedProviderIds } from '../lib/storage';
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
   logo: { width: 40, height: 40, borderRadius: 8, marginBottom: 6 },
   providerName: { fontSize: 11, textAlign: 'center', color: '#1A1A1A' },
   providerNameSelected: { color: '#E8B923' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginVertical: 20 },
+  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginTop: 20, marginBottom: TAB_BAR_CLEARANCE },
   nextButtonDisabled: { opacity: 0.4 },
   nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
 });

@@ -181,7 +181,7 @@ const GENRE_FAMILY = 10751;
 
 function computeExcludedGenres(filters: DiscoverFilters): number[] {
   const excluded: number[] = [];
-  if (!filters.genreIds.includes(GENRE_ANIMATION)) excluded.push(GENRE_ANIMATION);
+  if (!filters.familyFriendly && !filters.genreIds.includes(GENRE_ANIMATION)) excluded.push(GENRE_ANIMATION);
   if (!filters.familyFriendly && !filters.genreIds.includes(GENRE_FAMILY)) excluded.push(GENRE_FAMILY);
   return excluded;
 }
@@ -299,4 +299,65 @@ export async function fetchSimilarPage(movieId: number, page: number): Promise<M
   if (!res.ok) return { movies: [], totalPages: 0 };
   const data = await res.json();
   return { movies: data.results as Movie[], totalPages: Math.min(data.total_pages ?? 0, 500) };
+}
+export async function searchMovies(query: string): Promise<Movie[]> {
+  const params = new URLSearchParams({
+    api_key: process.env.EXPO_PUBLIC_TMDB_API_KEY!,
+    language: 'en-US',
+    query,
+    include_adult: 'false',
+  });
+  const res = await fetch(`${TMDB_BASE_URL}/search/movie?${params.toString()}`);
+  if (!res.ok) throw new Error(`TMDb fejl: ${res.status}`);
+  const data = await res.json();
+  return data.results as Movie[];
+}
+
+export async function fetchMovieDetails(movieId: number): Promise<Movie> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}?api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&language=en-US`);
+  if (!res.ok) throw new Error(`TMDb fejl: ${res.status}`);
+  const data = await res.json();
+  return {
+    id: data.id,
+    title: data.title,
+    overview: data.overview,
+    release_date: data.release_date,
+    vote_average: data.vote_average,
+    vote_count: data.vote_count,
+    genre_ids: data.genres?.map((g: any) => g.id) ?? [],
+    poster_path: data.poster_path,
+    runtime: data.runtime,
+  };
+}
+
+export type CastMember = { id: number; name: string; character: string; profile_path: string | null };
+export type CrewMember = { id: number; name: string; job: string; profile_path: string | null };
+export type MovieCredits = { cast: CastMember[]; director: CrewMember | null };
+
+export async function fetchMovieCredits(movieId: number): Promise<MovieCredits> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}/credits?api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&language=en-US`);
+  if (!res.ok) return { cast: [], director: null };
+  const data = await res.json();
+  const director = (data.crew ?? []).find((c: any) => c.job === 'Director') ?? null;
+  const cast = (data.cast ?? []).slice(0, 15).map((c: any) => ({
+    id: c.id,
+    name: c.name,
+    character: c.character,
+    profile_path: c.profile_path,
+  }));
+  return { cast, director };
+}
+
+export type MovieTrailer = { key: string; name: string };
+
+export async function fetchMovieTrailer(movieId: number): Promise<MovieTrailer | null> {
+  const res = await fetch(`${TMDB_BASE_URL}/movie/${movieId}/videos?api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&language=en-US`);
+  if (!res.ok) return null;
+  const data = await res.json();
+  const videos = (data.results ?? []) as any[];
+  const trailer =
+    videos.find((v) => v.site === 'YouTube' && v.type === 'Trailer' && v.official) ??
+    videos.find((v) => v.site === 'YouTube' && v.type === 'Trailer') ??
+    null;
+  return trailer ? { key: trailer.key, name: trailer.name } : null;
 }

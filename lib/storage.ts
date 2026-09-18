@@ -3,24 +3,18 @@ import { Movie } from './tmdb';
 
 const WATCH_LATER_KEY = 'watchLater';
 const MOVIE_JAIL_KEY = 'movieJail';
-
+const SOFT_JAIL_KEY = 'softJail';
 const SELECTED_PROVIDERS_KEY = 'selectedProviders';
+const SOFT_JAIL_DURATION_KEY = 'softJailDurationDays';
+const SOFT_JAIL_THRESHOLD_KEY = 'softJailThresholdMs';
 
-/** null = aldrig valgt endnu (skal vises i onboarding). Tomt array sker reelt aldrig, da UI kræver mindst 1 valg. */
-export async function getSelectedProviderIds(): Promise<number[] | null> {
-  try {
-    const raw = await AsyncStorage.getItem(SELECTED_PROVIDERS_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-
-export async function saveSelectedProviderIds(ids: number[]): Promise<void> {
-  await AsyncStorage.setItem(SELECTED_PROVIDERS_KEY, JSON.stringify(ids));
-}
+const DEFAULT_SOFT_JAIL_DURATION_DAYS = 30;
+const DEFAULT_SOFT_JAIL_THRESHOLD_MS = 1000;
 
 export type WatchLaterEntry = { movie: Movie; addedAt: string };
+export type SoftJailEntry = { movie: Movie; addedAt: string };
+
+// --- Watch Later ---
 
 async function readWatchLater(): Promise<WatchLaterEntry[]> {
   try {
@@ -28,8 +22,6 @@ async function readWatchLater(): Promise<WatchLaterEntry[]> {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
 
-    // Migrering: en tidligere version gemte filmen direkte (Movie[]),
-    // ikke indpakket i { movie, addedAt }. Genkend og ret det automatisk.
     let migrated = false;
     const normalized: WatchLaterEntry[] = parsed.map((item: any) => {
       if (item && item.movie) return item;
@@ -37,10 +29,7 @@ async function readWatchLater(): Promise<WatchLaterEntry[]> {
       return { movie: item, addedAt: new Date().toISOString() };
     });
 
-    if (migrated) {
-      await writeWatchLater(normalized); // gem den rettede version, så det kun sker én gang
-    }
-
+    if (migrated) await writeWatchLater(normalized);
     return normalized;
   } catch {
     return [];
@@ -75,7 +64,7 @@ export async function removeFromWatchLater(movieId: number): Promise<void> {
   await writeWatchLater(list.filter((e) => e.movie.id !== movieId));
 }
 
-// --- Movie jail (uændret) ---
+// --- Movie Jail ---
 
 async function readList(key: string): Promise<Movie[]> {
   try {
@@ -109,12 +98,33 @@ export async function releaseFromMovieJail(movieId: number): Promise<void> {
   const list = await getMovieJail();
   await writeList(MOVIE_JAIL_KEY, list.filter((m) => m.id !== movieId));
 }
-//----SOft Jail ----
 
-const SOFT_JAIL_KEY = 'softJail';
-const SOFT_JAIL_EXPIRY_DAYS = 30;
+// --- Soft Jail-indstillinger ---
 
-export type SoftJailEntry = { movie: Movie; addedAt: string };
+export async function getSoftJailDurationDays(): Promise<number> {
+  const raw = await AsyncStorage.getItem(SOFT_JAIL_DURATION_KEY);
+  return raw ? Number(raw) : DEFAULT_SOFT_JAIL_DURATION_DAYS;
+}
+
+export async function setSoftJailDurationDays(days: number): Promise<void> {
+  await AsyncStorage.setItem(SOFT_JAIL_DURATION_KEY, String(days));
+}
+
+export async function getSoftJailThresholdMs(): Promise<number> {
+  const raw = await AsyncStorage.getItem(SOFT_JAIL_THRESHOLD_KEY);
+  return raw ? Number(raw) : DEFAULT_SOFT_JAIL_THRESHOLD_MS;
+}
+
+export async function setSoftJailThresholdMs(ms: number): Promise<void> {
+  await AsyncStorage.setItem(SOFT_JAIL_THRESHOLD_KEY, String(ms));
+}
+
+export function getSoftJailRemainingMs(addedAt: string, durationDays: number): number {
+  const expiresAt = new Date(addedAt).getTime() + durationDays * 24 * 60 * 60 * 1000;
+  return Math.max(0, expiresAt - Date.now());
+}
+
+// --- Soft Jail ---
 
 async function readSoftJail(): Promise<SoftJailEntry[]> {
   try {
@@ -122,11 +132,12 @@ async function readSoftJail(): Promise<SoftJailEntry[]> {
     if (!raw) return [];
     const parsed: SoftJailEntry[] = JSON.parse(raw);
 
-    const cutoff = Date.now() - SOFT_JAIL_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+    const durationDays = await getSoftJailDurationDays();
+    const cutoff = Date.now() - durationDays * 24 * 60 * 60 * 1000;
     const stillValid = parsed.filter((e) => new Date(e.addedAt).getTime() > cutoff);
 
     if (stillValid.length !== parsed.length) {
-      await AsyncStorage.setItem(SOFT_JAIL_KEY, JSON.stringify(stillValid)); // rydder udløbne entries fra disk
+      await AsyncStorage.setItem(SOFT_JAIL_KEY, JSON.stringify(stillValid));
     }
 
     return stillValid;
@@ -148,4 +159,69 @@ export async function addToSoftJail(movie: Movie): Promise<void> {
   const list = await readSoftJail();
   if (list.some((e) => e.movie.id === movie.id)) return;
   await AsyncStorage.setItem(SOFT_JAIL_KEY, JSON.stringify([...list, { movie, addedAt: new Date().toISOString() }]));
+}
+
+export async function releaseFromSoftJail(movieId: number): Promise<void> {
+  const list = await readSoftJail();
+  await AsyncStorage.setItem(SOFT_JAIL_KEY, JSON.stringify(list.filter((e) => e.movie.id !== movieId)));
+}
+
+// --- Valgte streaming-tjenester ---
+
+export async function getSelectedProviderIds(): Promise<number[] | null> {
+  try {
+    const raw = await AsyncStorage.getItem(SELECTED_PROVIDERS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function saveSelectedProviderIds(ids: number[]): Promise<void> {
+  await AsyncStorage.setItem(SELECTED_PROVIDERS_KEY, JSON.stringify(ids));
+}
+
+const WATCHED_KEY = 'watchedMovies';
+
+export type WatchedEntry = { movie: Movie; rating: number | null; watchedAt: string };
+
+async function readWatched(): Promise<WatchedEntry[]> {
+  try {
+    const raw = await AsyncStorage.getItem(WATCHED_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function writeWatched(entries: WatchedEntry[]): Promise<void> {
+  await AsyncStorage.setItem(WATCHED_KEY, JSON.stringify(entries));
+}
+
+export async function getWatched(): Promise<WatchedEntry[]> {
+  return readWatched();
+}
+
+export async function getWatchedEntry(movieId: number): Promise<WatchedEntry | null> {
+  const list = await readWatched();
+  return list.find((e) => e.movie.id === movieId) ?? null;
+}
+
+export async function markWatched(movie: Movie, rating: number | null): Promise<void> {
+  const list = await readWatched();
+  const index = list.findIndex((e) => e.movie.id === movie.id);
+  const entry: WatchedEntry = { movie, rating, watchedAt: new Date().toISOString() };
+
+  if (index === -1) {
+    await writeWatched([...list, entry]);
+  } else {
+    const updated = [...list];
+    updated[index] = { ...updated[index], rating };
+    await writeWatched(updated);
+  }
+}
+
+export async function unmarkWatched(movieId: number): Promise<void> {
+  const list = await readWatched();
+  await writeWatched(list.filter((e) => e.movie.id !== movieId));
 }
