@@ -6,7 +6,7 @@ import StartupLoader from '../components/SplashScreen';
 import { checkStartupConnectivity, StartupCheckResult } from '../lib/startup';
 import { useUIStore } from '../store/ui';
 
-type ScreenState = 'loading' | StartupCheckResult;
+type ScreenState = 'loading' | 'success' | StartupCheckResult;
 
 export default function IndexScreen() {
   const hasStarted = useUIStore((s) => s.hasStarted);
@@ -43,6 +43,7 @@ export default function IndexScreen() {
   const runChecks = async () => {
     const result = await checkStartupConnectivity();
     setState(result);
+    setHasStarted(true); // Mark startup as done so it never triggers again this session
   };
 
   const handleLoaderFinish = () => {

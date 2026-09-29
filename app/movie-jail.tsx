@@ -38,7 +38,7 @@ function JailRow({ movie, editMode, onRelease }: { movie: Movie; editMode: boole
   return (
     <View style={styles.rowOuter}>
       <View style={styles.rowFlex}>
-        <MovieListRow movie={movie} />
+        <MovieListRow movie={movie} source="jail" />
       </View>
       <EditActionButton visible={editMode}>
         <Pressable onPress={() => onRelease(movie.id)} hitSlop={8}>

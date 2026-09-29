@@ -128,12 +128,7 @@ export default function ResultsScreen() {
   }, []);
 
   if (loading) {
-    return (
-      <View style={styles.center}>
-        <BackButton />
-        <ActivityIndicator size="large" color="#1A1A1A" />
-      </View>
-    );
+    return <View style={styles.center}><BackButton /><ActivityIndicator size="large" color="#1A1A1A" /></View>;
   }
 
   if (error) {

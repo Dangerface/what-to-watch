@@ -15,7 +15,12 @@ async function pingUrl(url: string, timeoutMs: number = DEFAULT_TIMEOUT_MS): Pro
 
 export type StartupCheckResult = 'ok' | 'no-internet' | 'no-tmdb';
 
+// Midlertidig test-kontakt — sæt til 'no-internet' eller 'no-tmdb' for at forhåndsvise
+// den skærm uden at skulle ændre din faktiske forbindelse. Husk at sætte tilbage til null.
+const FORCE_STATE: StartupCheckResult | null = null;
+
 export async function checkStartupConnectivity(): Promise<StartupCheckResult> {
+  if (FORCE_STATE) return FORCE_STATE;
   // Ét kald løser reelt begge spørgsmål på én gang, hvis det lykkes —
   // lykkes TMDb, er internettet jo pr. definition også i orden.
   const tmdbOk = await pingUrl(
