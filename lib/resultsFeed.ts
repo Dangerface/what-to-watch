@@ -18,13 +18,6 @@ const MAX_STREAK = 5;
 const VERIFY_BATCH_SIZE = 8;
 const RANDOM_PAGE_CAP = 25;
 
-const LIVE_VIBE_MAP: Partial<Record<Vibe, LiveVibe>> = {
-  classics: 'classics',
-  hiddenGem: 'hiddenGem',
-  trending: 'trending',
-  mustWatch: 'mustWatch',
-};
-
 function matchesRuntime(movie: Movie, filters: DiscoverFilters): boolean {
   if (filters.maxRuntimeMinutes == null || movie.runtime == null) return true;
   return movie.runtime <= filters.maxRuntimeMinutes + 15;
@@ -35,8 +28,14 @@ function filterByGenre(movies: Movie[], genreIds: number[]): Movie[] {
   return movies.filter((m) => m.genre_ids.some((g) => genreIds.includes(g)));
 }
 
-function byPopularityAdjustedScore(a: Movie, b: Movie): number {
-  return popularityAdjustedScore(b.vote_average, b.vote_count) - popularityAdjustedScore(a.vote_average, a.vote_count);
+// Bruges til at opdage samme-franchise-film uden ekstra API-kald — kun titlens ord, intet andet.
+function getComparisonWord(title: string): string {
+  const words = title.trim().split(/\s+/);
+  const clean = (w: string) => w.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+  const first = clean(words[0] ?? '');
+  if (first.length > 3) return first;
+  const second = clean(words[1] ?? '');
+  return second || first;
 }
 
 class VibeSupplier {
@@ -52,7 +51,6 @@ class VibeSupplier {
   private curatedRejectedFamilyCount = 0;
   private curatedRejectedProviderCount = 0;
 
-  // --- Sidehentning: skiftevis sekventiel og tilfældig, indenfor RANDOM_PAGE_CAP ---
   private fetchedPages = new Set<number>();
   private sequentialCursor = 0;
   private useRandomNext = false;
@@ -118,14 +116,13 @@ class VibeSupplier {
     this.liveTotalPages = Infinity;
   }
 
-    private async fetchNextLivePage(): Promise<void> {
+  private async fetchNextLivePage(): Promise<void> {
     if (this.liveDone) return;
 
     let pageToFetch: number;
     let pickedRandomly = false;
 
     if (this.liveTotalPages === Infinity) {
-      // Allerførste hentning for denne tærskel — skal være side 1, total_pages kendes ikke endnu
       pageToFetch = 1;
     } else {
       let resolved: number | null;
@@ -145,13 +142,13 @@ class VibeSupplier {
         const isMustWatch = this.liveVibe === 'mustWatch';
         if (isMustWatch && this.mustWatchThresholdIndex < MUST_WATCH_VOTE_THRESHOLDS.length - 1) {
           const nextThreshold = MUST_WATCH_VOTE_THRESHOLDS[this.mustWatchThresholdIndex + 1];
-          console.log(`[${this.label()}] tærskel udtømt (sekventielt + tilfældigt op til side ${RANDOM_PAGE_CAP}) — falder til vote_count.gte=${nextThreshold}`);
+          console.log(`[${this.label()}] tærskel udtømt — falder til vote_count.gte=${nextThreshold}`);
           this.mustWatchThresholdIndex += 1;
           this.resetPagination();
           return this.fetchNextLivePage();
         } else {
           this.liveDone = true;
-          console.log(`[${this.label()}] TMDb live UDTØMT — ingen flere sider (stopper efter ${this.liveFetchedCount} film totalt fra TMDb)`);
+          console.log(`[${this.label()}] TMDb live UDTØMT (stopper efter ${this.liveFetchedCount} film totalt)`);
           return;
         }
       }
@@ -165,7 +162,6 @@ class VibeSupplier {
     const isMustWatch = this.liveVibe === 'mustWatch';
     const threshold = MUST_WATCH_VOTE_THRESHOLDS[this.mustWatchThresholdIndex];
     const extra = isMustWatch ? liveVibeParams('mustWatch', threshold) : liveVibeParams(this.liveVibe);
-    const thresholdLabel = isMustWatch ? ` (vote_count.gte=${threshold})` : '';
 
     const { movies, totalPages } = await fetchDiscoverPage(this.filters, pageToFetch, extra);
     this.liveTotalPages = totalPages;
@@ -187,7 +183,7 @@ class VibeSupplier {
     this.liveFetchedCount += verified.length;
 
     console.log(
-      `[${this.label()}] TMDb live side ${pageToFetch}/${totalPages}${thresholdLabel} (${pickedRandomly ? 'tilfældig' : 'sekventiel'}): ${fresh.length} nye film (${this.liveFetchedCount} totalt fra TMDb indtil nu)`
+      `[${this.label()}] TMDb live side ${pageToFetch}/${totalPages} (${pickedRandomly ? 'tilfældig' : 'sekventiel'}): ${verified.length} nye film`
     );
   }
 
@@ -216,7 +212,7 @@ class VibeSupplier {
 
     if (this.curatedQueue!.length === 0) {
       console.log(
-        `[${this.label()}] kurateret pulje brugt op — ${this.curatedTakenCount} godkendt, ${this.curatedRejectedFamilyCount} afvist pga. aldersgrænse, ${this.curatedRejectedProviderCount} afvist pga. streaming-udbyder, skifter til TMDb live`
+        `[${this.label()}] kurateret pulje brugt op — ${this.curatedTakenCount} godkendt, ${this.curatedRejectedFamilyCount} afvist pga. aldersgrænse, ${this.curatedRejectedProviderCount} afvist pga. streaming-udbyder`
       );
     }
   }
@@ -229,7 +225,6 @@ class VibeSupplier {
         await this.verifyNextCuratedBatch();
         continue;
       }
-
       if (this.liveDone) return;
       await this.fetchNextLivePage();
       if (this.buffer.length === 0 && this.liveDone) return;
@@ -240,9 +235,7 @@ class VibeSupplier {
     const done = this.buffer.length === 0 && (this.curatedQueue?.length ?? 0) === 0 && this.liveDone;
     if (done && !this.loggedExhausted) {
       this.loggedExhausted = true;
-      console.log(
-        `[${this.label()}] FULDT UDTØMT — kurateret brugt: ${this.curatedTakenCount}, live hentet: ${this.liveFetchedCount}, samlet vist: ${this.curatedTakenCount + this.liveFetchedCount}`
-      );
+      console.log(`[${this.label()}] FULDT UDTØMT`);
     }
     return done;
   }
@@ -254,9 +247,18 @@ class VibeSupplier {
   }
 }
 
+const LIVE_VIBE_MAP: Partial<Record<Vibe, LiveVibe>> = {
+  classics: 'classics',
+  hiddenGem: 'hiddenGem',
+  trending: 'trending',
+  mustWatch: 'mustWatch',
+};
+
 export class ResultsFeed {
   private suppliers: VibeSupplier[];
   private recentVibes: (Vibe | null)[] = [];
+  private globalShownIds = new Set<number>();
+  private deferredQueue: Movie[] = [];
 
   constructor(vibes: Vibe[], filters: DiscoverFilters, jailedIds: Set<number>) {
     const vibeList: (Vibe | null)[] = vibes.length > 0 ? vibes : [null];
@@ -272,7 +274,32 @@ export class ResultsFeed {
 
   async getNextBatch(count: number): Promise<Movie[]> {
     const batch: Movie[] = [];
+    const usedWords = new Set<string>();
 
+    // Tilføjer en film til batchen, MEDMINDRE dens titel-ord allerede er brugt i denne batch —
+    // i så fald sættes den til side til en senere runde i stedet for at gå tabt.
+    const tryAdd = (movie: Movie) => {
+      const word = getComparisonWord(movie.title);
+      if (usedWords.has(word)) {
+        this.deferredQueue.push(movie);
+      } else {
+        usedWords.add(word);
+        batch.push(movie);
+      }
+    };
+
+    // 1. Tøm den udskudte kø fra tidligere runder først
+    const carryOver = this.deferredQueue;
+    this.deferredQueue = [];
+    for (const movie of carryOver) {
+      if (batch.length >= count) {
+        this.deferredQueue.push(movie); // stadig ikke plads, prøv igen næste runde
+        continue;
+      }
+      tryAdd(movie);
+    }
+
+    // 2. Hent nye kandidater som normalt, indtil batchen er fyldt
     while (batch.length < count) {
       await Promise.all(this.suppliers.map((s) => s.ensureBuffer()));
       const available = this.suppliers.filter((s) => !s.isExhausted());
@@ -281,8 +308,10 @@ export class ResultsFeed {
       const chosen = this.pickSupplier(available);
       const movie = chosen.take();
       if (movie) {
-        batch.push(movie);
+        if (this.globalShownIds.has(movie.id)) continue;
+        this.globalShownIds.add(movie.id);
         this.recentVibes.push(chosen.vibe);
+        tryAdd(movie);
       } else if (!chosen.isExhausted()) {
         continue;
       } else if (this.suppliers.every((s) => s.isExhausted())) {
@@ -290,11 +319,11 @@ export class ResultsFeed {
       }
     }
 
-    console.log(`[batch] leverede ${batch.length} film denne runde`);
+    console.log(`[batch] leverede ${batch.length} film (${this.deferredQueue.length} udskudt pga. titel-match)`);
     return batch;
   }
 
   isFullyExhausted(): boolean {
-    return this.suppliers.every((s) => s.isExhausted());
+    return this.deferredQueue.length === 0 && this.suppliers.every((s) => s.isExhausted());
   }
 }

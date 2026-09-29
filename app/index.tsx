@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { AppState, AppStateStatus, Pressable, StyleSheet, Text, View } from 'react-native';
 import StartupLoader from '../components/SplashScreen';
 import { checkStartupConnectivity, StartupCheckResult } from '../lib/startup';
 import { useUIStore } from '../store/ui';
@@ -9,12 +9,36 @@ import { useUIStore } from '../store/ui';
 type ScreenState = 'loading' | StartupCheckResult;
 
 export default function IndexScreen() {
-  const [state, setState] = useState<ScreenState>('loading');
+  const hasStarted = useUIStore((s) => s.hasStarted);
+  const setHasStarted = useUIStore((s) => s.setHasStarted);
+  
+  // Hvis hasStarted allerede er sand (fx ved navigering tilbage), starter vi ikke på 'loading'
+  const [state, setState] = useState<ScreenState>(hasStarted ? 'ok' : 'loading');
   const setTabBarHidden = useUIStore((s) => s.setTabBarHidden);
 
   useEffect(() => {
     setTabBarHidden(state === 'loading');
   }, [state]);
+
+  // Lyt efter dvale/baggrund via AppState og nulstil hasStarted, så animationen genafspilles
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'active') {
+        setHasStarted(false); // Dette tvinger animationen til at køre igen
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  // Hvis hasStarted bliver sat til false (fx når appen vågner), tvinges staten til 'loading'
+  useEffect(() => {
+    if (!hasStarted) {
+      setState('loading');
+    }
+  }, [hasStarted]);
 
   const runChecks = async () => {
     const result = await checkStartupConnectivity();
@@ -22,6 +46,7 @@ export default function IndexScreen() {
   };
 
   const handleLoaderFinish = () => {
+    setHasStarted(true); // Markér at den er færdig med at starte op
     runChecks();
   };
 

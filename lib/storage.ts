@@ -8,8 +8,8 @@ const SELECTED_PROVIDERS_KEY = 'selectedProviders';
 const SOFT_JAIL_DURATION_KEY = 'softJailDurationDays';
 const SOFT_JAIL_THRESHOLD_KEY = 'softJailThresholdMs';
 
-const DEFAULT_SOFT_JAIL_DURATION_DAYS = 30;
-const DEFAULT_SOFT_JAIL_THRESHOLD_MS = 1000;
+const DEFAULT_SOFT_JAIL_DURATION_DAYS = 3;
+const DEFAULT_SOFT_JAIL_THRESHOLD_MS = 3000;
 
 export type WatchLaterEntry = { movie: Movie; addedAt: string };
 export type SoftJailEntry = { movie: Movie; addedAt: string };
@@ -224,4 +224,42 @@ export async function markWatched(movie: Movie, rating: number | null): Promise<
 export async function unmarkWatched(movieId: number): Promise<void> {
   const list = await readWatched();
   await writeWatched(list.filter((e) => e.movie.id !== movieId));
+}
+const EXCLUDE_WATCHED_KEY = 'excludeWatchedMovies';
+
+export async function getExcludeWatchedMovies(): Promise<boolean> {
+  const raw = await AsyncStorage.getItem(EXCLUDE_WATCHED_KEY);
+  return raw != null ? raw === 'true' : true; // ingen gemt værdi endnu → true som standard
+}
+
+export async function setExcludeWatchedMovies(value: boolean): Promise<void> {
+  await AsyncStorage.setItem(EXCLUDE_WATCHED_KEY, String(value));
+}
+
+export async function getWatchedIds(): Promise<Set<number>> {
+  const list = await getWatched();
+  return new Set(list.map((e) => e.movie.id));
+}
+const DESTINY_POOL_KEY = 'destinyPool';
+
+export type DestinyPoolEntry = { movie: Movie; seedCount: number };
+export type DestinyPool = {
+  entries: DestinyPoolEntry[];
+  generatedAt: string;
+  seedMovieIds: number[];
+  eligibleMovieIds: number[]; // ALLE 4+-stjernede på byggetidspunktet, ikke kun de seks valgte seeds
+  version: number;
+};
+
+export async function getDestinyPool(): Promise<DestinyPool | null> {
+  try {
+    const raw = await AsyncStorage.getItem(DESTINY_POOL_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function saveDestinyPool(pool: DestinyPool): Promise<void> {
+  await AsyncStorage.setItem(DESTINY_POOL_KEY, JSON.stringify(pool));
 }

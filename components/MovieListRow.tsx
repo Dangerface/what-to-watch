@@ -6,13 +6,19 @@ import { Movie } from '../lib/tmdb';
 
 type Props = {
   movie: Movie;
-  extra?: ReactNode; // ekstra indhold under rating, fx udbyder-ikoner/dato
-  action?: ReactNode; // en selvstændig tryk-knap, fx fjern/frigiv — egen tryk-zone, adskilt fra selve rækken
+  extra?: ReactNode;
+  action?: ReactNode;
+  source?: 'watchlist' | 'jail' | 'watched';
+  onBeforeNavigate?: () => void;
 };
 
-export function MovieListRow({ movie, extra, action }: Props) {
+export function MovieListRow({ movie, extra, action, source, onBeforeNavigate }: Props) {
   const handlePress = () => {
-    router.push({ pathname: '/movie/[id]', params: { id: String(movie.id) } } as any);
+    onBeforeNavigate?.();
+    router.push({
+      pathname: '/movie/[id]',
+      params: { id: String(movie.id), ...(source ? { source } : {}) },
+    } as any);
   };
 
   return (

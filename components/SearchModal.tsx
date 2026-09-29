@@ -1,53 +1,30 @@
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { useFocusEffect, useNavigation } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
-  Animated,
-  Dimensions,
-  FlatList,
-  Keyboard,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  View,
+    ActivityIndicator, Animated, Dimensions, FlatList, Keyboard, Platform, Pressable, StyleSheet, Switch, Text, TextInput, View,
 } from 'react-native';
-import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
-import { MovieListRow } from '../components/MovieListRow';
 import { processBatched } from '../lib/batch';
 import { getSelectedProviderIds } from '../lib/storage';
 import { fetchMovieAvailableOnProviders, Movie, searchMovies } from '../lib/tmdb';
-import { useUIStore } from '../store/ui';
+import { MovieListRow } from './MovieListRow';
 
 const MIN_QUERY_LENGTH = 3;
 const DEBOUNCE_MS = 1500;
 const VERIFY_BATCH_SIZE = 8;
 const SEARCH_BAR_KEYBOARD_GAP = 12;
-const RESULTS_BOTTOM_OFFSET = 20;
+const SEARCH_BAR_REST_BOTTOM = 30;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const ROW_HORIZONTAL_PADDING = 20;
-const CLOSE_BUTTON_SIZE = 40;
+const CLOSE_KEYBOARD_BUTTON_SIZE = 40;
 const ROW_GAP = 10;
 const FULL_INPUT_WIDTH = SCREEN_WIDTH - ROW_HORIZONTAL_PADDING * 2;
-const SHRUNK_INPUT_WIDTH = FULL_INPUT_WIDTH - CLOSE_BUTTON_SIZE - ROW_GAP;
+const SHRUNK_INPUT_WIDTH = FULL_INPUT_WIDTH - CLOSE_KEYBOARD_BUTTON_SIZE - ROW_GAP;
 
-function BackButton({ onPress }: { onPress: () => void }) {
-  return (
-    <Pressable onPress={onPress} style={styles.backButton} hitSlop={12}>
-      <Text style={styles.backArrow}>←</Text>
-    </Pressable>
-  );
-}
+type Props = { visible: boolean; onClose: () => void };
 
-export default function SearchScreen() {
-  const navigation = useNavigation();
-  const setTabBarHidden = useUIStore((state) => state.setTabBarHidden);
-
+export function SearchModal({ visible, onClose }: Props) {
   const [query, setQuery] = useState('');
   const [onlyMyChannels, setOnlyMyChannels] = useState(false);
   const [rawResults, setRawResults] = useState<Movie[]>([]);
@@ -61,6 +38,7 @@ export default function SearchScreen() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchBarTranslateY = useRef(new Animated.Value(0)).current;
   const keyboardProgress = useRef(new Animated.Value(0)).current;
+  const overlayOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     getSelectedProviderIds().then((saved) => {
@@ -69,13 +47,12 @@ export default function SearchScreen() {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('transitionEnd' as any, (e: any) => {
-      if (!e.data?.closing) {
-        inputRef.current?.focus();
-      }
-    });
-    return unsubscribe;
-  }, [navigation]);
+    Animated.timing(overlayOpacity, { toValue: visible ? 1 : 0, duration: 220, useNativeDriver: true }).start();
+    if (visible) {
+      const t = setTimeout(() => inputRef.current?.focus(), 80);
+      return () => clearTimeout(t);
+    }
+  }, [visible]);
 
   useEffect(() => {
     const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
@@ -84,42 +61,21 @@ export default function SearchScreen() {
     const showSub = Keyboard.addListener(showEvent, (e) => {
       setKeyboardVisible(true);
       const keyboardHeight = e.endCoordinates?.height ?? 300;
-      const distance = keyboardHeight + SEARCH_BAR_KEYBOARD_GAP - TAB_BAR_CLEARANCE;
+      const distance = keyboardHeight + SEARCH_BAR_KEYBOARD_GAP - SEARCH_BAR_REST_BOTTOM;
 
       Animated.spring(searchBarTranslateY, {
-        toValue: -distance,
-        useNativeDriver: true,
-        mass: 3,
-        stiffness: 1000,
-        damping: 72,
-        overshootClamping: true,
+        toValue: -distance, useNativeDriver: true, mass: 3, stiffness: 1000, damping: 72, overshootClamping: true,
       }).start();
-
-      Animated.spring(keyboardProgress, {
-        toValue: 1,
-        useNativeDriver: false,
-        friction: 6,
-        tension: 160,
-      }).start();
+      Animated.spring(keyboardProgress, { toValue: 1, useNativeDriver: false, friction: 6, tension: 160 }).start();
     });
 
     const hideSub = Keyboard.addListener(hideEvent, () => {
       Animated.spring(searchBarTranslateY, {
-        toValue: 0,
-        useNativeDriver: true,
-        mass: 3,
-        stiffness: 1000,
-        damping: 500,
-        overshootClamping: true,
+        toValue: 0, useNativeDriver: true, mass: 3, stiffness: 1000, damping: 500, overshootClamping: true,
       }).start();
-
-      Animated.spring(keyboardProgress, {
-        toValue: 0,
-        useNativeDriver: false,
-        friction: 8,
-        tension: 160,
-        overshootClamping: true,
-      }).start(() => setKeyboardVisible(false));
+      Animated.spring(keyboardProgress, { toValue: 0, useNativeDriver: false, friction: 8, tension: 160, overshootClamping: true }).start(
+        () => setKeyboardVisible(false)
+      );
     });
 
     return () => {
@@ -128,27 +84,15 @@ export default function SearchScreen() {
     };
   }, []);
 
-  const searchInputWidth = keyboardProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [FULL_INPUT_WIDTH, SHRUNK_INPUT_WIDTH],
-  });
-
-  const closeButtonScale = keyboardProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.4, 1],
-  });
-
-  const closeButtonOpacity = keyboardProgress.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [0, 0, 1],
-  });
+  const searchInputWidth = keyboardProgress.interpolate({ inputRange: [0, 1], outputRange: [FULL_INPUT_WIDTH, SHRUNK_INPUT_WIDTH] });
+  const closeKeyboardButtonScale = keyboardProgress.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] });
+  const closeKeyboardButtonOpacity = keyboardProgress.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 0, 1] });
 
   const runSearch = async (text: string) => {
     setSearching(true);
     try {
       const results = await searchMovies(text.trim());
-      const filtered = results.filter((m) => m.poster_path && m.vote_average > 0);
-      setRawResults(filtered);
+      setRawResults(results.filter((m) => m.poster_path && m.vote_average > 0));
     } catch {
       setRawResults([]);
     } finally {
@@ -159,12 +103,10 @@ export default function SearchScreen() {
   const handleChangeText = (text: string) => {
     setQuery(text);
     if (debounceRef.current) clearTimeout(debounceRef.current);
-
     if (text.trim().length < MIN_QUERY_LENGTH) {
       setRawResults([]);
       return;
     }
-
     debounceRef.current = setTimeout(() => runSearch(text), DEBOUNCE_MS);
   };
 
@@ -173,10 +115,8 @@ export default function SearchScreen() {
       setDisplayedResults(rawResults);
       return;
     }
-
     let cancelled = false;
     setFiltering(true);
-
     processBatched(rawResults, VERIFY_BATCH_SIZE, async (movie) => {
       const available = await fetchMovieAvailableOnProviders(movie.id, providerIds, 'streamingOnly');
       return available ? movie : null;
@@ -185,7 +125,6 @@ export default function SearchScreen() {
       setDisplayedResults(results.filter((m): m is Movie => m !== null));
       setFiltering(false);
     });
-
     return () => {
       cancelled = true;
     };
@@ -195,27 +134,29 @@ export default function SearchScreen() {
   const showEmptyState = !isBusy && displayedResults.length === 0;
   const showingResults = !isBusy && displayedResults.length > 0;
 
-  useFocusEffect(
-    useCallback(() => {
-      setTabBarHidden(showingResults);
-      return () => setTabBarHidden(false);
-    }, [showingResults])
-  );
-
-  const handleClose = () => {
-    Keyboard.dismiss();
-  };
-
-  const handleBack = () => {
+  const handleCloseKeyboard = () => Keyboard.dismiss();
+  const handleBackWithinSearch = () => {
     setQuery('');
     setRawResults([]);
     Keyboard.dismiss();
   };
+  const handleCloseModal = () => {
+    Keyboard.dismiss();
+    onClose();
+  };
 
   return (
-    <View style={styles.root}>
+    <Animated.View style={[styles.root, { opacity: overlayOpacity }]} pointerEvents={visible ? 'auto' : 'none'}>
+      <Pressable onPress={handleCloseModal} style={styles.closeModalButton} hitSlop={12}>
+        <Ionicons name="close" size={26} color="#1A1A1A" />
+      </Pressable>
+
       <View style={styles.topSection}>
-        {showingResults && <BackButton onPress={handleBack} />}
+        {showingResults && (
+          <Pressable onPress={handleBackWithinSearch} style={styles.backButton} hitSlop={12}>
+            <Text style={styles.backArrow}>←</Text>
+          </Pressable>
+        )}
 
         <View style={[styles.toggleRow, showingResults && styles.toggleRowWithBack]}>
           <Text style={styles.toggleLabel}>Only my streaming channels</Text>
@@ -231,20 +172,14 @@ export default function SearchScreen() {
           <FlatList
             data={displayedResults}
             keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => <MovieListRow movie={item} />}
+            renderItem={({ item }) => <MovieListRow movie={item} onBeforeNavigate={onClose} />}
             contentContainerStyle={styles.listContent}
             keyboardShouldPersistTaps="handled"
           />
         )}
       </View>
 
-      <Animated.View
-        style={[
-          styles.searchBarRow,
-          { bottom: showingResults ? RESULTS_BOTTOM_OFFSET : TAB_BAR_CLEARANCE },
-          { transform: [{ translateY: searchBarTranslateY }] },
-        ]}
-      >
+      <Animated.View style={[styles.searchBarRow, { transform: [{ translateY: searchBarTranslateY }] }]}>
         <Animated.View style={[styles.searchInputOuter, { width: searchInputWidth }]}>
           <BlurView intensity={80} tint="light" style={styles.searchInputWrapper}>
             <Ionicons name="search" size={18} color="#4A4A4A" style={styles.searchIcon} />
@@ -261,22 +196,23 @@ export default function SearchScreen() {
         </Animated.View>
 
         <Animated.View
-          style={[styles.closeButtonOuter, { opacity: closeButtonOpacity, transform: [{ scale: closeButtonScale }] }]}
+          style={[styles.closeKeyboardButtonOuter, { opacity: closeKeyboardButtonOpacity, transform: [{ scale: closeKeyboardButtonScale }] }]}
           pointerEvents={keyboardVisible ? 'auto' : 'none'}
         >
-          <Pressable onPress={handleClose} style={{ flex: 1 }} hitSlop={10}>
-            <BlurView intensity={80} tint="light" style={styles.closeButton}>
+          <Pressable onPress={handleCloseKeyboard} style={{ flex: 1 }} hitSlop={10}>
+            <BlurView intensity={80} tint="light" style={styles.closeKeyboardButton}>
               <Ionicons name="close" size={22} color="#1A1A1A" />
             </BlurView>
           </Pressable>
         </Animated.View>
       </Animated.View>
-    </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#E8B923' },
+  root: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#E8B923', zIndex: 50 },
+  closeModalButton: { position: 'absolute', top: 60, right: 20, zIndex: 20, padding: 4 },
   topSection: { flex: 1, paddingHorizontal: 20, paddingTop: 125 },
   backButton: { position: 'absolute', top: 60, left: 20, zIndex: 10, padding: 4 },
   backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
@@ -286,44 +222,22 @@ const styles = StyleSheet.create({
   separator: { height: 1, backgroundColor: 'rgba(26,26,26,0.15)', marginBottom: 16 },
   loading: { marginTop: 24 },
   emptyText: { fontSize: 15, color: '#5A5A5A' },
-  listContent: { paddingBottom: TAB_BAR_CLEARANCE + 70 },
+  listContent: { paddingBottom: 100 },
   searchBarRow: {
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingHorizontal: ROW_HORIZONTAL_PADDING,
-  gap: ROW_GAP,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 6 },
-  shadowOpacity: 0.18,
-  shadowRadius: 14,
-  elevation: 10,
-},
+    position: 'absolute', left: 0, right: 0, bottom: SEARCH_BAR_REST_BOTTOM,
+    flexDirection: 'row', alignItems: 'center', paddingHorizontal: ROW_HORIZONTAL_PADDING, gap: ROW_GAP,
+    shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.18, shadowRadius: 14, elevation: 10,
+  },
   searchInputOuter: { height: 46, borderRadius: 24, overflow: 'hidden' },
   searchInputWrapper: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 24,
-    paddingHorizontal: 14,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.5)',
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    flex: 1, flexDirection: 'row', alignItems: 'center', borderRadius: 24, paddingHorizontal: 14, overflow: 'hidden',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.3)',
   },
   searchIcon: { marginRight: 6 },
   searchInput: { flex: 1, fontSize: 16, color: '#1A1A1A' },
-  closeButtonOuter: { width: CLOSE_BUTTON_SIZE, height: CLOSE_BUTTON_SIZE },
-  closeButton: {
-    flex: 1,
-    borderRadius: CLOSE_BUTTON_SIZE / 2,
-    overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.5)',
-    backgroundColor: 'rgba(255,255,255,0.3)',
+  closeKeyboardButtonOuter: { width: CLOSE_KEYBOARD_BUTTON_SIZE, height: CLOSE_KEYBOARD_BUTTON_SIZE },
+  closeKeyboardButton: {
+    flex: 1, borderRadius: CLOSE_KEYBOARD_BUTTON_SIZE / 2, overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.3)',
   },
 });

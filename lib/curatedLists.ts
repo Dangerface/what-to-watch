@@ -13,3 +13,16 @@ const curatedByVibe: Partial<Record<Vibe, Movie[]>> = {
 export function getCuratedMovies(vibe: Vibe): Movie[] {
   return curatedByVibe[vibe] ?? [];
 }
+export function getAllCuratedMovies(): Movie[] {
+  const seen = new Set<number>();
+  const all: Movie[] = [];
+  for (const list of Object.values(curatedByVibe)) {
+    for (const movie of list ?? []) {
+      if (!seen.has(movie.id)) {
+        seen.add(movie.id);
+        all.push(movie);
+      }
+    }
+  }
+  return all;
+}

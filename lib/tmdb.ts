@@ -166,6 +166,7 @@ export type Movie = {
   genre_ids: number[];
   poster_path: string | null;
   runtime?: number;
+  origin_country?: string[];
 };
 
 export type DiscoverFilters = {
@@ -178,11 +179,13 @@ export type DiscoverFilters = {
 
 const GENRE_ANIMATION = 16;
 const GENRE_FAMILY = 10751;
+const GENRE_DOCUMENTARY = 99;
 
 function computeExcludedGenres(filters: DiscoverFilters): number[] {
   const excluded: number[] = [];
   if (!filters.familyFriendly && !filters.genreIds.includes(GENRE_ANIMATION)) excluded.push(GENRE_ANIMATION);
   if (!filters.familyFriendly && !filters.genreIds.includes(GENRE_FAMILY)) excluded.push(GENRE_FAMILY);
+  if (!filters.genreIds.includes(GENRE_DOCUMENTARY)) excluded.push(GENRE_DOCUMENTARY);
   return excluded;
 }
 
@@ -241,7 +244,7 @@ export function liveVibeParams(vibe: LiveVibe, mustWatchThreshold?: number): Rec
     case 'classics':
       return { 'primary_release_date.lte': `${thisYear - 25}-12-31`, 'vote_count.gte': '200', sort_by: 'vote_average.desc' };
     case 'hiddenGem':
-      return { 'vote_average.gte': '7.0', 'vote_count.gte': '50', 'vote_count.lte': '500', sort_by: 'vote_average.desc' };
+      return { 'vote_average.gte': '7.0', 'vote_count.gte': '1000', 'vote_count.lte': '5000', sort_by: 'vote_average.desc' };
     case 'trending':
       return { sort_by: 'popularity.desc' };
     case 'mustWatch':
@@ -327,6 +330,7 @@ export async function fetchMovieDetails(movieId: number): Promise<Movie> {
     genre_ids: data.genres?.map((g: any) => g.id) ?? [],
     poster_path: data.poster_path,
     runtime: data.runtime,
+    origin_country: data.origin_country ?? data.production_countries?.map((c: any) => c.iso_3166_1) ?? [],
   };
 }
 

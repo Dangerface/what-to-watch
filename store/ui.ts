@@ -11,10 +11,14 @@ type UIState = {
   listsTabPosition: Position | null;
   setListsTabPosition: (pos: Position) => void;
   actionModalMovie: Movie | null;
-actionModalOnJailed: (() => void) | null;
-openActionModal: (movie: Movie, onJailed?: () => void) => void;
-closeActionModal: () => void;
-  
+  actionModalOnJailed: (() => void) | null;
+  openActionModal: (movie: Movie, onJailed?: () => void) => void;
+  closeActionModal: () => void;
+  hasStarted: boolean;
+setHasStarted: (hasStarted: boolean) => void;
+searchModalOpen: boolean;
+  openSearchModal: () => void;
+  closeSearchModal: () => void;
 };
 
 export const useUIStore = create<UIState>()((set) => ({
@@ -27,5 +31,10 @@ export const useUIStore = create<UIState>()((set) => ({
   actionModalMovie: null,
   actionModalOnJailed: null,
   openActionModal: (movie, onJailed) => set({ actionModalMovie: movie, actionModalOnJailed: onJailed ?? null }),
-closeActionModal: () => set({ actionModalMovie: null, actionModalOnJailed: null }),
+  closeActionModal: () => set({ actionModalMovie: null, actionModalOnJailed: null }),
+  hasStarted: false,
+  setHasStarted: (hasStarted) => set({ hasStarted }),
+  searchModalOpen: false,
+  openSearchModal: () => set({ searchModalOpen: true }),
+  closeSearchModal: () => set({ searchModalOpen: false }),
 }));
