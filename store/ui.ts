@@ -14,11 +14,13 @@ type UIState = {
   actionModalOnJailed: (() => void) | null;
   openActionModal: (movie: Movie, onJailed?: () => void) => void;
   closeActionModal: () => void;
-  hasStarted: boolean;
-setHasStarted: (hasStarted: boolean) => void;
-searchModalOpen: boolean;
+  searchModalOpen: boolean;
   openSearchModal: () => void;
   closeSearchModal: () => void;
+  hasStarted: boolean;
+  setHasStarted: (hasStarted: boolean) => void;
+  pendingSilentCheck: boolean;
+  setPendingSilentCheck: (value: boolean) => void;
 };
 
 export const useUIStore = create<UIState>()((set) => ({
@@ -32,9 +34,11 @@ export const useUIStore = create<UIState>()((set) => ({
   actionModalOnJailed: null,
   openActionModal: (movie, onJailed) => set({ actionModalMovie: movie, actionModalOnJailed: onJailed ?? null }),
   closeActionModal: () => set({ actionModalMovie: null, actionModalOnJailed: null }),
-  hasStarted: false,
-  setHasStarted: (hasStarted) => set({ hasStarted }),
   searchModalOpen: false,
   openSearchModal: () => set({ searchModalOpen: true }),
   closeSearchModal: () => set({ searchModalOpen: false }),
+  hasStarted: false,
+  setHasStarted: (hasStarted) => set({ hasStarted }),
+  pendingSilentCheck: false,
+  setPendingSilentCheck: (value) => set({ pendingSilentCheck: value }),
 }));

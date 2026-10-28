@@ -89,11 +89,7 @@ export default function StartupLoader({ onFinish }: StartupLoaderProps) {
                   globalScaleX.value = withSequence(
                     withTiming(1.15, { duration: 300 }), 
                     withTiming(0.92, { duration: 180 }), 
-                    withSpring(1, { damping: 20, stiffness: 600 }, (finished) => { 
-                      if (finished && onFinish) {
-                        runOnJS(onFinish)();
-                      }
-                    })
+                    withSpring(1, { damping: 20, stiffness: 600 })
                   );
 
                   globalScaleY.value = withSequence(
@@ -101,6 +97,13 @@ export default function StartupLoader({ onFinish }: StartupLoaderProps) {
                     withTiming(1.08, { duration: 180 }), 
                     withSpring(1, { damping: 20, stiffness: 600 })
                   );
+
+                  // Original spring is restored above, unchanged in feel — we just stop
+                  // *listening* for its (slow, asymptotic) finish callback and instead call
+                  // onFinish on a fixed clock, once the visible motion has settled enough.
+                  setTimeout(() => {
+                    if (onFinish) runOnJS(onFinish)();
+                  }, 2500);
                 }, 100);
               }
             });

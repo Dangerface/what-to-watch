@@ -78,7 +78,7 @@ export default function MoreLikeThisScreen() {
     <View style={styles.root}>
       <BackButton />
       <Text style={styles.header}>Ligner {title ?? 'denne film'}</Text>
-      <FlatList
+      <FlatList style={styles.content}
         data={movies}
         keyExtractor={(item) => String(item.id)}
         horizontal
@@ -102,11 +102,12 @@ export default function MoreLikeThisScreen() {
 }
 
 const styles = StyleSheet.create({
+  content:{top:50},
   root: { flex: 1, backgroundColor: '#E8B923' },
   backButton: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
   backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  header: { fontFamily: 'Gabarito-Bold', fontSize: 20, textAlign: 'center', marginTop: 60, marginBottom: 10 },
+  header: { position: 'absolute', top: 66, left: 60, right: 60, fontFamily: 'Gabarito-Bold', fontSize: 18, textAlign: 'center', zIndex: 5 },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
-  card: { alignItems: 'center', padding: 24, paddingTop: 60, backgroundColor: '#E8B923' },
+  card: { alignItems: 'center', padding: 24,  paddingTop: 60, backgroundColor: '#E8B923' },
   errorText: { fontSize: 16, textAlign: 'center' },
 });

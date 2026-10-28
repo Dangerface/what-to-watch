@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import LoopLoader from '../../components/LoopLoader';
 import { MovieDetailCard } from '../../components/MovieDetailCard';
 import { getMovieJail, getWatched, getWatchLater, releaseFromSoftJail } from '../../lib/storage';
 import { fetchMovieDetails, Movie } from '../../lib/tmdb';
@@ -59,7 +60,7 @@ export default function MovieDetailScreen() {
     })();
   }, [id, source]);
 
-  if (loading) return <View style={styles.center}><BackButton /><ActivityIndicator size="large" color="#1A1A1A" /></View>;
+  if (loading) return <View style={styles.center}><BackButton /><LoopLoader /></View>;
   if (error || movies.length === 0) return <View style={styles.center}><BackButton /><Text style={styles.errorText}>Kunne ikke hente film.</Text></View>;
 
   return (

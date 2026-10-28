@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View, ViewToken } from 'react-native';
+import { Dimensions, FlatList, Pressable, StyleSheet, Text, View, ViewToken } from 'react-native';
 import { LoopingLoader } from '../components/LoopingLoader';
+import LoopLoader from '../components/LoopLoader';
 import { MovieDetailCard } from '../components/MovieDetailCard';
 import { ResultsFeed } from '../lib/resultsFeed';
 import { getExcludeWatchedMovies, getMovieJailIds, getSoftJailIds, getWatchedIds } from '../lib/storage';
@@ -128,7 +129,7 @@ export default function ResultsScreen() {
   }, []);
 
   if (loading) {
-    return <View style={styles.center}><BackButton /><ActivityIndicator size="large" color="#1A1A1A" /></View>;
+    return <View style={styles.center}><BackButton /><LoopLoader /></View>;
   }
 
   if (error) {

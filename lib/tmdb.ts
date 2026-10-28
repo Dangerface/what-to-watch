@@ -303,17 +303,18 @@ export async function fetchSimilarPage(movieId: number, page: number): Promise<M
   const data = await res.json();
   return { movies: data.results as Movie[], totalPages: Math.min(data.total_pages ?? 0, 500) };
 }
-export async function searchMovies(query: string): Promise<Movie[]> {
+export async function searchMovies(query: string, page: number = 1): Promise<{ movies: Movie[]; totalPages: number }> {
   const params = new URLSearchParams({
     api_key: process.env.EXPO_PUBLIC_TMDB_API_KEY!,
     language: 'en-US',
     query,
     include_adult: 'false',
+    page: String(page),
   });
   const res = await fetch(`${TMDB_BASE_URL}/search/movie?${params.toString()}`);
   if (!res.ok) throw new Error(`TMDb fejl: ${res.status}`);
   const data = await res.json();
-  return data.results as Movie[];
+  return { movies: data.results as Movie[], totalPages: Math.min(data.total_pages ?? 1, 500) };
 }
 
 export async function fetchMovieDetails(movieId: number): Promise<Movie> {
@@ -364,4 +365,51 @@ export async function fetchMovieTrailer(movieId: number): Promise<MovieTrailer |
     videos.find((v) => v.site === 'YouTube' && v.type === 'Trailer') ??
     null;
   return trailer ? { key: trailer.key, name: trailer.name } : null;
+}
+
+export type MovieCreditsAndKeywords = {
+  director: CrewMember | null;
+  cast: CastMember[];
+  keywordIds: number[];
+};
+
+export async function fetchMovieCreditsAndKeywords(movieId: number): Promise<MovieCreditsAndKeywords> {
+  const res = await fetch(
+    `${TMDB_BASE_URL}/movie/${movieId}?api_key=${process.env.EXPO_PUBLIC_TMDB_API_KEY}&language=en-US&append_to_response=credits,keywords`
+  );
+  if (!res.ok) return { director: null, cast: [], keywordIds: [] };
+  const data = await res.json();
+  const director = (data.credits?.crew ?? []).find((c: any) => c.job === 'Director') ?? null;
+  const cast = (data.credits?.cast ?? []).slice(0, 15).map((c: any) => ({
+    id: c.id,
+    name: c.name,
+    character: c.character,
+    profile_path: c.profile_path,
+  }));
+  const keywordIds = (data.keywords?.keywords ?? []).map((k: any) => k.id);
+  return { director, cast, keywordIds };
+}
+export async function discoverMoviesByKeywords(keywordIds: number[], page: number): Promise<{ movies: Movie[]; totalPages: number }> {
+  const params = new URLSearchParams({
+    api_key: process.env.EXPO_PUBLIC_TMDB_API_KEY!,
+    language: 'en-US',
+    page: String(page),
+    with_keywords: keywordIds.join('|'),
+    sort_by: 'vote_average.desc',
+    'vote_count.gte': '50',
+  });
+  const res = await fetch(`${TMDB_BASE_URL}/discover/movie?${params.toString()}`);
+  if (!res.ok) throw new Error(`TMDb fejl: ${res.status}`);
+  const data = await res.json();
+  return { movies: data.results as Movie[], totalPages: Math.min(data.total_pages ?? 1, 500) };
+}
+
+export function computeSharedKeywordIds(keywordSets: number[][], minSeedCount: number): number[] {
+  const counts: Record<number, number> = {};
+  for (const keywords of keywordSets) {
+    for (const k of new Set(keywords)) counts[k] = (counts[k] ?? 0) + 1;
+  }
+  return Object.entries(counts)
+    .filter(([, count]) => count >= minSeedCount)
+    .map(([id]) => Number(id));
 }

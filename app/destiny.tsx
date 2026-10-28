@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Easing, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import {
   CAROUSEL_HEIGHT,
   CAROUSEL_SNAP_INTERVAL,
@@ -14,6 +14,7 @@ import {
 } from '../components/DestinyCarousel';
 import { DestinyReveal } from '../components/DestinyReveal';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
+import LoopLoader from '../components/LoopLoader';
 import { getDestinyCandidates, markDestinyShown } from '../lib/destiny';
 import {
   DESTINY_HEADING_HEIGHT,
@@ -284,7 +285,7 @@ export default function DestinyScreen() {
   if (state === 'checking' || state === 'loading-pool' || state === 'revealing') {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#1A1A1A" />
+        <LoopLoader />
       </View>
     );
   }

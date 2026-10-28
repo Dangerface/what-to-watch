@@ -1,7 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { popularityAdjustedScore, weightedShuffle } from './scoring';
 import { DestinyPool, DestinyPoolEntry, getDestinyPool, getMovieJailIds, getWatched, saveDestinyPool } from './storage';
-import { fetchRecommendationsPage, fetchSimilarPage, Movie } from './tmdb';
+import {
+  computeSharedKeywordIds,
+  discoverMoviesByKeywords,
+  fetchMovieCreditsAndKeywords,
+  fetchRecommendationsPage,
+  fetchSimilarPage,
+  Movie,
+} from './tmdb';
 
 const MAX_SEEDS = 6;
 const MIN_RATING_FOR_SEED = 8;
@@ -14,7 +21,9 @@ const MIN_VOTE_AVERAGE = 5.5;
 const RECENT_AVOID_COUNT = 5;
 const DESTINY_RECENT_KEY = 'destinyRecentlyShown';
 const POOL_MAX_AGE_MS = 6 * 60 * 60 * 1000;
-const POOL_VERSION = 5;
+const POOL_VERSION = 6;
+const BASE_PAGES_PER_SEED = 3; // solution 1: more pages per pick
+const KEYWORD_SUPPLEMENT_PAGES = 2; // solution 3: broader discover by shared keywords
 
 export type DestinyResult =
   | { status: 'insufficient-seeds'; seedCount: number; required: number }
@@ -55,12 +64,37 @@ async function fetchCandidatesForSeeds(
   }
 }
 
+async function fetchKeywordSupplement(seedMovieIds: number[], excludedIds: Set<number>, target: CandidateMap): Promise<void> {
+  const seedKeywordData = await Promise.all(seedMovieIds.map((id) => fetchMovieCreditsAndKeywords(id)));
+  const sharedKeywords = computeSharedKeywordIds(
+    seedKeywordData.map((d) => d.keywordIds),
+    Math.min(2, seedMovieIds.length)
+  );
+  if (sharedKeywords.length === 0) return;
+
+  for (let page = 1; page <= KEYWORD_SUPPLEMENT_PAGES; page++) {
+    const { movies } = await discoverMoviesByKeywords(sharedKeywords, page);
+    for (const movie of movies) {
+      if (excludedIds.has(movie.id) || seedMovieIds.includes(movie.id)) continue;
+      if (!passesQualityBar(movie)) continue;
+      const existing = target.get(movie.id);
+      if (existing) existing.count += 1;
+      else target.set(movie.id, { movie, count: 1 });
+    }
+  }
+}
+
 async function buildPool(seedMovieIds: number[], excludedIds: Set<number>): Promise<DestinyPoolEntry[]> {
   const candidateSeedCounts: CandidateMap = new Map();
 
-  await fetchCandidatesForSeeds(seedMovieIds, excludedIds, 1, candidateSeedCounts);
+  for (let page = 1; page <= BASE_PAGES_PER_SEED; page++) {
+    await fetchCandidatesForSeeds(seedMovieIds, excludedIds, page, candidateSeedCounts);
+  }
+
+  await fetchKeywordSupplement(seedMovieIds, excludedIds, candidateSeedCounts);
+
   if (candidateSeedCounts.size < MIN_POOL_SIZE_TARGET) {
-    await fetchCandidatesForSeeds(seedMovieIds, excludedIds, 2, candidateSeedCounts);
+    await fetchCandidatesForSeeds(seedMovieIds, excludedIds, BASE_PAGES_PER_SEED + 1, candidateSeedCounts);
   }
 
   const entries: DestinyPoolEntry[] = Array.from(candidateSeedCounts.values()).map(({ movie, count }) => ({
@@ -128,7 +162,6 @@ export async function getDestinyCandidates(forceRefresh = false): Promise<Destin
   const notRecentlyShown = freshEntries.filter((e) => !recentlyShown.has(e.movie.id));
   if (notRecentlyShown.length > 0) freshEntries = notRecentlyShown;
 
-  // Different subset and order every visit, still biased toward better matches.
   const shuffled = weightedShuffle(
     freshEntries,
     (e) => popularityAdjustedScore(e.movie.vote_average, e.movie.vote_count) * (1 + e.seedCount)

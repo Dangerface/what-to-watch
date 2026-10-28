@@ -10,10 +10,15 @@ type Props = {
   action?: ReactNode;
   source?: 'watchlist' | 'jail' | 'watched';
   onBeforeNavigate?: () => void;
+  onPress?: () => void; // when set, completely replaces the default router navigation
 };
 
-export function MovieListRow({ movie, extra, action, source, onBeforeNavigate }: Props) {
+export function MovieListRow({ movie, extra, action, source, onBeforeNavigate, onPress }: Props) {
   const handlePress = () => {
+    if (onPress) {
+      onPress();
+      return;
+    }
     onBeforeNavigate?.();
     router.push({
       pathname: '/movie/[id]',

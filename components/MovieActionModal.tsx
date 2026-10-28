@@ -210,7 +210,7 @@ export function MovieActionModal({ movie, visible, onClose, onJailed }: Props) {
 }
 
 const styles = StyleSheet.create({
-  root: { justifyContent: 'flex-end', zIndex: 40, backgroundColor: 'rgba(0,0,0,0.35)' },
+  root: { justifyContent: 'flex-end', zIndex: 60, backgroundColor: 'rgba(0,0,0,0.35)' },
   sheet: { backgroundColor: '#E8B923', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingTop: 12, paddingBottom: 44, alignItems: 'center' },
   handle: { width: 40, height: 5, borderRadius: 3, backgroundColor: 'rgba(0,0,0,0.2)', marginBottom: 16, alignSelf: 'center' },
   title: { fontFamily: 'Gabarito-Bold', fontSize: 18, textAlign: 'center' },

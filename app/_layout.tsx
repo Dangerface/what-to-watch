@@ -9,6 +9,7 @@ import { GlobalTabBar } from '../components/GlobalTabBar';
 import { MovieActionModal } from '../components/MovieActionModal';
 import { SearchModal } from '../components/SearchModal';
 import { SettingsOverlay } from '../components/SettingsOverlay';
+import { SplashOverlay } from '../components/SplashOverlay';
 import { useUIStore } from '../store/ui';
 
 SplashScreen.preventAutoHideAsync();
@@ -29,7 +30,7 @@ export default function RootLayout() {
   const closeActionModal = useUIStore((state) => state.closeActionModal);
   const searchModalOpen = useUIStore((state) => state.searchModalOpen);
   const closeSearchModal = useUIStore((state) => state.closeSearchModal);
-  const setHasStarted = useUIStore((s) => s.setHasStarted);
+  const setPendingSilentCheck = useUIStore((s) => s.setPendingSilentCheck);
   const appStateRef = useRef(AppState.currentState);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function RootLayout() {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextState: AppStateStatus) => {
       if (appStateRef.current.match(/inactive|background/) && nextState === 'active') {
-        setHasStarted(false);
+        setPendingSilentCheck(true);
       }
       appStateRef.current = nextState;
     });
@@ -61,6 +62,7 @@ export default function RootLayout() {
       <SettingsOverlay visible={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <MovieActionModal movie={actionModalMovie} visible={!!actionModalMovie} onClose={closeActionModal} onJailed={actionModalOnJailed} />
       <SearchModal visible={searchModalOpen} onClose={closeSearchModal} />
+      <SplashOverlay />
     </View>
   );
 }

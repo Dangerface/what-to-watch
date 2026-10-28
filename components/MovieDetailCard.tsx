@@ -2,14 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { countryFlag } from '../lib/format';
 import {
   CastMember, CrewMember, fetchMovieCredits, fetchMovieProviders, fetchMovieTrailer,
   Movie, MovieTrailer, WatchProvider,
 } from '../lib/tmdb';
 import { useUIStore } from '../store/ui';
 import { CollapsibleSection } from './CollapsibleSection';
-import { TAB_BAR_CLEARANCE } from './GlobalTabBar';
 
 function ActorCard({ actor }: { actor: CastMember }) {
   return (
@@ -27,9 +25,15 @@ function ActorCard({ actor }: { actor: CastMember }) {
   );
 }
 
-type Props = { movie: Movie; width: number; onJailed?: () => void };
+type Props = {
+  movie: Movie;
+  width: number;
+  onJailed?: () => void;
+  topPadding?: number;
+  onMoreLikeThis?: (movie: Movie) => void; // når sat, erstatter den navigationen til /more-like-this
+};
 
-export function MovieDetailCard({ movie, width, onJailed }: Props) {
+export function MovieDetailCard({ movie, width, onJailed, topPadding = 70, onMoreLikeThis }: Props) {
   const [director, setDirector] = useState<CrewMember | null>(null);
   const [cast, setCast] = useState<CastMember[]>([]);
   const [trailer, setTrailer] = useState<MovieTrailer | null>(null);
@@ -49,7 +53,7 @@ export function MovieDetailCard({ movie, width, onJailed }: Props) {
   }, [movie.id]);
 
   return (
-    <ScrollView style={{ width }} contentContainerStyle={styles.content}>
+    <ScrollView style={{ width }} contentContainerStyle={[styles.content, { paddingTop: topPadding }]}>
       {movie.poster_path && (
         <Image source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} style={styles.poster} />
       )}
@@ -57,10 +61,7 @@ export function MovieDetailCard({ movie, width, onJailed }: Props) {
       <View style={styles.body}>
         <Text style={styles.title}>{movie.title}</Text>
         <View style={styles.metaRow}>
-          <Text style={styles.meta}>
-            {movie.release_date?.slice(0, 4)} · ⭐ {movie.vote_average.toFixed(1)}
-            {movie.origin_country?.[0] ? ` · ${countryFlag(movie.origin_country[0])}` : ''}
-          </Text>
+          <Text style={styles.meta}>{movie.release_date?.slice(0, 4)} · ⭐ {movie.vote_average.toFixed(1)}</Text>
           {providers.slice(0, 5).map((p) => p.logo_path && (
             <Image key={p.provider_id} source={{ uri: `https://image.tmdb.org/t/p/w45${p.logo_path}` }} style={styles.providerIcon} />
           ))}
@@ -68,7 +69,11 @@ export function MovieDetailCard({ movie, width, onJailed }: Props) {
 
         <Pressable
           style={styles.moreLikeThisButton}
-          onPress={() => router.push({ pathname: '/more-like-this', params: { movieId: String(movie.id), title: movie.title } } as any)}
+          onPress={() =>
+            onMoreLikeThis
+              ? onMoreLikeThis(movie)
+              : router.push({ pathname: '/more-like-this', params: { movieId: String(movie.id), title: movie.title } } as any)
+          }
         >
           <Ionicons name="film-outline" size={16} color="#1A1A1A" />
           <Text style={styles.moreLikeThisText}>More like this</Text>
@@ -111,7 +116,7 @@ export function MovieDetailCard({ movie, width, onJailed }: Props) {
 }
 
 const styles = StyleSheet.create({
-  content: { paddingTop: 70, paddingBottom: TAB_BAR_CLEARANCE + 20, alignItems: 'center' },
+  content: { paddingBottom: 40, alignItems: 'center' },
   poster: { width: 200, height: 300, borderRadius: 16, marginBottom: 16 },
   body: { width: '100%', paddingHorizontal: 20, alignItems: 'center' },
   title: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', marginBottom: 8 },
