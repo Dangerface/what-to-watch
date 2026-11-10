@@ -1,11 +1,13 @@
 import { Feather, Ionicons } from '@expo/vector-icons';
-import { router, useFocusEffect } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackButton } from '../components/BackButton';
 import { EditActionButton } from '../components/EditActionButton';
 import { EditToggleButton } from '../components/EditToggleButton';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
 import { MovieListRow } from '../components/MovieListRow';
+import { ScreenBackground } from '../components/ScreenBackground';
 import {
   getMovieJail,
   getSoftJail,
@@ -15,15 +17,8 @@ import {
   releaseFromSoftJail,
   SoftJailEntry,
 } from '../lib/storage';
+import { colors, spacing, typography } from '../lib/theme';
 import { Movie } from '../lib/tmdb';
-
-function BackButton() {
-  return (
-    <Pressable onPress={() => router.back()} style={styles.backButton} hitSlop={12}>
-      <Text style={styles.backArrow}>←</Text>
-    </Pressable>
-  );
-}
 
 function formatRemaining(ms: number): string {
   const days = Math.floor(ms / (24 * 60 * 60 * 1000));
@@ -42,7 +37,7 @@ function JailRow({ movie, editMode, onRelease }: { movie: Movie; editMode: boole
       </View>
       <EditActionButton visible={editMode}>
         <Pressable onPress={() => onRelease(movie.id)} hitSlop={8}>
-          <Ionicons name="close-circle" size={28} color="#1A1A1A" />
+          <Ionicons name="close-circle" size={28} color={colors.ink} />
         </Pressable>
       </EditActionButton>
     </View>
@@ -68,7 +63,7 @@ function SoftJailRow({
       </View>
       <EditActionButton visible={editMode}>
         <Pressable onPress={() => onRelease(entry.movie.id)} hitSlop={8}>
-          <Feather name="x" size={28} color="#1A1A1A" />
+          <Feather name="x" size={28} color={colors.ink} />
         </Pressable>
       </EditActionButton>
     </View>
@@ -113,6 +108,7 @@ export default function MovieJailScreen() {
 
   return (
     <View style={styles.root}>
+      <ScreenBackground />
       <BackButton />
       <EditToggleButton editMode={editMode} onPress={() => setEditMode((prev) => !prev)} />
       <Text style={styles.title}>Movie Jail</Text>
@@ -152,19 +148,17 @@ export default function MovieJailScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  backButton: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  title: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', paddingTop: 110, marginBottom: 16, paddingHorizontal: 16 },
-  tabRow: { flexDirection: 'row', paddingHorizontal: 16, gap: 10, marginBottom: 16 },
-  tabButton: { flex: 1, borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 18, paddingVertical: 10, alignItems: 'center' },
-  tabButtonActive: { backgroundColor: '#1A1A1A' },
-  tabText: { fontSize: 14, fontWeight: '600', color: '#1A1A1A' },
-  tabTextActive: { color: '#E8B923' },
-  emptyWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 },
-  emptyText: { fontSize: 15, textAlign: 'center', color: '#1A1A1A' },
-  listContent: { paddingHorizontal: 16, paddingBottom: TAB_BAR_CLEARANCE + 20 },
+  root: { flex: 1, backgroundColor: colors.background },
+  title: { ...typography.h2, textAlign: 'center', paddingTop: 110, marginBottom: spacing.lg, paddingHorizontal: spacing.lg },
+  tabRow: { flexDirection: 'row', paddingHorizontal: spacing.lg, gap: 10, marginBottom: spacing.lg },
+  tabButton: { flex: 1, borderWidth: 2, borderColor: colors.ink, borderRadius: 18, paddingVertical: 10, alignItems: 'center' },
+  tabButtonActive: { backgroundColor: colors.ink },
+  tabText: { fontSize: 14, fontWeight: '600', color: colors.textPrimary },
+  tabTextActive: { color: colors.background },
+  emptyWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xxl },
+  emptyText: { ...typography.body, textAlign: 'center' },
+  listContent: { paddingHorizontal: spacing.lg, paddingBottom: TAB_BAR_CLEARANCE + 20 },
   rowOuter: { flexDirection: 'row', alignItems: 'center' },
   rowFlex: { flex: 1 },
-  remainingText: { fontSize: 12, color: '#7A5C00', fontWeight: '600' },
+  remainingText: { fontSize: 12, color: colors.textAccent, fontWeight: '600' }, // enkeltstående farve, ikke i theme endnu
 });

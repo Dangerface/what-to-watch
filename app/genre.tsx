@@ -1,9 +1,14 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Chip } from '../components/Chip';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
+import LoopLoader from '../components/LoopLoader';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getStepNumber, getTotalSteps } from '../lib/flow';
+import { colors, spacing, typography } from '../lib/theme';
 import { fetchGenres, Genre } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
 
@@ -23,41 +28,30 @@ export default function GenreScreen() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#1A1A1A" /></View>;
+  if (loading) return <View style={styles.center}><LoopLoader /></View>;
   if (error) return <View style={styles.center}><Text>Kunne ikke hente genrer.</Text></View>;
 
   return (
     <View style={styles.container}>
+      <ScreenBackground />
       <ScreenHeader step={step} totalSteps={totalSteps} />
       <Text style={styles.heading}>What genres do you like?</Text>
 
       <ScrollView contentContainerStyle={styles.chipWrap}>
-        {genres.map((genre) => {
-          const isSelected = genreIds.includes(genre.id);
-          return (
-            <Pressable key={genre.id} onPress={() => toggleGenre(genre.id)} style={[styles.chip, isSelected && styles.chipSelected]}>
-              <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>{genre.name}</Text>
-            </Pressable>
-          );
-        })}
+        {genres.map((genre) => (
+          <Chip key={genre.id} label={genre.name} selected={genreIds.includes(genre.id)} onPress={() => toggleGenre(genre.id)} />
+        ))}
       </ScrollView>
 
-      <Pressable style={styles.nextButton} onPress={() => router.push('/vibe')}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </Pressable>
+      <PrimaryButton label="Next" onPress={() => router.push('/vibe')} style={styles.nextButton} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', paddingHorizontal: 24 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923' },
-  heading: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', marginBottom: 20 },
+  container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.xxl },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background },
+  heading: { ...typography.h2, textAlign: 'center', marginBottom: spacing.xl },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center' },
-  chip: { borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 20, paddingVertical: 8, paddingHorizontal: 16, marginBottom: 10 },
-  chipSelected: { backgroundColor: '#1A1A1A' },
-  chipText: { fontSize: 15, color: '#1A1A1A', fontWeight: '600' },
-  chipTextSelected: { color: '#E8B923' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginTop: 20, marginBottom: TAB_BAR_CLEARANCE },
-  nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
+  nextButton: { marginTop: spacing.xl, marginBottom: TAB_BAR_CLEARANCE },
 });

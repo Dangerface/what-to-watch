@@ -1,32 +1,34 @@
 import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator, Animated, Dimensions, FlatList, Keyboard, PanResponder, Platform, Pressable, StyleSheet, Switch, Text, TextInput, View,
+  Animated, Dimensions, FlatList, Keyboard, Platform, Pressable, StyleSheet, Switch, Text, TextInput, View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { processBatched } from '../lib/batch';
 import { MoreLikeThisFeed } from '../lib/moreLikeThis';
 import { getSelectedProviderIds } from '../lib/storage';
+import { colors, radius, shadows, spacing, typography, zIndex } from '../lib/theme';
 import { DiscoverFilters, fetchMovieAvailableOnProviders, Movie, searchMovies } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
+import { GlassSurface } from './GlassSurface';
+import { InlineLoader } from './InlineLoader';
 import LoopLoader from './LoopLoader';
 import { MovieDetailCard } from './MovieDetailCard';
 import { MovieListRow } from './MovieListRow';
+import { Sheet, SheetHandle } from './Sheet';
 
 const MIN_QUERY_LENGTH = 3;
 const DEBOUNCE_MS = 1500;
 const VERIFY_BATCH_SIZE = 8;
 const MLT_BATCH_SIZE = 12;
 const SEARCH_BAR_KEYBOARD_GAP = 12;
-const SEARCH_BAR_HIDE_DISTANCE = 120; // enough to slide it fully below the sheet's clipped bottom edge, shadow included
+const SEARCH_BAR_HIDE_DISTANCE = 120; // nok til at skubbe søgefeltet helt ud af arkets afklippede bund, skygge inkluderet
 const SEARCH_BAR_REST_BOTTOM = 30;
 const DISMISS_THRESHOLD_FRACTION = 0.3;
 const PANEL_SLIDE_DURATION_MS = 300;
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-const SHEET_TOP_GAP = 20; // gap BELOW the safe area (notch / Dynamic Island), not from the screen edge
-const SHEET_HEIGHT = SCREEN_HEIGHT; // upper bound, only used as the off-screen offset
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const SHEET_TOP_GAP = 20; // afstand UNDER sikkerhedsområdet (notch / Dynamic Island), ikke fra skærmkanten
 const DRAG_ZONE_HEIGHT = 70;
 const ROW_HORIZONTAL_PADDING = 20;
 const CLOSE_KEYBOARD_BUTTON_SIZE = 40;
@@ -40,9 +42,6 @@ type ViewMode = 'results' | 'detail' | 'mlt';
 export function SearchModal({ visible, onClose }: Props) {
   const { familyFriendly, providerIds: sessionProviderIds, sourceType } = useSessionStore();
   const insets = useSafeAreaInsets();
-  const sheetHeight = SCREEN_HEIGHT - insets.top - SHEET_TOP_GAP;
-  const sheetHeightRef = useRef(sheetHeight);
-  sheetHeightRef.current = sheetHeight;
 
   const [query, setQuery] = useState('');
   const [onlyMyChannels, setOnlyMyChannels] = useState(false);
@@ -76,8 +75,6 @@ export function SearchModal({ visible, onClose }: Props) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchBarTranslateY = useRef(new Animated.Value(0)).current;
   const keyboardProgress = useRef(new Animated.Value(0)).current;
-  const overlayOpacity = useRef(new Animated.Value(0)).current;
-  const sheetTranslateY = useRef(new Animated.Value(SHEET_HEIGHT)).current;
 
   useEffect(() => {
     getSelectedProviderIds().then((saved) => {
@@ -85,11 +82,8 @@ export function SearchModal({ visible, onClose }: Props) {
     });
   }, []);
 
+  // Selve åbne/lukke-animationen ligger nu i <Sheet>; her nulstiller vi kun modalens eget indhold.
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(overlayOpacity, { toValue: visible ? 1 : 0, duration: 220, useNativeDriver: true }),
-      Animated.spring(sheetTranslateY, { toValue: visible ? 0 : SHEET_HEIGHT, useNativeDriver: true, friction: 9, tension: 60 }),
-    ]).start();
     if (visible) {
       searchBarHideY.setValue(0);
       setSearchBarEnabled(true);
@@ -102,23 +96,6 @@ export function SearchModal({ visible, onClose }: Props) {
       setMltMovies([]);
     }
   }, [visible]);
-
-  const dragPanResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dy) > 5 && Math.abs(g.dy) > Math.abs(g.dx),
-      onPanResponderMove: (_, g) => {
-        if (g.dy > 0) sheetTranslateY.setValue(g.dy);
-      },
-      onPanResponderRelease: (_, g) => {
-        if (g.dy > sheetHeightRef.current * DISMISS_THRESHOLD_FRACTION) {
-          onClose();
-        } else {
-          Animated.spring(sheetTranslateY, { toValue: 0, useNativeDriver: true, friction: 8, tension: 80 }).start();
-        }
-      },
-    })
-  ).current;
 
   useEffect(() => {
     const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
@@ -233,7 +210,7 @@ export function SearchModal({ visible, onClose }: Props) {
     Animated.timing(panelTranslateX, { toValue: x, duration: PANEL_SLIDE_DURATION_MS, useNativeDriver: true }).start(() => onDone?.());
   };
 
-    const hideSearchBar = () => {
+  const hideSearchBar = () => {
     setSearchBarEnabled(false);
     Animated.timing(searchBarHideY, { toValue: SEARCH_BAR_HIDE_DISTANCE, duration: 220, useNativeDriver: true }).start();
   };
@@ -255,7 +232,7 @@ export function SearchModal({ visible, onClose }: Props) {
   const backToResults = () => {
     slideTo(0, () => {
       setViewMode('results');
-      showSearchBar(); // only once the slide back has finished
+      showSearchBar(); // først når slidet tilbage er færdigt
     });
   };
 
@@ -320,205 +297,197 @@ export function SearchModal({ visible, onClose }: Props) {
   };
 
   return (
-    <View style={styles.root} pointerEvents={visible ? 'auto' : 'none'}>
-      <Animated.View style={[styles.backdrop, { opacity: overlayOpacity }]}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={handleCloseModal} />
-      </Animated.View>
+    <Sheet
+      visible={visible}
+      onClose={handleCloseModal}
+      zIndex={zIndex.searchModal}
+      dismissFraction={DISMISS_THRESHOLD_FRACTION}
+      sheetStyle={[styles.sheet, { top: insets.top + SHEET_TOP_GAP }]}
+    >
+      {(panHandlers) => (
+        <>
+          <View {...panHandlers}>
+            <SheetHandle marginBottom={spacing.xs} />
+          </View>
 
-      <Animated.View style={[styles.sheet, { top: insets.top + SHEET_TOP_GAP, transform: [{ translateY: sheetTranslateY }] }]}>
-        <View {...dragPanResponder.panHandlers}>
-          <View style={styles.handle} />
-        </View>
-
-        {viewMode !== 'results' && (
-          <Pressable onPress={handleBack} style={styles.backButton} hitSlop={12}>
-            <Text style={styles.backArrow}>←</Text>
+          {viewMode !== 'results' && (
+            <Pressable onPress={handleBack} style={styles.backButton} hitSlop={12}>
+              <Text style={styles.backArrow}>←</Text>
+            </Pressable>
+          )}
+          <Pressable onPress={handleCloseModal} style={styles.doneButton} hitSlop={12}>
+            <Text style={styles.doneButtonText}>Done</Text>
           </Pressable>
-        )}
-        <Pressable onPress={handleCloseModal} style={styles.doneButton} hitSlop={12}>
-          <Text style={styles.doneButtonText}>Done</Text>
-        </Pressable>
 
-        <View style={styles.dragZone} {...dragPanResponder.panHandlers} />
+          <View style={styles.dragZone} {...panHandlers} />
 
-        <View style={styles.panelViewport}>
-          <Animated.View style={[styles.panelRow, { transform: [{ translateX: panelTranslateX }] }]}>
-            {/* Panel 1: søgeresultater */}
-            <View style={styles.panel}>
-              <View style={styles.resultsContent}>
-                <View style={styles.toggleRow}>
-                  <Text style={styles.toggleLabel}>Only my streaming channels</Text>
-                  <Switch value={onlyMyChannels} onValueChange={setOnlyMyChannels} />
+          <View style={styles.panelViewport}>
+            <Animated.View style={[styles.panelRow, { transform: [{ translateX: panelTranslateX }] }]}>
+              {/* Panel 1: søgeresultater */}
+              <View style={styles.panel}>
+                <View style={styles.resultsContent}>
+                  <View style={styles.toggleRow}>
+                    <Text style={styles.toggleLabel}>Only my streaming channels</Text>
+                    <Switch value={onlyMyChannels} onValueChange={setOnlyMyChannels} />
+                  </View>
+                  <View style={styles.separator} />
+
+                  {isBusy ? (
+                    <InlineLoader style={styles.loading} />
+                  ) : showEmptyState ? (
+                    <Text style={styles.emptyText}>No results</Text>
+                  ) : (
+                    <FlatList
+                      data={displayedResults}
+                      keyExtractor={(item) => String(item.id)}
+                      renderItem={({ item, index }) => <MovieListRow movie={item} onPress={() => openDetail(index)} />}
+                      contentContainerStyle={styles.listContent}
+                      keyboardShouldPersistTaps="handled"
+                      onEndReachedThreshold={0.2}
+                      onEndReached={loadMoreResults}
+                      ListFooterComponent={loadingMore ? <InlineLoader style={{ marginVertical: 16 }} /> : null}
+                    />
+                  )}
                 </View>
-                <View style={styles.separator} />
-
-                {isBusy ? (
-                  <ActivityIndicator style={styles.loading} color="#1A1A1A" />
-                ) : showEmptyState ? (
-                  <Text style={styles.emptyText}>No results</Text>
-                ) : (
-                  <FlatList
-                    data={displayedResults}
-                    keyExtractor={(item) => String(item.id)}
-                    renderItem={({ item, index }) => <MovieListRow movie={item} onPress={() => openDetail(index)} />}
-                    contentContainerStyle={styles.listContent}
-                    keyboardShouldPersistTaps="handled"
-                    onEndReachedThreshold={0.2}
-                    onEndReached={loadMoreResults}
-                    ListFooterComponent={loadingMore ? <ActivityIndicator style={{ marginVertical: 16 }} color="#1A1A1A" /> : null}
-                  />
-                )}
               </View>
-            </View>
 
-            {/* Panel 2: filmkort, swipebart på tværs af søgeresultaterne */}
-            <View style={styles.panel}>
-              <FlatList
-                key={detailOpenToken}
-                data={displayedResults}
-                keyExtractor={(item) => String(item.id)}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                initialScrollIndex={detailIndex}
-                getItemLayout={(_, index) => ({ length: SCREEN_WIDTH, offset: SCREEN_WIDTH * index, index })}
-                renderItem={({ item }) => (
-                  <MovieDetailCard
-                    movie={item}
-                    width={SCREEN_WIDTH}
-                    topPadding={0}
-                    onJailed={backToResults}
-                    onMoreLikeThis={openMoreLikeThis}
-                  />
-                )}
-              />
-            </View>
-
-            {/* Panel 3: "more like this", swipebart */}
-            <View style={styles.panel}>
-              <Text style={styles.mltHeader} numberOfLines={1}>Ligner {mltTitle}</Text>
-              {mltLoading ? (
-                <LoopLoader />
-              ) : mltMovies.length === 0 ? (
-                <View style={styles.centerMessage}>
-                  <Text style={styles.emptyText}>Fandt ingen lignende film der matcher jeres filtre.</Text>
-                </View>
-              ) : (
+              {/* Panel 2: filmkort, swipebart på tværs af søgeresultaterne */}
+              <View style={styles.panel}>
                 <FlatList
-                  key={mltToken}
-                  data={mltMovies}
+                  key={detailOpenToken}
+                  data={displayedResults}
                   keyExtractor={(item) => String(item.id)}
                   horizontal
                   pagingEnabled
                   showsHorizontalScrollIndicator={false}
+                  initialScrollIndex={detailIndex}
                   getItemLayout={(_, index) => ({ length: SCREEN_WIDTH, offset: SCREEN_WIDTH * index, index })}
-                  onEndReachedThreshold={0.5}
-                  onEndReached={loadMoreMlt}
                   renderItem={({ item }) => (
                     <MovieDetailCard
                       movie={item}
                       width={SCREEN_WIDTH}
                       topPadding={0}
-                      onJailed={() => setMltMovies((prev) => prev.filter((m) => m.id !== item.id))}
+                      onJailed={backToResults}
                       onMoreLikeThis={openMoreLikeThis}
                     />
                   )}
-                  ListFooterComponent={
-                    mltExhausted ? (
-                      <View style={[styles.centerMessage, { width: SCREEN_WIDTH }]}>
-                        <Text style={styles.emptyText}>Ikke flere lignende film at vise.</Text>
-                      </View>
-                    ) : null
-                  }
                 />
-              )}
-            </View>
-          </Animated.View>
-        </View>
+              </View>
 
-        <Animated.View
-          style={[styles.searchBarRow, { transform: [{ translateY: searchBarTranslateY }, { translateY: searchBarHideY }] }]}
-          pointerEvents={searchBarEnabled ? 'auto' : 'none'}
-        >
-          <Animated.View style={[styles.searchInputOuter, { width: searchInputWidth }]}>
-            <BlurView intensity={80} tint="light" style={styles.searchInputWrapper}>
-              <Ionicons name="search" size={18} color="#4A4A4A" style={styles.searchIcon} />
-              <TextInput
-                ref={inputRef}
-                value={query}
-                onChangeText={handleChangeText}
-                placeholder="Search movies"
-                placeholderTextColor="#6B6B6B"
-                style={styles.searchInput}
-                returnKeyType="search"
-                editable={searchBarEnabled}
-              />
-              {query.length > 0 && (
-                <Pressable onPress={handleClearQuery} style={styles.clearButton} hitSlop={10}>
-                  <Ionicons name="close" size={14} color="#FFFFFF" />
-                </Pressable>
-              )}
-            </BlurView>
-          </Animated.View>
+              {/* Panel 3: "more like this", swipebart */}
+              <View style={styles.panel}>
+                <Text style={styles.mltHeader} numberOfLines={1}>Ligner {mltTitle}</Text>
+                {mltLoading ? (
+                  <LoopLoader />
+                ) : mltMovies.length === 0 ? (
+                  <View style={styles.centerMessage}>
+                    <Text style={styles.emptyText}>Fandt ingen lignende film der matcher jeres filtre.</Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    key={mltToken}
+                    data={mltMovies}
+                    keyExtractor={(item) => String(item.id)}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    getItemLayout={(_, index) => ({ length: SCREEN_WIDTH, offset: SCREEN_WIDTH * index, index })}
+                    onEndReachedThreshold={0.5}
+                    onEndReached={loadMoreMlt}
+                    renderItem={({ item }) => (
+                      <MovieDetailCard
+                        movie={item}
+                        width={SCREEN_WIDTH}
+                        topPadding={0}
+                        onJailed={() => setMltMovies((prev) => prev.filter((m) => m.id !== item.id))}
+                        onMoreLikeThis={openMoreLikeThis}
+                      />
+                    )}
+                    ListFooterComponent={
+                      mltExhausted ? (
+                        <View style={[styles.centerMessage, { width: SCREEN_WIDTH }]}>
+                          <Text style={styles.emptyText}>Ikke flere lignende film at vise.</Text>
+                        </View>
+                      ) : null
+                    }
+                  />
+                )}
+              </View>
+            </Animated.View>
+          </View>
 
           <Animated.View
-            style={[styles.closeKeyboardButtonOuter, { opacity: closeKeyboardButtonOpacity, transform: [{ scale: closeKeyboardButtonScale }] }]}
-            pointerEvents={keyboardVisible ? 'auto' : 'none'}
+            style={[styles.searchBarRow, { transform: [{ translateY: searchBarTranslateY }, { translateY: searchBarHideY }] }]}
+            pointerEvents={searchBarEnabled ? 'auto' : 'none'}
           >
-            <Pressable onPress={handleCloseKeyboard} style={{ flex: 1 }} hitSlop={10}>
-              <BlurView intensity={80} tint="light" style={styles.closeKeyboardButton}>
-                <Ionicons name="close" size={22} color="#1A1A1A" />
-              </BlurView>
-            </Pressable>
+            <Animated.View style={[styles.searchInputOuter, { width: searchInputWidth }]}>
+              <GlassSurface strength="strong" style={styles.searchInputWrapper}>
+                {/* #4A4A4A og #6B6B6B er enkeltstående grå nuancer, ikke i theme endnu. */}
+                <Ionicons name="search" size={18} color={colors.textSecondary} style={styles.searchIcon} />
+                <TextInput
+                  ref={inputRef}
+                  value={query}
+                  onChangeText={handleChangeText}
+                  placeholder="Search movies"
+                  placeholderTextColor={colors.textMuted}
+                  style={styles.searchInput}
+                  returnKeyType="search"
+                  editable={searchBarEnabled}
+                />
+                {query.length > 0 && (
+                  <Pressable onPress={handleClearQuery} style={styles.clearButton} hitSlop={10}>
+                    <Ionicons name="close" size={14} color={colors.textOnDark} />
+                  </Pressable>
+                )}
+              </GlassSurface>
+            </Animated.View>
+
+            <Animated.View
+              style={[styles.closeKeyboardButtonOuter, { opacity: closeKeyboardButtonOpacity, transform: [{ scale: closeKeyboardButtonScale }] }]}
+              pointerEvents={keyboardVisible ? 'auto' : 'none'}
+            >
+              <Pressable onPress={handleCloseKeyboard} style={{ flex: 1 }} hitSlop={10}>
+                <GlassSurface strength="strong" style={styles.closeKeyboardButton}>
+                  <Ionicons name="close" size={22} color={colors.ink} />
+                </GlassSurface>
+              </Pressable>
+            </Animated.View>
           </Animated.View>
-        </Animated.View>
-      </Animated.View>
-    </View>
+        </>
+      )}
+    </Sheet>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { ...StyleSheet.absoluteFill, zIndex: 50 },
-  backdrop: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(0,0,0,0.35)', zIndex: 49 },
-  sheet: {
-    position: 'absolute', left: 0, right: 0, bottom: 0,
-    backgroundColor: '#E8B923', borderTopLeftRadius: 28, borderTopRightRadius: 28,
-    paddingTop: 12, zIndex: 50, overflow: 'hidden',
-  },
-  handle: { width: 40, height: 5, borderRadius: 3, backgroundColor: 'rgba(0,0,0,0.2)', alignSelf: 'center', marginBottom: 4 },
-  backButton: { position: 'absolute', top: 16, left: 20, zIndex: 20, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  doneButton: { position: 'absolute', top: 16, right: 20, zIndex: 20, padding: 4 },
-  doneButtonText: { fontSize: 16, fontWeight: '700', color: '#1A1A1A' },
+  sheet: { paddingTop: spacing.md, overflow: 'hidden' },
+  backButton: { position: 'absolute', top: spacing.lg, left: spacing.xl, zIndex: zIndex.floatingControl, padding: spacing.xs },
+  backArrow: { fontSize: 26, fontWeight: 'bold', color: colors.textPrimary },
+  doneButton: { position: 'absolute', top: spacing.lg, right: spacing.xl, zIndex: zIndex.floatingControl, padding: spacing.xs },
+  doneButtonText: { fontSize: 16, fontWeight: '700', color: colors.textPrimary },
   dragZone: { height: DRAG_ZONE_HEIGHT },
   panelViewport: { flex: 1, overflow: 'hidden' },
   panelRow: { flexDirection: 'row', width: SCREEN_WIDTH * 3, flex: 1 },
   panel: { width: SCREEN_WIDTH },
-  resultsContent: { flex: 1, paddingHorizontal: 20 },
-  mltHeader: { fontFamily: 'Gabarito-Bold', fontSize: 18, textAlign: 'center', paddingHorizontal: 20, marginBottom: 4 },
+  resultsContent: { flex: 1, paddingHorizontal: spacing.xl },
+  mltHeader: { ...typography.h4, textAlign: 'center', paddingHorizontal: spacing.xl, marginBottom: spacing.xs },
   centerMessage: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 30 },
   toggleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
-  toggleLabel: { fontSize: 16, fontWeight: '600', color: '#1A1A1A' },
-  separator: { height: 1, backgroundColor: 'rgba(26,26,26,0.15)', marginBottom: 16 },
-  loading: { marginTop: 24 },
-  emptyText: { fontSize: 15, color: '#5A5A5A', textAlign: 'center' },
+  toggleLabel: { fontSize: 16, fontWeight: '600', color: colors.textPrimary },
+  separator: { height: 1, backgroundColor: colors.divider, marginBottom: spacing.lg },
+  loading: { marginTop: spacing.xxl },
+  emptyText: { ...typography.body, color: colors.textSecondary, textAlign: 'center' },
   listContent: { paddingBottom: 100 },
   searchBarRow: {
     position: 'absolute', left: 0, right: 0, bottom: SEARCH_BAR_REST_BOTTOM,
     flexDirection: 'row', alignItems: 'center', paddingHorizontal: ROW_HORIZONTAL_PADDING, gap: ROW_GAP,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.18, shadowRadius: 14, elevation: 10,
+    ...shadows.floating,
   },
-  searchInputOuter: { height: 46, borderRadius: 24, overflow: 'hidden' },
-  searchInputWrapper: {
-    flex: 1, flexDirection: 'row', alignItems: 'center', borderRadius: 24, paddingHorizontal: 14, overflow: 'hidden',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.3)',
-  },
+  searchInputOuter: { height: 46, borderRadius: radius.field, overflow: 'hidden' },
+  searchInputWrapper: { flex: 1, flexDirection: 'row', alignItems: 'center', borderRadius: radius.field, paddingHorizontal: 14 },
   searchIcon: { marginRight: 6 },
-  searchInput: { flex: 1, fontSize: 16, color: '#1A1A1A' },
-  clearButton: { width: 20, height: 20, borderRadius: 10, backgroundColor: '#1A1A1A', justifyContent: 'center', alignItems: 'center', marginLeft: 6 },
+  searchInput: { flex: 1, fontSize: 16, color: colors.textPrimary },
+  clearButton: { width: 20, height: 20, borderRadius: 10, backgroundColor: colors.ink, justifyContent: 'center', alignItems: 'center', marginLeft: 6 },
   closeKeyboardButtonOuter: { width: CLOSE_KEYBOARD_BUTTON_SIZE, height: CLOSE_KEYBOARD_BUTTON_SIZE },
-  closeKeyboardButton: {
-    flex: 1, borderRadius: CLOSE_KEYBOARD_BUTTON_SIZE / 2, overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.3)',
-  },
+  closeKeyboardButton: { flex: 1, borderRadius: CLOSE_KEYBOARD_BUTTON_SIZE / 2, justifyContent: 'center', alignItems: 'center' },
 });

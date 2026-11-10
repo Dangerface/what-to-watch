@@ -2,14 +2,16 @@ import { router } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import {
-    DESTINY_HEADING_HEIGHT,
-    DESTINY_HEADING_MARGIN,
-    DESTINY_TOP_PADDING,
-    SLOT_GAP,
-    SLOT_HEIGHT,
-    SLOT_WIDTH,
+  DESTINY_HEADING_HEIGHT,
+  DESTINY_HEADING_MARGIN,
+  DESTINY_TOP_PADDING,
+  SLOT_GAP,
+  SLOT_HEIGHT,
+  SLOT_WIDTH,
 } from '../lib/destinyLayout';
+import { colors, fonts, radius, spacing, typography } from '../lib/theme';
 import { Movie } from '../lib/tmdb';
+import { BackButton } from './BackButton';
 import { TAB_BAR_CLEARANCE } from './GlobalTabBar';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -51,9 +53,7 @@ export function DestinyReveal({ chosenMovies, winner, matchedPickIds, onBack, ga
 
   return (
     <View style={styles.root}>
-      <Pressable onPress={onBack} style={styles.backButton} hitSlop={12}>
-        <Text style={styles.backArrow}>←</Text>
-      </Pressable>
+      <BackButton onPress={onBack} />
 
       <View style={styles.topSection}>
         <Text style={styles.heading}>Tonight's movie</Text>
@@ -73,7 +73,7 @@ export function DestinyReveal({ chosenMovies, winner, matchedPickIds, onBack, ga
           {winner.poster_path && (
             <Image
               source={{ uri: `https://image.tmdb.org/t/p/w500${winner.poster_path}` }}
-              style={{ width: posterWidth, height: posterHeight, borderRadius: 16, marginBottom: 12 }}
+              style={{ width: posterWidth, height: posterHeight, borderRadius: radius.card, marginBottom: 12 }}
             />
           )}
           <Text style={styles.winnerTitle} numberOfLines={2}>{winner.title}</Text>
@@ -88,19 +88,17 @@ export function DestinyReveal({ chosenMovies, winner, matchedPickIds, onBack, ga
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  backButton: { position: 'absolute', top: 60, left: 20, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  topSection: { paddingTop: DESTINY_TOP_PADDING, paddingHorizontal: 20 },
+  root: { flex: 1, backgroundColor: colors.background },
+  topSection: { paddingTop: DESTINY_TOP_PADDING, paddingHorizontal: spacing.xl },
   heading: {
-    fontFamily: 'Gabarito-Bold', fontSize: 18, lineHeight: 24, textAlign: 'center',
+    ...typography.h4, lineHeight: 24, textAlign: 'center',
     height: DESTINY_HEADING_HEIGHT, marginBottom: DESTINY_HEADING_MARGIN,
   },
   chosenRow: { flexDirection: 'row', gap: SLOT_GAP, justifyContent: 'center' },
-  chosenPoster: { width: SLOT_WIDTH, height: SLOT_HEIGHT, borderRadius: 10 },
+  chosenPoster: { width: SLOT_WIDTH, height: SLOT_HEIGHT, borderRadius: radius.poster },
   winnerBlock: { alignItems: 'center' },
   winnerPress: { alignItems: 'center' },
-  winnerTitle: { fontFamily: 'Gabarito-Bold', fontSize: 22, lineHeight: 28, textAlign: 'center', paddingHorizontal: 20 },
-  winnerYear: { fontSize: 15, textAlign: 'center', color: '#1A1A1A', marginTop: 4 },
-    matchedText: { fontSize: 13, textAlign: 'center', color: '#1A1A1A', marginTop: 8, paddingHorizontal: 30 },
+  winnerTitle: { fontFamily: fonts.heading, fontSize: 22, lineHeight: 28, textAlign: 'center', paddingHorizontal: spacing.xl },
+  winnerYear: { ...typography.body, textAlign: 'center', marginTop: 4 },
+  matchedText: { ...typography.caption, textAlign: 'center', marginTop: spacing.sm, paddingHorizontal: 30 },
 });

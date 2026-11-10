@@ -1,24 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, PanResponder, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { getWatchedEntry, isInWatchLater, markWatched, sendToMovieJail, toggleWatchLater, unmarkWatched } from '../lib/storage';
+import { colors, radius, spacing, typography, zIndex } from '../lib/theme';
 import { Movie } from '../lib/tmdb';
 import { InteractiveStarRating } from './InteractiveStarRating';
 import { ParticleBurst } from './ParticleBurst';
+import { Sheet, SheetHandle } from './Sheet';
 import { STAR_BURST_DURATION_MS, STAR_BURST_STAGGER_MS, StarBurstSequence } from './StarBurstSequence';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const SEEN_BUTTON_REVEAL_MS = 350;
 const AUTO_CLOSE_IDLE_MS = 1000;
+const DISMISS_THRESHOLD_FRACTION = 0.5;
 
 type Props = { movie: Movie | null; visible: boolean; onClose: () => void; onJailed?: (() => void) | null };
 
 export function MovieActionModal({ movie, visible, onClose, onJailed }: Props) {
   const [displayedMovie, setDisplayedMovie] = useState<Movie | null>(null);
-  const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
-  const overlayOpacity = useRef(new Animated.Value(0)).current;
-  const sheetHeightRef = useRef(0);
 
   const [seen, setSeen] = useState(false);
   const [rating, setRating] = useState<number | null>(null);
@@ -62,12 +61,6 @@ export function MovieActionModal({ movie, visible, onClose, onJailed }: Props) {
   }, [visible, movie?.id]);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.spring(translateY, { toValue: visible ? 0 : SCREEN_HEIGHT, useNativeDriver: true, friction: 9, tension: 60 }),
-      Animated.timing(overlayOpacity, { toValue: visible ? 1 : 0, duration: 220, useNativeDriver: true }),
-    ]).start(() => {
-      if (!visible) setDisplayedMovie(null);
-    });
     if (!visible) clearAutoCloseTimers();
   }, [visible]);
 
@@ -84,24 +77,6 @@ export function MovieActionModal({ movie, visible, onClose, onJailed }: Props) {
       ]).start();
     }
   }, [seen]);
-
-  const dragPanResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dy) > 5 && Math.abs(g.dy) > Math.abs(g.dx),
-      onPanResponderGrant: () => clearAutoCloseTimers(),
-      onPanResponderMove: (_, g) => {
-        if (g.dy > 0) translateY.setValue(g.dy);
-      },
-      onPanResponderRelease: (_, g) => {
-        if (sheetHeightRef.current > 0 && g.dy > sheetHeightRef.current * 0.5) {
-          onClose();
-        } else {
-          Animated.spring(translateY, { toValue: 0, useNativeDriver: true, friction: 8, tension: 80 }).start();
-        }
-      },
-    })
-  ).current;
 
   if (!displayedMovie) return null;
   const movieRef = displayedMovie;
@@ -165,67 +140,70 @@ export function MovieActionModal({ movie, visible, onClose, onJailed }: Props) {
   const ratingLabel = rating != null ? `${(rating / 2).toFixed(1).replace('.0', '')}/5` : 'Not rated yet';
 
   return (
-    <Animated.View style={[StyleSheet.absoluteFill, styles.root, { opacity: overlayOpacity }]} pointerEvents={visible ? 'auto' : 'none'}>
-      <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
-      <Animated.View
-        style={[styles.sheet, { transform: [{ translateY }] }]}
-        onLayout={(e) => {
-          sheetHeightRef.current = e.nativeEvent.layout.height;
-        }}
-      >
-        <View {...dragPanResponder.panHandlers}>
-          <View style={styles.handle} />
-          <Text style={styles.title}>Rate this movie</Text>
-          <Text style={styles.ratingLabel}>{ratingLabel}</Text>
-        </View>
+    <Sheet
+      visible={visible}
+      onClose={onClose}
+      zIndex={zIndex.actionModal}
+      dismissFraction={DISMISS_THRESHOLD_FRACTION}
+      fadeSheet
+      sheetStyle={styles.sheet}
+      onDragStart={clearAutoCloseTimers}
+      onClosed={() => setDisplayedMovie(null)}
+    >
+      {(panHandlers) => (
+        <>
+          <View {...panHandlers}>
+            <SheetHandle marginBottom={spacing.lg} />
+            <Text style={styles.title}>Rate this movie</Text>
+            <Text style={styles.ratingLabel}>{ratingLabel}</Text>
+          </View>
 
-        <View style={styles.starWrapper}>
-          <InteractiveStarRating rating={rating} onChange={handleRatingChange} onCommit={handleRatingCommit} />
-          <StarBurstSequence filledStars={burstStarCount} trigger={starBurst} />
-        </View>
+          <View style={styles.starWrapper}>
+            <InteractiveStarRating rating={rating} onChange={handleRatingChange} onCommit={handleRatingCommit} />
+            <StarBurstSequence filledStars={burstStarCount} trigger={starBurst} />
+          </View>
 
-        <View style={styles.seenWrapper}>
-          <Animated.View style={{ transform: [{ scale: seenScale }] }}>
-            <Pressable style={[styles.seenButton, seen && styles.seenButtonFilled]} onPress={handleToggleSeen}>
-              <Text style={[styles.seenButtonText, seen && styles.seenButtonTextFilled]}>I've seen this</Text>
-              <Ionicons name={seen ? 'checkbox' : 'checkbox-outline'} size={22} color={seen ? '#FFFFFF' : '#1A1A1A'} />
+          <View style={styles.seenWrapper}>
+            <Animated.View style={{ transform: [{ scale: seenScale }] }}>
+              <Pressable style={[styles.seenButton, seen && styles.seenButtonFilled]} onPress={handleToggleSeen}>
+                <Text style={[styles.seenButtonText, seen && styles.seenButtonTextFilled]}>I've seen this</Text>
+                <Ionicons name={seen ? 'checkbox' : 'checkbox-outline'} size={22} color={seen ? colors.textOnDark : colors.ink} />
+              </Pressable>
+            </Animated.View>
+            <ParticleBurst trigger={seenBurst} />
+          </View>
+
+          <View style={styles.squareRow}>
+            <Pressable style={styles.squareButton} onPress={handleToggleSave}>
+              <Ionicons name={saved ? 'bookmark' : 'bookmark-outline'} size={26} color={colors.ink} />
+              <Text style={styles.squareButtonText}>{saved ? 'Saved' : 'Watch List'}</Text>
             </Pressable>
-          </Animated.View>
-          <ParticleBurst trigger={seenBurst} />
-        </View>
-
-        <View style={styles.squareRow}>
-          <Pressable style={styles.squareButton} onPress={handleToggleSave}>
-            <Ionicons name={saved ? 'bookmark' : 'bookmark-outline'} size={26} color="#1A1A1A" />
-            <Text style={styles.squareButtonText}>{saved ? 'Saved' : 'Watch List'}</Text>
-          </Pressable>
-          <Pressable style={styles.squareButton} onPress={handleJail} disabled={jailed}>
-            <Ionicons name="close-circle-outline" size={26} color="#1A1A1A" />
-            <Text style={styles.squareButtonText}>{jailed ? 'Jailed' : 'Movie Jail'}</Text>
-          </Pressable>
-        </View>
-      </Animated.View>
-    </Animated.View>
+            <Pressable style={styles.squareButton} onPress={handleJail} disabled={jailed}>
+              <Ionicons name="close-circle-outline" size={26} color={colors.ink} />
+              <Text style={styles.squareButtonText}>{jailed ? 'Jailed' : 'Movie Jail'}</Text>
+            </Pressable>
+          </View>
+        </>
+      )}
+    </Sheet>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { justifyContent: 'flex-end', zIndex: 60, backgroundColor: 'rgba(0,0,0,0.35)' },
-  sheet: { backgroundColor: '#E8B923', borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingTop: 12, paddingBottom: 44, alignItems: 'center' },
-  handle: { width: 40, height: 5, borderRadius: 3, backgroundColor: 'rgba(0,0,0,0.2)', marginBottom: 16, alignSelf: 'center' },
-  title: { fontFamily: 'Gabarito-Bold', fontSize: 18, textAlign: 'center' },
-  ratingLabel: { fontSize: 14, color: '#1A1A1A', marginBottom: 4, marginTop: 4, textAlign: 'center' },
-  starWrapper: { position: 'relative', alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+  sheet: { padding: spacing.xxl, paddingTop: spacing.md, paddingBottom: 44, alignItems: 'center' },
+  title: { ...typography.h4, textAlign: 'center' },
+  ratingLabel: { fontSize: 14, color: colors.textPrimary, marginBottom: 4, marginTop: 4, textAlign: 'center' },
+  starWrapper: { position: 'relative', alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md },
   seenWrapper: { position: 'relative', width: '100%', alignItems: 'center' },
   seenButton: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10,
-    borderRadius: 20, width: 214, height: 100, marginBottom: 14,
-    borderWidth: 2, borderColor: '#1A1A1A', backgroundColor: 'transparent',
+    borderRadius: radius.lg, width: 214, height: 100, marginBottom: 14,
+    borderWidth: 2, borderColor: colors.ink, backgroundColor: 'transparent',
   },
-  seenButtonFilled: { backgroundColor: '#1A1A1A' },
-  seenButtonText: { fontSize: 16, fontWeight: '700', color: '#1A1A1A' },
-  seenButtonTextFilled: { color: '#FFFFFF' },
+  seenButtonFilled: { backgroundColor: colors.ink },
+  seenButtonText: { fontSize: 16, fontWeight: '700', color: colors.textPrimary },
+  seenButtonTextFilled: { color: colors.textOnDark },
   squareRow: { flexDirection: 'row', gap: 14, width: '100%', justifyContent: 'center' },
-  squareButton: { width: 100, aspectRatio: 1, borderRadius: 20, borderWidth: 2, borderColor: '#1A1A1A', justifyContent: 'center', alignItems: 'center', gap: 6 },
-  squareButtonText: { fontSize: 12, fontWeight: '600', color: '#1A1A1A', textAlign: 'center' },
+  squareButton: { width: 100, aspectRatio: 1, borderRadius: radius.lg, borderWidth: 2, borderColor: colors.ink, justifyContent: 'center', alignItems: 'center', gap: 6 },
+  squareButtonText: { fontSize: 12, fontWeight: '600', color: colors.textPrimary, textAlign: 'center' },
 });

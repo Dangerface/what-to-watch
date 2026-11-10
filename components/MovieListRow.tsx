@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { ReactNode } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors, radius, spacing, typography } from '../lib/theme';
 import { Movie } from '../lib/tmdb';
 
 type Props = {
@@ -37,16 +38,16 @@ export function MovieListRow({ movie, extra, action, source, onBeforeNavigate, o
         {extra}
       </View>
       {action}
-      <Ionicons name="chevron-forward" size={20} color="#8A8A8A" style={styles.chevron} />
+      <Ionicons name="chevron-forward" size={20} color={colors.textMuted} style={styles.chevron} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', backgroundColor: '#FFFFFF', borderRadius: 14, padding: 8, marginBottom: 8, alignItems: 'center' },
-  poster: { width: 58, height: 80, borderRadius: 8, marginRight: 12 },
-  info: { flex: 1, justifyContent: 'center', gap: 4 },
-  title: { fontSize: 15, fontWeight: '700', color: '#1A1A1A' },
-  rating: { fontSize: 13, color: '#1A1A1A' },
+  row: { flexDirection: 'row', backgroundColor: colors.surface, borderRadius: radius.md, padding: spacing.sm, marginBottom: spacing.sm, alignItems: 'center' },
+  poster: { width: 58, height: 80, borderRadius: radius.sm, marginRight: spacing.md },
+  info: { flex: 1, justifyContent: 'center', gap: spacing.xs },
+  title: { ...typography.body, fontWeight: '700' },
+  rating: { ...typography.caption },
   chevron: { marginLeft: 6 },
 });

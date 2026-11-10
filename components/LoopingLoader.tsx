@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
-
+import { colors } from '../lib/theme';
 export function LoopingLoader() {
   const translateY = useSharedValue(0);
 
@@ -28,6 +28,6 @@ export function LoopingLoader() {
 
 const styles = StyleSheet.create({
   container: { width: 150, height: 150, justifyContent: 'center', alignItems: 'center' },
-  blackBox: { position: 'absolute', width: '100%', height: '100%', backgroundColor: '#000000', borderRadius: 28 },
+  blackBox: { position: 'absolute', width: '100%', height: '100%', backgroundColor: colors.logoBox, borderRadius: 28 },
   vhsImage: { width: 90, height: 90 },
 });

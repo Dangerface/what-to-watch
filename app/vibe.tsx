@@ -1,8 +1,12 @@
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Chip } from '../components/Chip';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getStepNumber, getTotalSteps } from '../lib/flow';
+import { colors, spacing, typography } from '../lib/theme';
 import { useSessionStore, Vibe } from '../store/session';
 
 const VIBE_OPTIONS: { value: Vibe; label: string }[] = [
@@ -21,42 +25,33 @@ export default function VibeScreen() {
 
   return (
     <View style={styles.container}>
+      <ScreenBackground />
       <ScreenHeader step={step} totalSteps={totalSteps} />
       <Text style={styles.heading}>What kind of movie?</Text>
 
       <ScrollView contentContainerStyle={styles.chipWrap}>
-        {VIBE_OPTIONS.map((option) => {
-          const isSelected = vibes.includes(option.value);
-          return (
-            <Pressable
-              key={option.value}
-              onPress={() => toggleVibe(option.value)}
-              style={[styles.chip, isSelected && styles.chipSelected]}
-            >
-              <Text style={[styles.chipText, isSelected && styles.chipTextSelected]}>{option.label}</Text>
-            </Pressable>
-          );
-        })}
+        {VIBE_OPTIONS.map((option) => (
+          <Chip
+            key={option.value}
+            label={option.label}
+            selected={vibes.includes(option.value)}
+            onPress={() => toggleVibe(option.value)}
+          />
+        ))}
       </ScrollView>
 
-      <Pressable
-        style={styles.nextButton}
+      <PrimaryButton
+        label="Find movie"
         onPress={() => router.push({ pathname: '/results', params: { searchId: Date.now().toString() } })}
-      >
-        <Text style={styles.nextButtonText}>Find movie</Text>
-      </Pressable>
+        style={styles.nextButton}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', paddingHorizontal: 24 },
-  heading: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', marginBottom: 20 },
+  container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.xxl },
+  heading: { ...typography.h2, textAlign: 'center', marginBottom: spacing.xl },
   chipWrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center' },
-  chip: { borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 20, paddingVertical: 10, paddingHorizontal: 18, marginBottom: 10 },
-  chipSelected: { backgroundColor: '#1A1A1A' },
-  chipText: { fontSize: 16, color: '#1A1A1A', fontWeight: '600' },
-  chipTextSelected: { color: '#E8B923' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginTop: 20, marginBottom: TAB_BAR_CLEARANCE },
-  nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
+  nextButton: { marginTop: spacing.xl, marginBottom: TAB_BAR_CLEARANCE },
 });

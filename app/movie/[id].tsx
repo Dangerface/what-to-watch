@@ -1,22 +1,17 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import { BackButton } from '../../components/BackButton';
 import LoopLoader from '../../components/LoopLoader';
 import { MovieDetailCard } from '../../components/MovieDetailCard';
+import { ScreenBackground } from '../../components/ScreenBackground';
 import { getMovieJail, getWatched, getWatchLater, releaseFromSoftJail } from '../../lib/storage';
+import { colors, spacing } from '../../lib/theme';
 import { fetchMovieDetails, Movie } from '../../lib/tmdb';
 
 const { width } = Dimensions.get('window');
 
 type Source = 'watchlist' | 'jail' | 'watched' | undefined;
-
-function BackButton() {
-  return (
-    <Pressable onPress={() => router.back()} style={styles.backButton} hitSlop={12}>
-      <Text style={styles.backArrow}>←</Text>
-    </Pressable>
-  );
-}
 
 async function loadSourceList(source: Source): Promise<Movie[]> {
   if (source === 'watchlist') return (await getWatchLater()).reverse().map((e) => e.movie);
@@ -60,12 +55,16 @@ export default function MovieDetailScreen() {
     })();
   }, [id, source]);
 
-  if (loading) return <View style={styles.center}><BackButton /><LoopLoader /></View>;
-  if (error || movies.length === 0) return <View style={styles.center}><BackButton /><Text style={styles.errorText}>Kunne ikke hente film.</Text></View>;
+  
+  if (loading) return <View style={styles.center}><ScreenBackground /><BackButton  /><LoopLoader /></View>;
+  if (error || movies.length === 0) {
+    return <View style={styles.center}><ScreenBackground /><BackButton  /><Text style={styles.errorText}>Kunne ikke hente film.</Text></View>;
+  }
 
   return (
     <View style={styles.root}>
-      <BackButton />
+      <ScreenBackground />
+      <BackButton  />
       <FlatList
         data={movies}
         keyExtractor={(item) => String(item.id)}
@@ -81,9 +80,7 @@ export default function MovieDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  backButton: { position: 'absolute', top: 60, left: 20, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
+  root: { flex: 1, backgroundColor: colors.background },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background, padding: spacing.xxl },
   errorText: { fontSize: 16, textAlign: 'center' },
 });

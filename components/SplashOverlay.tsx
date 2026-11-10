@@ -1,9 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Asset } from 'expo-asset';
 import { useEffect, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { checkStartupConnectivity, StartupCheckResult } from '../lib/startup';
+import { colors, spacing, typography, zIndex } from '../lib/theme';
 import { useUIStore } from '../store/ui';
+import { OutlineButton } from './OutlineButton';
 import StartupLoader from './SplashScreen';
 
 type Phase = 'cold-animating' | 'checking' | 'ok' | StartupCheckResult;
@@ -87,11 +89,9 @@ export function SplashOverlay() {
     return (
       <View style={styles.root}>
         <View style={styles.container}>
-          <Ionicons name="cloud-offline-outline" size={64} color="#1A1A1A" style={styles.icon} />
+          <Ionicons name="cloud-offline-outline" size={64} color={colors.ink} style={styles.icon} />
           <Text style={styles.errorText}>It looks like you're out of WhyPhy</Text>
-          <Pressable style={styles.retryButton} onPress={retryFromError}>
-            <Text style={styles.retryButtonText}>Prøv igen</Text>
-          </Pressable>
+          <OutlineButton label="Prøv igen" onPress={retryFromError} size="sm" style={{ marginBottom: 0 }} />
         </View>
       </View>
     );
@@ -100,21 +100,17 @@ export function SplashOverlay() {
   return (
     <View style={styles.root}>
       <View style={styles.container}>
-        <Ionicons name="planet-outline" size={64} color="#1A1A1A" style={styles.icon} />
+        <Ionicons name="planet-outline" size={64} color={colors.ink} style={styles.icon} />
         <Text style={styles.errorText}>Unable to reach the mothership TMDB.com</Text>
-        <Pressable style={styles.retryButton} onPress={retryFromError}>
-          <Text style={styles.retryButtonText}>Prøv igen</Text>
-        </Pressable>
+        <OutlineButton label="Prøv igen" onPress={retryFromError} size="sm" style={{ marginBottom: 0 }} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { ...StyleSheet.absoluteFill, backgroundColor: '#E8B923', zIndex: 100 },
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 },
-  icon: { marginBottom: 20 },
-  errorText: { fontFamily: 'Gabarito-Bold', fontSize: 20, textAlign: 'center', marginBottom: 30 },
-  retryButton: { borderWidth: 2, borderColor: '#1A1A1A', paddingVertical: 14, paddingHorizontal: 40, borderRadius: 40 },
-  retryButtonText: { fontSize: 16, fontWeight: '600', color: '#1A1A1A' },
+  root: { ...StyleSheet.absoluteFill, backgroundColor: colors.background, zIndex: zIndex.splash },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xxl },
+  icon: { marginBottom: spacing.xl },
+  errorText: { ...typography.h3, textAlign: 'center', marginBottom: 30 },
 });

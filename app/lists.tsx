@@ -1,27 +1,22 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { OutlineButton } from '../components/OutlineButton';
+import { ScreenBackground } from '../components/ScreenBackground';
+import { colors, spacing, typography } from '../lib/theme';
 
 export default function ListsScreen() {
   return (
     <View style={styles.container}>
+      <ScreenBackground />
       <Text style={styles.header}>Lister</Text>
-      <Pressable style={styles.optionButton} onPress={() => router.push('/watched')}>
-        <Text style={styles.optionText}>Watched</Text>
-      </Pressable>
-      <Pressable style={styles.optionButton} onPress={() => router.push('/watchlist')}>
-        <Text style={styles.optionText}>Watch List</Text>
-      </Pressable>
-
-      <Pressable style={styles.optionButton} onPress={() => router.push('/movie-jail')}>
-        <Text style={styles.optionText}>Movie Jail</Text>
-      </Pressable>
+      <OutlineButton label="Watched" onPress={() => router.push('/watched')} />
+      <OutlineButton label="Watch List" onPress={() => router.push('/watchlist')} />
+      <OutlineButton label="Movie Jail" onPress={() => router.push('/movie-jail')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', paddingHorizontal: 24, paddingTop: 80 },
-  header: { fontFamily: 'Gabarito-Bold', fontSize: 28, textAlign: 'center', marginBottom: 40 },
-  optionButton: { borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 20, paddingVertical: 20, alignItems: 'center', marginBottom: 16 },
-  optionText: { fontSize: 18, fontWeight: '600', color: '#1A1A1A' },
+  container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.xxl, paddingTop: 80 },
+  header: { ...typography.h1, textAlign: 'center', marginBottom: 40 },
 });

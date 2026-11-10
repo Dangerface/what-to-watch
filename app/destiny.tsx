@@ -15,6 +15,8 @@ import {
 import { DestinyReveal } from '../components/DestinyReveal';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
 import LoopLoader from '../components/LoopLoader';
+import { OutlineButton } from '../components/OutlineButton';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { getDestinyCandidates, markDestinyShown } from '../lib/destiny';
 import {
   DESTINY_HEADING_HEIGHT,
@@ -28,6 +30,7 @@ import {
 import { buildRevealPool, scoreRevealPool } from '../lib/destinyReveal';
 import { getMovieJailIds, getWatched, releaseFromSoftJail } from '../lib/storage';
 import { getTasteProfile } from '../lib/tasteProfile';
+import { colors, radius, spacing, typography } from '../lib/theme';
 import { Movie } from '../lib/tmdb';
 
 const REQUIRED_RATED_COUNT = 20;
@@ -285,6 +288,7 @@ export default function DestinyScreen() {
   if (state === 'checking' || state === 'loading-pool' || state === 'revealing') {
     return (
       <View style={styles.container}>
+        <ScreenBackground />
         <LoopLoader />
       </View>
     );
@@ -303,9 +307,7 @@ export default function DestinyScreen() {
     return (
       <View style={styles.container}>
         <Text style={styles.message}>Couldn't find a match right now.</Text>
-        <Pressable style={styles.backButton} onPress={loadInitialPool}>
-          <Text style={styles.backButtonText}>Try again</Text>
-        </Pressable>
+        <OutlineButton label="Try again" onPress={loadInitialPool} size="sm" style={{ marginTop: 20, marginBottom: 0 }} />
       </View>
     );
   }
@@ -380,25 +382,23 @@ export default function DestinyScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 },
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  topSection: { paddingTop: DESTINY_TOP_PADDING, paddingHorizontal: 20, zIndex: 5 },
+  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center', paddingHorizontal: spacing.xxl },
+  root: { flex: 1, backgroundColor: colors.background },
+  topSection: { paddingTop: DESTINY_TOP_PADDING, paddingHorizontal: spacing.xl, zIndex: 5 },
   heading: {
-    fontFamily: 'Gabarito-Bold', fontSize: 18, lineHeight: 24, textAlign: 'center',
+    ...typography.h4, lineHeight: 24, textAlign: 'center',
     height: DESTINY_HEADING_HEIGHT, marginBottom: DESTINY_HEADING_MARGIN,
   },
   slotRow: { flexDirection: 'row', gap: SLOT_GAP, justifyContent: 'center', zIndex: 5 },
   slot: { width: SLOT_WIDTH, height: SLOT_HEIGHT, borderRadius: 10, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
-  slotEmpty: { borderWidth: 2, borderColor: '#1A1A1A', borderStyle: 'dashed', backgroundColor: 'transparent' },
+  slotEmpty: { borderWidth: 2, borderColor: colors.ink, borderStyle: 'dashed', backgroundColor: 'transparent' },
   slotFilled: { borderWidth: 0 },
   slotImage: { width: '100%', height: '100%' },
   carouselSection: { flex: 1 },
   hintWrapper: { alignItems: 'center', marginBottom: TAB_BAR_CLEARANCE + 10 },
-  hintTitle: { fontFamily: 'Gabarito-Bold', fontSize: 18, textAlign: 'center', color: '#1A1A1A' },
-  hintSubtitle: { fontSize: 14, textAlign: 'center', color: '#1A1A1A', marginTop: 2 },
-  message: { fontFamily: 'Gabarito-Bold', fontSize: 20, textAlign: 'center', marginBottom: 12 },
-  subMessage: { fontSize: 14, textAlign: 'center', color: '#1A1A1A' },
-  backButton: { borderWidth: 2, borderColor: '#1A1A1A', paddingVertical: 14, paddingHorizontal: 40, borderRadius: 40, marginTop: 20 },
-  backButtonText: { fontSize: 16, fontWeight: '600', color: '#1A1A1A' },
-  flyingPoster: { position: 'absolute', borderRadius: 14, zIndex: 60 },
+  hintTitle: { ...typography.h4, textAlign: 'center' },
+  hintSubtitle: { fontSize: 14, textAlign: 'center', color: colors.textPrimary, marginTop: 2 },
+  message: { ...typography.h3, textAlign: 'center', marginBottom: spacing.md },
+  subMessage: { fontSize: 14, textAlign: 'center', color: colors.textPrimary },
+  flyingPoster: { position: 'absolute', borderRadius: radius.md, zIndex: 60 },
 });

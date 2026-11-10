@@ -1,11 +1,15 @@
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, Pressable, StyleSheet, Text, View, ViewToken } from 'react-native';
-import { LoopingLoader } from '../components/LoopingLoader';
+import { Dimensions, FlatList, StyleSheet, Text, View, ViewToken } from 'react-native';
+import { BackButton } from '../components/BackButton';
+import { InlineLoader } from '../components/InlineLoader';
 import LoopLoader from '../components/LoopLoader';
 import { MovieDetailCard } from '../components/MovieDetailCard';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { ResultsFeed } from '../lib/resultsFeed';
 import { getExcludeWatchedMovies, getMovieJailIds, getSoftJailIds, getWatchedIds } from '../lib/storage';
+import { colors, spacing, typography } from '../lib/theme';
 import { DiscoverFilters, Movie } from '../lib/tmdb';
 import { useQuickSwipeTracking } from '../lib/useQuickSwipeTracking';
 import { useSessionStore } from '../store/session';
@@ -14,14 +18,6 @@ const { width } = Dimensions.get('window');
 const BATCH_SIZE = 12;
 const PREFETCH_LOOKAHEAD = 3;
 const LOADER_MIN_DISPLAY_MS = 1000;
-
-function BackButton() {
-  return (
-    <Pressable onPress={() => router.back()} style={styles.backButton} hitSlop={12}>
-      <Text style={styles.backArrow}>←</Text>
-    </Pressable>
-  );
-}
 
 export default function ResultsScreen() {
   const { genreIds, maxRuntimeMinutes, familyFriendly, providerIds, sourceType, vibes } = useSessionStore();
@@ -129,17 +125,16 @@ export default function ResultsScreen() {
   }, []);
 
   if (loading) {
-    return <View style={styles.center}><BackButton /><LoopLoader /></View>;
+    return <View style={styles.center}><ScreenBackground /><BackButton /><LoopLoader /></View>;
   }
 
   if (error) {
     return (
       <View style={styles.center}>
+        <ScreenBackground />
         <BackButton />
         <Text style={styles.errorText}>Der gik noget galt undervejs. Prøv igen.</Text>
-        <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
-          <Text style={styles.restartButtonText}>Forfra</Text>
-        </Pressable>
+        <PrimaryButton label="Forfra" onPress={() => router.replace('/')} size="md" />
       </View>
     );
   }
@@ -147,17 +142,17 @@ export default function ResultsScreen() {
   if (movies.length === 0) {
     return (
       <View style={styles.center}>
+        <ScreenBackground />
         <BackButton />
         <Text style={styles.errorText}>We can't find any more movies. Try another search</Text>
-        <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
-          <Text style={styles.restartButtonText}>Forfra</Text>
-        </Pressable>
+        <PrimaryButton label="Forfra" onPress={() => router.replace('/')} size="md" />
       </View>
     );
   }
 
   return (
     <View style={styles.root}>
+      <ScreenBackground />
       <BackButton />
       <FlatList
         data={movies}
@@ -174,14 +169,12 @@ export default function ResultsScreen() {
         ListFooterComponent={
           loadingMore ? (
             <View style={[styles.card, { width, justifyContent: 'center', alignItems: 'center' }]}>
-              <LoopingLoader />
+              <InlineLoader />
             </View>
           ) : exhausted ? (
             <View style={[styles.card, { width, justifyContent: 'center' }]}>
               <Text style={styles.endOfListText}>We can't find any more movies. Try another search</Text>
-              <Pressable style={styles.restartButton} onPress={() => router.replace('/')}>
-                <Text style={styles.restartButtonText}>Forfra</Text>
-              </Pressable>
+              <PrimaryButton label="Forfra" onPress={() => router.replace('/')} size="md" />
             </View>
           ) : null
         }
@@ -191,13 +184,10 @@ export default function ResultsScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  backButton: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  card: { alignItems: 'center', padding: 24, paddingTop: 60, backgroundColor: '#E8B923' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
-  errorText: { fontSize: 16, textAlign: 'center', marginBottom: 20 },
-  endOfListText: { fontSize: 15, textAlign: 'center', marginBottom: 20, paddingHorizontal: 20, color: '#1A1A1A' },
-  restartButton: { backgroundColor: '#1A1A1A', paddingVertical: 16, paddingHorizontal: 40, borderRadius: 40 },
-  restartButtonText: { color: '#FFFFFF', fontSize: 18, fontWeight: '600' },
+  root: { flex: 1, backgroundColor: colors.background },
+  card: { alignItems: 'center', padding: spacing.xxl, paddingTop: 60, backgroundColor: colors.background },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background, padding: spacing.xxl },
+  errorText: { fontSize: 16, textAlign: 'center', marginBottom: spacing.xl },
+  endOfListText: { ...typography.body, textAlign: 'center', marginBottom: spacing.xl, paddingHorizontal: spacing.xl },
+  
 });

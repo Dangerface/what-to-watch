@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import Animated, {
-    cancelAnimation,
-    useAnimatedStyle,
-    useSharedValue,
-    withRepeat,
-    withSequence,
-    withSpring,
-    withTiming,
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
+import { colors } from '../lib/theme';
 
 export default function LoopLoader() {
   const boxOpacity = useSharedValue(1);
@@ -33,6 +34,8 @@ export default function LoopLoader() {
     cancelAnimation(textOpacity);
     cancelAnimation(globalScaleX);
     cancelAnimation(globalScaleY);
+
+    
 
     boxOpacity.value = 1;
     overlayOpacity.value = 1;
@@ -151,12 +154,7 @@ export default function LoopLoader() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#E8B923',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  container: { flex: 1, backgroundColor: 'transparent', justifyContent: 'center', alignItems: 'center' },
   animationWrapper: {
     width: 150,
     height: 150,
@@ -172,32 +170,21 @@ const styles = StyleSheet.create({
     marginBottom: -90,
     width: 300,
     textAlign: 'center',
-    color: '#1A1A1A',
+    color: colors.textPrimary,
     fontSize: 30,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+    fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif', // logoens ordmærke, bevidst ikke Gabarito
     fontWeight: 'bold',
     letterSpacing: -0.5,
     zIndex: 10,
   },
-  blackBox: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000000',
-    borderRadius: 28,
-    zIndex: 1,
-  },
-  vhsImage: {
-    position: 'absolute',
-    width: 120,
-    height: 120,
-    zIndex: 2,
-  },
+  blackBox: { width: '100%', height: '100%', backgroundColor: colors.logoBox, borderRadius: 28, zIndex: 1 },
+  vhsImage: { position: 'absolute', width: 120, height: 120, zIndex: 2 },
   overlayBox: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
     height: '50%',
-    backgroundColor: '#000000',
+    backgroundColor: colors.logoBox,
     borderBottomLeftRadius: 28,
     borderBottomRightRadius: 28,
     zIndex: 3,

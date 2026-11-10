@@ -1,10 +1,14 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackButton } from '../components/BackButton';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
+import LoopLoader from '../components/LoopLoader';
+import { PrimaryButton } from '../components/PrimaryButton';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getTotalSteps } from '../lib/flow';
 import { getSelectedProviderIds, saveSelectedProviderIds } from '../lib/storage';
+import { colors, radius, spacing, typography } from '../lib/theme';
 import { fetchWatchProviders, WatchProvider } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
 
@@ -40,18 +44,12 @@ export default function ProvidersScreen() {
     }
   };
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#1A1A1A" /></View>;
+  if (loading) return <View style={styles.center}><LoopLoader /></View>;
   if (error) return <View style={styles.center}><Text>Kunne ikke hente streaming-tjenester.</Text></View>;
 
   return (
     <View style={styles.container}>
-      {isFromSettings ? (
-        <Pressable onPress={() => router.back()} style={styles.backButtonPlain} hitSlop={12}>
-          <Text style={styles.backArrow}>←</Text>
-        </Pressable>
-      ) : (
-        <ScreenHeader step={2} totalSteps={totalSteps} />
-      )}
+      {isFromSettings ? <BackButton /> : <ScreenHeader step={2} totalSteps={totalSteps} />}
       <Text style={styles.heading}>Hvilke tjenester har I?</Text>
 
       <FlatList
@@ -77,30 +75,25 @@ export default function ProvidersScreen() {
         }}
       />
 
-      <Pressable
-        style={[styles.nextButton, providerIds.length === 0 && styles.nextButtonDisabled]}
-        disabled={providerIds.length === 0}
+      <PrimaryButton
+        label={isFromSettings ? 'Gem' : 'Next'}
         onPress={handleNext}
-      >
-        <Text style={styles.nextButtonText}>{isFromSettings ? 'Gem' : 'Next'}</Text>
-      </Pressable>
+        disabled={providerIds.length === 0}
+        style={styles.nextButton}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', paddingHorizontal: 24 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923' },
-  heading: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', marginTop: 40, marginBottom: 20 },
-  backButtonPlain: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  grid: { paddingBottom: 20 },
-  providerTile: { flex: 1, margin: 6, borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 16, padding: 10, alignItems: 'center', maxWidth: '30%' },
-  providerTileSelected: { backgroundColor: '#1A1A1A' },
-  logo: { width: 40, height: 40, borderRadius: 8, marginBottom: 6 },
-  providerName: { fontSize: 11, textAlign: 'center', color: '#1A1A1A' },
-  providerNameSelected: { color: '#E8B923' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center', marginTop: 20, marginBottom: TAB_BAR_CLEARANCE },
-  nextButtonDisabled: { opacity: 0.4 },
-  nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
+  container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.xxl },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background },
+  heading: { ...typography.h2, textAlign: 'center', marginTop: 40, marginBottom: spacing.xl },
+  grid: { paddingBottom: spacing.xl },
+  providerTile: { flex: 1, margin: 6, borderWidth: 2, borderColor: colors.ink, borderRadius: 16, padding: 10, alignItems: 'center', maxWidth: '30%' },
+  providerTileSelected: { backgroundColor: colors.ink },
+  logo: { width: 40, height: 40, borderRadius: radius.sm, marginBottom: 6 },
+  providerName: { fontSize: 11, textAlign: 'center', color: colors.textPrimary },
+  providerNameSelected: { color: colors.background },
+  nextButton: { marginTop: spacing.xl, marginBottom: TAB_BAR_CLEARANCE },
 });

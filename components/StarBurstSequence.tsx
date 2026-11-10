@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
+import { colors } from '../lib/theme';
 import { STAR_GAP, STAR_SIZE } from './InteractiveStarRating';
 
 export const STAR_BURST_STAGGER_MS = 90;
@@ -62,5 +63,5 @@ export function StarBurstSequence({ filledStars, trigger }: Props) {
 const styles = StyleSheet.create({
   container: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 },
   anchor: { position: 'absolute', top: '50%' },
-  particle: { position: 'absolute', width: 5, height: 5, borderRadius: 2.5, backgroundColor: '#1A1A1A', marginLeft: -2.5, marginTop: -2.5 },
+  particle: { position: 'absolute', width: 5, height: 5, borderRadius: 2.5, backgroundColor: colors.ink, marginLeft: -2.5, marginTop: -2.5 },
 });

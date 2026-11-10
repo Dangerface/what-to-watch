@@ -3,9 +3,11 @@ import { BlurView } from 'expo-blur';
 import { router, usePathname } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors, layout, radius, shadows, zIndex } from '../lib/theme';
 import { useUIStore } from '../store/ui';
+import { GlassSurface } from './GlassSurface';
 
-export const TAB_BAR_CLEARANCE = 110;
+export const TAB_BAR_CLEARANCE = layout.tabBarClearance;
 
 type TabKey = 'index' | 'destiny' | 'lists';
 
@@ -81,26 +83,27 @@ export function GlobalTabBar() {
   return (
     <View style={styles.outerRow} pointerEvents="box-none">
       <View style={styles.pillShadowWrapper}>
-        <BlurView intensity={70} tint="light" style={styles.pill} onLayout={handlePillLayout}>
+        <GlassSurface style={styles.pill} onLayout={handlePillLayout}>
           {pillWidth > 0 && activeIndex !== -1 && (
             <Animated.View style={[styles.capsule, { width: segmentWidth - CAPSULE_INSET * 2, transform: [{ translateX: capsuleX }] }]}>
+              {/* Mørkt glas til fremhævelsen — bruges kun her, så den bliver stående som ren BlurView. */}
               <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
             </Animated.View>
           )}
           {TABS.map((tab) => (
             <Pressable key={tab.key} onPress={() => handlePress(tab.key, tab.path)} style={styles.tabItem}>
-              <Ionicons name={tab.icon} size={22} color="#1A1A1A" />
+              <Ionicons name={tab.icon} size={22} color={colors.ink} />
               <Text style={styles.label}>{tab.label}</Text>
             </Pressable>
           ))}
-        </BlurView>
+        </GlassSurface>
       </View>
 
       <View style={styles.circleShadowWrapper}>
         <Pressable onPress={openSearchModal} style={{ flex: 1 }}>
-          <BlurView intensity={70} tint="light" style={styles.circle}>
-            <Ionicons name="search" size={22} color="#1A1A1A" />
-          </BlurView>
+          <GlassSurface style={styles.circle}>
+            <Ionicons name="search" size={22} color={colors.ink} />
+          </GlassSurface>
         </Pressable>
       </View>
     </View>
@@ -108,18 +111,12 @@ export function GlobalTabBar() {
 }
 
 const styles = StyleSheet.create({
-  outerRow: { position: 'absolute', bottom: 30, left: 20, right: 20, zIndex: 15, flexDirection: 'row', alignItems: 'center', gap: 14 },
-  pillShadowWrapper: { flex: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.18, shadowRadius: 14, elevation: 10 },
-  pill: {
-    flexDirection: 'row', borderRadius: 28, overflow: 'hidden', paddingVertical: 10, width: '100%',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.12)',
-  },
-  capsule: { position: 'absolute', left: 0, top: 6, bottom: 6, borderRadius: 20, overflow: 'hidden', backgroundColor: 'rgba(0,0,0,0.06)' },
+  outerRow: { position: 'absolute', bottom: 30, left: 20, right: 20, zIndex: zIndex.tabBar, flexDirection: 'row', alignItems: 'center', gap: 14 },
+  pillShadowWrapper: { flex: 1, ...shadows.floating },
+  pill: { flexDirection: 'row', borderRadius: radius.sheet, paddingVertical: 10, width: '100%' },
+  capsule: { position: 'absolute', left: 0, top: 6, bottom: 6, borderRadius: radius.lg, overflow: 'hidden', backgroundColor: colors.glassCapsule },
   tabItem: { flex: 1, alignItems: 'center', justifyContent: 'center', zIndex: 1, gap: 3 },
-  label: { fontSize: 11, fontWeight: '600', color: '#1A1A1A' },
-  circleShadowWrapper: { width: 58, height: 58, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.18, shadowRadius: 14, elevation: 10 },
-  circle: {
-    width: 58, height: 58, borderRadius: 29, overflow: 'hidden', justifyContent: 'center', alignItems: 'center',
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', backgroundColor: 'rgba(255,255,255,0.12)',
-  },
+  label: { fontSize: 11, fontWeight: '600', color: colors.textPrimary },
+  circleShadowWrapper: { width: 58, height: 58, ...shadows.floating },
+  circle: { width: 58, height: 58, borderRadius: 29, justifyContent: 'center', alignItems: 'center' },
 });

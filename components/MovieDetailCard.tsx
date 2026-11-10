@@ -1,13 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { colors, radius, spacing, typography } from '../lib/theme';
 import {
   CastMember, CrewMember, fetchMovieCredits, fetchMovieProviders, fetchMovieTrailer,
   Movie, MovieTrailer, WatchProvider,
 } from '../lib/tmdb';
 import { useUIStore } from '../store/ui';
 import { CollapsibleSection } from './CollapsibleSection';
+import { InlineLoader } from './InlineLoader';
 
 function ActorCard({ actor }: { actor: CastMember }) {
   return (
@@ -16,7 +18,7 @@ function ActorCard({ actor }: { actor: CastMember }) {
         <Image source={{ uri: `https://image.tmdb.org/t/p/w185${actor.profile_path}` }} style={styles.actorPhoto} />
       ) : (
         <View style={[styles.actorPhoto, styles.actorPhotoPlaceholder]}>
-          <Ionicons name="person" size={28} color="#8A8A8A" />
+          <Ionicons name="person" size={28} color={colors.textMuted} />
         </View>
       )}
       <Text style={styles.actorName} numberOfLines={1}>{actor.name}</Text>
@@ -75,7 +77,7 @@ export function MovieDetailCard({ movie, width, onJailed, topPadding = 70, onMor
               : router.push({ pathname: '/more-like-this', params: { movieId: String(movie.id), title: movie.title } } as any)
           }
         >
-          <Ionicons name="film-outline" size={16} color="#1A1A1A" />
+          <Ionicons name="film-outline" size={16} color={colors.ink} />
           <Text style={styles.moreLikeThisText}>More like this</Text>
         </Pressable>
 
@@ -84,7 +86,7 @@ export function MovieDetailCard({ movie, width, onJailed, topPadding = 70, onMor
         </CollapsibleSection>
 
         <CollapsibleSection title="Crew">
-          {loading ? <ActivityIndicator color="#1A1A1A" /> : (
+          {loading ? <InlineLoader /> : (
             <>
               {director && <Text style={styles.directorText}>Instruktør: {director.name}</Text>}
               {cast.length > 0 ? (
@@ -101,7 +103,7 @@ export function MovieDetailCard({ movie, width, onJailed, topPadding = 70, onMor
         {trailer && (
           <CollapsibleSection title="Trailer">
             <Pressable style={styles.trailerButton} onPress={() => Linking.openURL(`https://www.youtube.com/watch?v=${trailer.key}`)}>
-              <Ionicons name="play-circle" size={22} color="#FFFFFF" />
+              <Ionicons name="play-circle" size={22} color={colors.textOnDark} />
               <Text style={styles.trailerButtonText}>Se trailer på YouTube</Text>
             </Pressable>
           </CollapsibleSection>
@@ -117,27 +119,27 @@ export function MovieDetailCard({ movie, width, onJailed, topPadding = 70, onMor
 
 const styles = StyleSheet.create({
   content: { paddingBottom: 40, alignItems: 'center' },
-  poster: { width: 200, height: 300, borderRadius: 16, marginBottom: 16 },
-  body: { width: '100%', paddingHorizontal: 20, alignItems: 'center' },
-  title: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', marginBottom: 8 },
-  metaRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16, flexWrap: 'wrap', justifyContent: 'center' },
-  meta: { fontSize: 15, color: '#1A1A1A' },
+  poster: { width: 200, height: 300, borderRadius: 16, marginBottom: spacing.lg },
+  body: { width: '100%', paddingHorizontal: spacing.xl, alignItems: 'center' },
+  title: { ...typography.h2, textAlign: 'center', marginBottom: spacing.sm },
+  metaRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.lg, flexWrap: 'wrap', justifyContent: 'center' },
+  meta: { ...typography.body },
   providerIcon: { width: 20, height: 20, borderRadius: 5 },
   moreLikeThisButton: {
-    flexDirection: 'row', alignItems: 'center', gap: 6, borderWidth: 2, borderColor: '#1A1A1A',
-    borderRadius: 18, paddingVertical: 8, paddingHorizontal: 16, marginBottom: 16, backgroundColor: '#E8B923',
+    flexDirection: 'row', alignItems: 'center', gap: 6, borderWidth: 2, borderColor: colors.ink,
+    borderRadius: 18, paddingVertical: spacing.sm, paddingHorizontal: spacing.lg, marginBottom: spacing.lg, backgroundColor: colors.background,
   },
-  moreLikeThisText: { fontSize: 13, fontWeight: '600', color: '#1A1A1A' },
-  overview: { fontSize: 14, color: '#1A1A1A', lineHeight: 20, width: '100%' },
-  directorText: { fontSize: 14, fontWeight: '600', color: '#1A1A1A', marginBottom: 10 },
-  castScroll: { marginTop: 4 },
-  actorCard: { width: 80, marginRight: 12, alignItems: 'center' },
+  moreLikeThisText: { fontSize: 13, fontWeight: '600', color: colors.textPrimary },
+  overview: { fontSize: 14, color: colors.textPrimary, lineHeight: 20, width: '100%' },
+  directorText: { fontSize: 14, fontWeight: '600', color: colors.textPrimary, marginBottom: 10 },
+  castScroll: { marginTop: spacing.xs },
+  actorCard: { width: 80, marginRight: spacing.md, alignItems: 'center' },
   actorPhoto: { width: 70, height: 70, borderRadius: 35, marginBottom: 6 },
-  actorPhotoPlaceholder: { backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' },
-  actorName: { fontSize: 11, fontWeight: '700', color: '#1A1A1A', textAlign: 'center' },
-  actorCharacter: { fontSize: 10, color: '#5A5A5A', textAlign: 'center' },
-  trailerButton: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#1A1A1A', borderRadius: 20, paddingVertical: 12, paddingHorizontal: 16, justifyContent: 'center' },
-  trailerButtonText: { color: '#FFFFFF', fontSize: 14, fontWeight: '600' },
-  verdictButton: { backgroundColor: '#1A1A1A', borderRadius: 40, paddingVertical: 18, width: '100%', alignItems: 'center', marginTop: 12 },
-  verdictButtonText: { color: '#FFFFFF', fontSize: 18, fontWeight: '700' },
+  actorPhotoPlaceholder: { backgroundColor: colors.surface, justifyContent: 'center', alignItems: 'center' },
+  actorName: { fontSize: 11, fontWeight: '700', color: colors.textPrimary, textAlign: 'center' },
+  actorCharacter: { fontSize: 10, color: colors.textSecondary, textAlign: 'center' },
+  trailerButton: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, backgroundColor: colors.ink, borderRadius: radius.lg, paddingVertical: spacing.md, paddingHorizontal: spacing.lg, justifyContent: 'center' },
+  trailerButtonText: { color: colors.textOnDark, fontSize: 14, fontWeight: '600' },
+  verdictButton: { backgroundColor: colors.ink, borderRadius: radius.pill, paddingVertical: 18, width: '100%', alignItems: 'center', marginTop: spacing.md },
+  verdictButtonText: { color: colors.textOnDark, fontSize: 18, fontWeight: '700' },
 });

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { typography } from '../lib/theme';
 import { Movie } from '../lib/tmdb';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -138,5 +139,5 @@ const styles = StyleSheet.create({
   pressArea: { alignItems: 'center' },
   poster: { width: ITEM_WIDTH, height: POSTER_HEIGHT, borderRadius: 12 },
   titleBox: { height: TITLE_HEIGHT, width: ITEM_WIDTH, marginTop: TITLE_MARGIN_TOP },
-  title: { fontSize: 13, lineHeight: 17, fontWeight: '700', color: '#1A1A1A', textAlign: 'center' },
+  title: { ...typography.caption, lineHeight: 17, fontWeight: '700', textAlign: 'center' },
 });

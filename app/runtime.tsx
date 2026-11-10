@@ -2,8 +2,11 @@ import Slider from '@react-native-community/slider';
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { PrimaryButton } from '../components/PrimaryButton';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getStepNumber, getTotalSteps } from '../lib/flow';
+import { colors, fonts, spacing, typography } from '../lib/theme';
 import { useSessionStore } from '../store/session';
 
 const RUNTIME_STEPS: { label: string; minutes: number | null }[] = [
@@ -24,7 +27,7 @@ function indexForMinutes(minutes: number | null): number {
 export default function RuntimeScreen() {
   const { showProvidersThisFlow, maxRuntimeMinutes, setMaxRuntime, familyFriendly, setFamilyFriendly } = useSessionStore();
   const totalSteps = getTotalSteps(showProvidersThisFlow);
-  const step = getStepNumber('runtime', showProvidersThisFlow); // eller 'genre' / 'vibe'
+  const step = getStepNumber('runtime', showProvidersThisFlow);
   const currentIndex = indexForMinutes(maxRuntimeMinutes);
 
   const handleChange = (index: number) => {
@@ -37,6 +40,7 @@ export default function RuntimeScreen() {
 
   return (
     <View style={styles.container}>
+      <ScreenBackground />
       <ScreenHeader step={step} totalSteps={totalSteps} />
       <Text style={styles.heading}>How long can the movie be?</Text>
       <Text style={styles.value}>{RUNTIME_STEPS[currentIndex].label}</Text>
@@ -48,9 +52,9 @@ export default function RuntimeScreen() {
         step={1}
         value={currentIndex}
         onValueChange={handleChange}
-        minimumTrackTintColor="#1A1A1A"
-        maximumTrackTintColor="#FFFFFF"
-        thumbTintColor="#1A1A1A"
+        minimumTrackTintColor={colors.ink}
+        maximumTrackTintColor={colors.surface}
+        thumbTintColor={colors.ink}
       />
 
       <View style={styles.stepLabels}>
@@ -65,25 +69,22 @@ export default function RuntimeScreen() {
         <Text style={styles.checkboxLabel}>Family friendly</Text>
       </Pressable>
 
-      <Pressable style={styles.nextButton} onPress={() => router.push('/genre')}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </Pressable>
+      <PrimaryButton label="Next" onPress={() => router.push('/genre')} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', paddingHorizontal: 24 },
-  heading: { fontFamily: 'Gabarito-Bold', fontSize: 26, textAlign: 'center', marginBottom: 20 },
-  value: { fontFamily: 'Gabarito-Bold', fontSize: 40, textAlign: 'center', marginBottom: 20 },
+  container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.xxl },
+  // 26 og 40 ligger uden for skalaen — samles i Trin 4.
+  heading: { ...typography.h2, textAlign: 'center', marginBottom: spacing.xl },
+  value: { fontFamily: fonts.heading, fontSize: 40, color: colors.textPrimary, textAlign: 'center', marginBottom: spacing.xl },
   slider: { width: '100%', marginBottom: 4 },
   stepLabels: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 50 },
-  stepLabelText: { fontSize: 13, color: '#1A1A1A' },
+  stepLabelText: { fontSize: 13, color: colors.textPrimary },
   checkboxRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 50 },
-  checkbox: { width: 26, height: 26, borderRadius: 6, borderWidth: 2, borderColor: '#1A1A1A', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
-  checkboxChecked: { backgroundColor: '#1A1A1A' },
-  checkmark: { color: '#E8B923', fontWeight: 'bold' },
-  checkboxLabel: { fontSize: 18, fontWeight: '600' },
-  nextButton: { backgroundColor: '#1A1A1A', paddingVertical: 18, borderRadius: 40, alignItems: 'center' },
-  nextButtonText: { color: '#FFFFFF', fontSize: 20, fontWeight: '600' },
+  checkbox: { width: 26, height: 26, borderRadius: 6, borderWidth: 2, borderColor: colors.ink, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
+  checkboxChecked: { backgroundColor: colors.ink },
+  checkmark: { color: colors.background, fontWeight: 'bold' },
+  checkboxLabel: { fontSize: 18, fontWeight: '600', color: colors.textPrimary },
 });

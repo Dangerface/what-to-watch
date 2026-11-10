@@ -1,20 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router, useFocusEffect } from 'expo-router';
+import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackButton } from '../components/BackButton';
 import { EditActionButton } from '../components/EditActionButton';
 import { EditToggleButton } from '../components/EditToggleButton';
 import { TAB_BAR_CLEARANCE } from '../components/GlobalTabBar';
 import { MovieListRow } from '../components/MovieListRow';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { getWatched, unmarkWatched, WatchedEntry } from '../lib/storage';
-
-function BackButton() {
-  return (
-    <Pressable onPress={() => router.back()} style={styles.backButton} hitSlop={12}>
-      <Text style={styles.backArrow}>←</Text>
-    </Pressable>
-  );
-}
+import { colors, spacing, typography } from '../lib/theme';
 
 function WatchedRow({ entry, editMode, onRemove }: { entry: WatchedEntry; editMode: boolean; onRemove: (id: number) => void }) {
   return (
@@ -28,7 +23,7 @@ function WatchedRow({ entry, editMode, onRemove }: { entry: WatchedEntry; editMo
       </View>
       <EditActionButton visible={editMode}>
         <Pressable onPress={() => onRemove(entry.movie.id)} hitSlop={8}>
-          <Ionicons name="close-circle" size={28} color="#1A1A1A" />
+          <Ionicons name="close-circle" size={28} color={colors.ink} />
         </Pressable>
       </EditActionButton>
     </View>
@@ -57,6 +52,7 @@ export default function WatchedScreen() {
 
   return (
     <View style={styles.root}>
+      <ScreenBackground />
       <BackButton />
       <EditToggleButton editMode={editMode} onPress={() => setEditMode((prev) => !prev)} />
       <Text style={styles.title}>Watched</Text>
@@ -71,14 +67,12 @@ export default function WatchedScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  backButton: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  title: { fontFamily: 'Gabarito-Bold', fontSize: 24, textAlign: 'center', paddingTop: 110, marginBottom: 16, paddingHorizontal: 16 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
-  emptyText: { fontFamily: 'Gabarito-Bold', fontSize: 20, textAlign: 'center' },
-  listContent: { paddingHorizontal: 16, paddingBottom: TAB_BAR_CLEARANCE + 20 },
+  root: { flex: 1, backgroundColor: colors.background },
+  title: { ...typography.h2, textAlign: 'center', paddingTop: 110, marginBottom: spacing.lg, paddingHorizontal: spacing.lg },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background, padding: spacing.xxl },
+  emptyText: { ...typography.h3, textAlign: 'center' },
+  listContent: { paddingHorizontal: spacing.lg, paddingBottom: TAB_BAR_CLEARANCE + 20 },
   rowOuter: { flexDirection: 'row', alignItems: 'center' },
   rowFlex: { flex: 1 },
-  ratingText: { fontSize: 12, color: '#1A1A1A', fontWeight: '600' },
+  ratingText: { fontSize: 12, color: colors.textPrimary, fontWeight: '600' },
 });

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
+import { colors } from '../lib/theme';
 
 const PARTICLE_COUNT = 14;
 const BURST_RADIUS = 55;
@@ -43,5 +44,5 @@ export function ParticleBurst({ trigger }: Props) {
 
 const styles = StyleSheet.create({
   container: { position: 'absolute', top: '50%', left: '50%', width: 0, height: 0 },
-  particle: { position: 'absolute', width: 6, height: 6, borderRadius: 3, backgroundColor: '#1A1A1A', marginLeft: -3, marginTop: -3 },
+  particle: { position: 'absolute', width: 6, height: 6, borderRadius: 3, backgroundColor: colors.ink, marginLeft: -3, marginTop: -3 },
 });

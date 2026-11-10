@@ -2,6 +2,7 @@ import { BlurView } from 'expo-blur';
 import { router } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { colors, zIndex } from '../lib/theme';
 import { SettingsPanel } from './SettingsPanel';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -77,12 +78,12 @@ export function SettingsOverlay({ visible, onClose }: Props) {
 }
 
 const styles = StyleSheet.create({
-  root: { zIndex: 30 },
+  root: { zIndex: zIndex.settingsOverlay },
   panel: {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    backgroundColor: '#E8B923',
+    backgroundColor: colors.modalBackground,
     shadowColor: '#000',
     shadowOffset: { width: -4, height: 0 },
     shadowOpacity: 0.25,

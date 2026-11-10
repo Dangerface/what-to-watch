@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors, spacing } from '../lib/theme';
 
 type Props = { step: number; totalSteps: number };
 
@@ -20,11 +21,11 @@ export function ScreenHeader({ step, totalSteps }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { paddingTop: 60, paddingHorizontal: 24, marginBottom: 20 },
-  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  backButton: { padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  stepLabel: { fontSize: 14, fontWeight: '600', color: '#1A1A1A' },
-  barTrack: { height: 6, backgroundColor: '#FFFFFF', borderRadius: 3, overflow: 'hidden' },
-  barFill: { height: '100%', backgroundColor: '#1A1A1A', borderRadius: 3 },
+  container: { paddingTop: 60, paddingHorizontal: spacing.xxl, marginBottom: spacing.xl },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md },
+  backButton: { padding: spacing.xs },
+  backArrow: { fontSize: 26, fontWeight: 'bold', color: colors.textPrimary },
+  stepLabel: { fontSize: 14, fontWeight: '600', color: colors.textPrimary },
+  barTrack: { height: 6, backgroundColor: colors.surface, borderRadius: 3, overflow: 'hidden' },
+  barFill: { height: '100%', backgroundColor: colors.ink, borderRadius: 3 },
 });

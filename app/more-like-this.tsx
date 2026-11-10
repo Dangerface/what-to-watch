@@ -1,21 +1,17 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import { BackButton } from '../components/BackButton';
+import LoopLoader from '../components/LoopLoader';
 import { MovieDetailCard } from '../components/MovieDetailCard';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { MoreLikeThisFeed } from '../lib/moreLikeThis';
+import { colors, spacing, typography } from '../lib/theme';
 import { DiscoverFilters, Movie } from '../lib/tmdb';
 import { useSessionStore } from '../store/session';
 
 const { width } = Dimensions.get('window');
 const BATCH_SIZE = 12;
-
-function BackButton() {
-  return (
-    <Pressable onPress={() => router.back()} style={styles.backButton} hitSlop={12}>
-      <Text style={styles.backArrow}>←</Text>
-    </Pressable>
-  );
-}
 
 export default function MoreLikeThisScreen() {
   const { movieId, title } = useLocalSearchParams<{ movieId: string; title?: string }>();
@@ -59,8 +55,9 @@ export default function MoreLikeThisScreen() {
   if (loading) {
     return (
       <View style={styles.center}>
+        <ScreenBackground />
         <BackButton />
-        <ActivityIndicator size="large" color="#1A1A1A" />
+        <LoopLoader />
       </View>
     );
   }
@@ -68,6 +65,7 @@ export default function MoreLikeThisScreen() {
   if (error || movies.length === 0) {
     return (
       <View style={styles.center}>
+        <ScreenBackground />
         <BackButton />
         <Text style={styles.errorText}>Fandt ingen lignende film der matcher jeres filtre.</Text>
       </View>
@@ -76,9 +74,11 @@ export default function MoreLikeThisScreen() {
 
   return (
     <View style={styles.root}>
+      <ScreenBackground />
       <BackButton />
       <Text style={styles.header}>Ligner {title ?? 'denne film'}</Text>
-      <FlatList style={styles.content}
+      <FlatList
+        style={styles.content}
         data={movies}
         keyExtractor={(item) => String(item.id)}
         horizontal
@@ -87,8 +87,8 @@ export default function MoreLikeThisScreen() {
         onEndReachedThreshold={0.5}
         onEndReached={handleEndReached}
         renderItem={({ item }) => (
-  <MovieDetailCard movie={item} width={width} onJailed={() => setMovies((prev) => prev.filter((m) => m.id !== item.id))} />
-)}
+          <MovieDetailCard movie={item} width={width} onJailed={() => setMovies((prev) => prev.filter((m) => m.id !== item.id))} />
+        )}
         ListFooterComponent={
           exhausted ? (
             <View style={[styles.card, { width, justifyContent: 'center' }]}>
@@ -102,12 +102,10 @@ export default function MoreLikeThisScreen() {
 }
 
 const styles = StyleSheet.create({
-  content:{top:50},
-  root: { flex: 1, backgroundColor: '#E8B923' },
-  backButton: { position: 'absolute', top: 60, left: 24, zIndex: 10, padding: 4 },
-  backArrow: { fontSize: 26, fontWeight: 'bold', color: '#1A1A1A' },
-  header: { position: 'absolute', top: 66, left: 60, right: 60, fontFamily: 'Gabarito-Bold', fontSize: 18, textAlign: 'center', zIndex: 5 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923', padding: 24 },
-  card: { alignItems: 'center', padding: 24,  paddingTop: 60, backgroundColor: '#E8B923' },
+  content: { top: 50 },
+  root: { flex: 1, backgroundColor: colors.background },
+  header: { position: 'absolute', top: 66, left: 60, right: 60, ...typography.h4, textAlign: 'center', zIndex: 5 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background, padding: spacing.xxl },
+  card: { alignItems: 'center', padding: spacing.xxl, paddingTop: 60, backgroundColor: colors.background },
   errorText: { fontSize: 16, textAlign: 'center' },
 });

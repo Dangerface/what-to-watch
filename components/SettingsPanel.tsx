@@ -11,6 +11,8 @@ import {
   setSoftJailDurationDays,
   setSoftJailThresholdMs,
 } from '../lib/storage';
+import { colors, spacing, typography } from '../lib/theme';
+import { OutlineButton } from './OutlineButton';
 
 type Props = {
   onNavigate: (path: string) => void;
@@ -65,9 +67,7 @@ export function SettingsPanel({ onNavigate, onClose }: Props) {
         </Pressable>
       </View>
 
-      <Pressable style={styles.optionButton} onPress={() => onNavigate('/providers?fromSettings=true')}>
-        <Text style={styles.optionText}>Streaming-tjenester</Text>
-      </Pressable>
+      <OutlineButton label="Streaming-tjenester" onPress={() => onNavigate('/providers?fromSettings=true')} style={{ marginBottom: spacing.xl }} />
 
       <View style={styles.toggleRow}>
         <Text style={styles.toggleLabel}>Exclude watched movies from search</Text>
@@ -89,9 +89,9 @@ export function SettingsPanel({ onNavigate, onClose }: Props) {
             handleSelectDuration(days);
           }
         }}
-        minimumTrackTintColor="#1A1A1A"
-        maximumTrackTintColor="#FFFFFF"
-        thumbTintColor="#1A1A1A"
+        minimumTrackTintColor={colors.ink}
+        maximumTrackTintColor={colors.surface}
+        thumbTintColor={colors.ink}
       />
 
       <Text style={styles.sectionLabel}>Soft Jail — hvor hurtigt et swipe tæller</Text>
@@ -109,13 +109,14 @@ export function SettingsPanel({ onNavigate, onClose }: Props) {
             handleSelectThreshold(ms);
           }
         }}
-        minimumTrackTintColor="#1A1A1A"
-        maximumTrackTintColor="#FFFFFF"
-        thumbTintColor="#1A1A1A"
+        minimumTrackTintColor={colors.ink}
+        maximumTrackTintColor={colors.surface}
+        thumbTintColor={colors.ink}
       />
 
       <View style={styles.tmdbContainer}>
-        <Image source={TmdbLogo} style={styles.logo} tintColor="#55565A" />
+        {/* TMDB-logoets grå og teksten nedenfor er enkeltstående farver, ikke i theme endnu. */}
+        <Image source={TmdbLogo} style={styles.logo} tintColor={colors.textMuted} />
         <Text style={styles.tmdbText}>This product uses the TMDB API but is not endorsed or certified by TMDB.</Text>
       </View>
     </View>
@@ -123,18 +124,16 @@ export function SettingsPanel({ onNavigate, onClose }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 20, paddingTop: 70 },
+  container: { flex: 1, paddingHorizontal: spacing.xl, paddingTop: 70 },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 },
-  header: { fontFamily: 'Gabarito-Bold', fontSize: 24 },
-  closeText: { fontSize: 20, fontWeight: 'bold', color: '#1A1A1A' },
-  optionButton: { borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 20, paddingVertical: 18, alignItems: 'center', marginBottom: 20 },
-  optionText: { fontSize: 17, fontWeight: '600', color: '#1A1A1A' },
-  toggleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
-  toggleLabel: { fontSize: 15, fontWeight: '600', color: '#1A1A1A', flex: 1, marginRight: 12 },
-  sectionLabel: { fontSize: 14, fontWeight: '600', color: '#1A1A1A', marginBottom: 4 },
-  sectionValue: { fontSize: 13, color: '#1A1A1A', marginBottom: 6 },
-  slider: { width: '100%', marginBottom: 24 },
-  tmdbContainer: { paddingHorizontal: 50, alignItems: 'center', justifyContent: 'center', marginVertical: 20, marginTop: 'auto' },
-  tmdbText: { fontSize: 10, textAlign: 'center', color: '#333', marginBottom: 10, lineHeight: 14 },
+  header: { ...typography.h2 },
+  closeText: { fontSize: 20, fontWeight: 'bold', color: colors.textPrimary },
+  toggleRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xxl },
+  toggleLabel: { ...typography.body, fontWeight: '600', flex: 1, marginRight: spacing.md },
+  sectionLabel: { fontSize: 14, fontWeight: '600', color: colors.textPrimary, marginBottom: spacing.xs },
+  sectionValue: { ...typography.caption, marginBottom: 6 },
+  slider: { width: '100%', marginBottom: spacing.xxl },
+  tmdbContainer: { paddingHorizontal: 50, alignItems: 'center', justifyContent: 'center', marginVertical: spacing.xl, marginTop: 'auto' },
+  tmdbText: { fontSize: 10, textAlign: 'center', color: colors.textSecondary, marginBottom: 10, lineHeight: 14 },
   logo: { width: 100, height: 30, resizeMode: 'contain' },
 });

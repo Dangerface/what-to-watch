@@ -1,9 +1,13 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import LoopLoader from '../components/LoopLoader';
+import { OutlineButton } from '../components/OutlineButton';
+import { ScreenBackground } from '../components/ScreenBackground';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { getTotalSteps } from '../lib/flow';
 import { getSelectedProviderIds } from '../lib/storage';
+import { colors, spacing, typography } from '../lib/theme';
 import { useSessionStore } from '../store/session';
 
 export default function SourceTypeScreen() {
@@ -32,31 +36,27 @@ export default function SourceTypeScreen() {
   if (!ready) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#1A1A1A" />
+        <ScreenBackground />
+        <LoopLoader />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
+      <ScreenBackground />
       <ScreenHeader step={1} totalSteps={totalSteps} />
       <Text style={styles.heading}>Hvor skal filmene findes?</Text>
 
-      <Pressable style={styles.optionButton} onPress={() => choose('streamingOnly')}>
-        <Text style={styles.optionText}>Kun streaming</Text>
-      </Pressable>
-
-      <Pressable style={styles.optionButton} onPress={() => choose('includeRental')}>
-        <Text style={styles.optionText}>Også lejefilm</Text>
-      </Pressable>
+      <OutlineButton label="Kun streaming" onPress={() => choose('streamingOnly')} size="lg" />
+      <OutlineButton label="Også lejefilm" onPress={() => choose('includeRental')} size="lg" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#E8B923', paddingHorizontal: 24 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#E8B923' },
-  heading: { fontFamily: 'Gabarito-Bold', fontSize: 26, textAlign: 'center', marginBottom: 40 },
-  optionButton: { borderWidth: 2, borderColor: '#1A1A1A', borderRadius: 20, paddingVertical: 24, alignItems: 'center', marginBottom: 16 },
-  optionText: { fontSize: 20, fontWeight: '600', color: '#1A1A1A' },
+  container: { flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.xxl },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background },
+  // 26 ligger mellem h2 (24) og h1 (28) — samles i Trin 4.
+  heading: { ...typography.h2, textAlign: 'center', marginBottom: 40 },
 });

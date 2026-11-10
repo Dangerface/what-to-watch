@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { colors } from '../lib/theme';
 
 interface StartupLoaderProps {
   onFinish?: () => void;
@@ -48,6 +49,8 @@ export default function StartupLoader({ onFinish }: StartupLoaderProps) {
     cancelAnimation(textOpacity);
     cancelAnimation(globalScaleX);
     cancelAnimation(globalScaleY);
+
+    
 
     boxOpacity.value = 0;
     overlayOpacity.value = 0;
@@ -175,18 +178,13 @@ export default function StartupLoader({ onFinish }: StartupLoaderProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#E8B923',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  container: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' },
   animationWrapper: {
     width: 150,
     height: 150,
     position: 'absolute',
     bottom: '50%',
-    marginBottom: -75, 
+    marginBottom: -75,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -196,47 +194,25 @@ const styles = StyleSheet.create({
     marginBottom: -90,
     width: 300,
     textAlign: 'center',
-    color: '#1A1A1A', 
-    fontSize: 30, 
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif',
+    color: colors.textPrimary,
+    fontSize: 30,
+    fontFamily: Platform.OS === 'ios' ? 'Helvetica' : 'sans-serif', // logoens ordmærke, bevidst ikke Gabarito
     fontWeight: 'bold',
     letterSpacing: -0.5,
     zIndex: 10,
   },
-  blackBox: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000000',
-    borderRadius: 28,
-    zIndex: 1,
-  },
-  vhsImage: {
-    position: 'absolute',
-    width: 120,
-    height: 120, 
-    zIndex: 2,   
-  },
+  blackBox: { width: '100%', height: '100%', backgroundColor: colors.logoBox, borderRadius: 28, zIndex: 1 },
+  vhsImage: { position: 'absolute', width: 120, height: 120, zIndex: 2 },
   overlayBox: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '50%', 
-    backgroundColor: '#000000',
+    height: '50%',
+    backgroundColor: colors.logoBox,
     borderBottomLeftRadius: 28,
     borderBottomRightRadius: 28,
-    zIndex: 3,   
+    zIndex: 3,
   },
-  replayButton: {
-    position: 'absolute',
-    bottom: 60,
-    backgroundColor: '#1A1A1A',
-    paddingVertical: 14,
-    paddingHorizontal: 30,
-    borderRadius: 30,
-  },
-  replayButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  replayButton: { position: 'absolute', bottom: 60, backgroundColor: colors.ink, paddingVertical: 14, paddingHorizontal: 30, borderRadius: 30 },
+  replayButtonText: { color: colors.textOnDark, fontSize: 16, fontWeight: '600' },
 });

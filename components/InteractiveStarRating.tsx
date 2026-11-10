@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useRef } from 'react';
 import { GestureResponderEvent, PanResponder, StyleSheet, View } from 'react-native';
+import { colors } from '../lib/theme';
 
 export const STAR_SIZE = 34;
 export const STAR_GAP = 8;
@@ -69,7 +70,7 @@ export function InteractiveStarRating({ rating, onChange, onCommit }: Props) {
         let icon: keyof typeof Ionicons.glyphMap = 'star-outline';
         if (ratingOutOfFive >= star) icon = 'star';
         else if (ratingOutOfFive >= star - 0.5) icon = 'star-half';
-        return <Ionicons key={star} name={icon} size={STAR_SIZE} color="#1A1A1A" />;
+        return <Ionicons key={star} name={icon} size={STAR_SIZE} color={colors.ink} />;
       })}
     </View>
   );
